@@ -1,0 +1,71 @@
+[build-system]
+requires = [
+  "scikit-build-core>=0.9.0"
+]
+build-backend = "scikit_build_core.build"
+
+# System requirements (must be installed separately):
+# - FLINT library for arbitrary precision arithmetic
+# - OpenMP for parallel processing
+# - CBlas a family of routines for fundamental linear-algebra operations
+#
+# Installation:
+#   macOS:   brew install flint libomp openblas
+#   Ubuntu:  sudo apt-get install libflint-dev libgomp1-dev libopenblas-dev
+#   RHEL:    sudo yum install flint-devel gcc-openmp openblas-devel
+
+[project]
+name = "fkcompute"
+version = "0.2.20"
+description = "Compute the FK invariant for braids (inversion + ILP + compiled helper binary)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "TBD" }
+authors = [
+  { name = "Toby" },
+  { name = "Paul" },
+  { name = "Lara" },
+  { name = "Josef" },
+  { name = "Davide" },
+]
+keywords = ["knot-theory", "braids", "FK-invariant", "mathematics"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+dependencies = [
+  "numpy>=1.20",
+  "typer>=0.9.0",
+]
+
+[project.optional-dependencies]
+ilp = ["gurobipy>=9.5"]
+symbolic = ["sympy>=1.10"]
+interactive = ["rich>=13"]
+yaml = ["PyYAML>=6"]
+viz = ["ipython>=8", "jupyter"]
+full = ["gurobipy>=9.5", "sympy>=1.10", "rich>=13", "PyYAML>=6", "ipython>=8", "jupyter"]
+
+[project.scripts]
+fk = "fkcompute.cli.app:main"
+fk-install-man = "fkcompute.install_man:main"
+
+[tool.scikit-build]
+# Point to your src-layout package directory
+wheel.packages = ["src/fkcompute"]
+
+# (Optional) add files to sdist
+sdist.include = [
+  "cpp/**",
+  "CMakeLists.txt",
+  "docs/**",
+  "README.md",
+  "LICENSE",
+  "mathematica/**",
+  "src/**",
+  "fk.1",
+]
+
+# Example CMake args if you ever need them:
+# cmake.args = ["-DSOME_FLAG=ON"]
