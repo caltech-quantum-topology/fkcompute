@@ -70,8 +70,8 @@ html_theme_options = {
 
 html_context = {
     "display_github": True,
-    "github_user": "fkcompute",
-    "github_repo": "fk-compute",
+    "github_user": "caltech-quantum-topology",
+    "github_repo": "fkcompute",
     "github_version": "main",
     "conf_py_path": "/docs/",
 }
