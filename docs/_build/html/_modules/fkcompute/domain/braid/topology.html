@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fkcompute.domain.braid.topology &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fkcompute.domain.braid.topology</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fkcompute.domain.braid.topology</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">BraidTopology class for pure topological braid data.</span>
+
+<span class="sd">This class represents the topological structure of a braid closure,</span>
+<span class="sd">independent of any sign assignment. It contains:</span>
+<span class="sd">- Braid word and generator information</span>
+<span class="sd">- State locations and equivalence classes</span>
+<span class="sd">- Component structure (which strands form which components)</span>
+<span class="sd">- Strand endpoint and type information</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">string</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
+
+
+<div class="viewcode-block" id="BraidTopology">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.braid.topology.BraidTopology">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BraidTopology</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pure topological data for a braid closure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    braid</span>
+<span class="sd">        Braid word as a list of signed generator indices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">braid</span> <span class="o">=</span> <span class="n">braid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_strand</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">braid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strands</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_strand</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_strands</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_strand</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_crossings</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">braid_group_generators</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_strand</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">braid</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">g</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writhe</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_locations</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strands</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_crossings</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_input_state_locations</span> <span class="o">=</span> <span class="p">[(</span><span class="nb">abs</span><span class="p">(</span><span class="n">braid</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_crossings</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom_input_state_locations</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_input_state_locations</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_output_state_locations</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_input_state_locations</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom_output_state_locations</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_input_state_locations</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loc</span> <span class="o">=</span> <span class="p">[[[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)],</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">)]]</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_input_state_locations</span><span class="p">]</span>
+
+        <span class="n">state_info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">state_at_location</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">strand</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strands</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="n">strand</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">state_info</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">state_at_location</span><span class="p">[(</span><span class="n">strand</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">strand</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_crossings</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">braid</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="n">strand</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">braid</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="n">strand</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="n">strand</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+                    <span class="n">state_info</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">state_at_location</span><span class="p">[(</span><span class="n">strand</span><span class="p">,</span> <span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="n">state</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">state_info</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">state_info</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">26</span> <span class="k">else</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_info</span> <span class="o">=</span> <span class="n">state_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_at_location</span> <span class="o">=</span> <span class="n">state_at_location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">state_at_location</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_equivalence_classes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state_equivalence_classes</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">state_at_location</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state_equivalence_classes</span><span class="p">[</span><span class="n">state_at_location</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">component_locations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">component</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_strands</span><span class="p">:</span>
+            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">component_locations</span><span class="p">)):</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">current_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">current_list_strand</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+                    <span class="n">current_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">))</span>
+                    <span class="n">current_list_strand</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_input_state_locations</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span><span class="p">[</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">current_list_strand</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">])</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                        <span class="n">current_list_strand</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="n">prefix</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;L&#39;</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_input_state_locations</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span><span class="p">[</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">current_list_strand</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;L&#39;</span><span class="p">])</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                        <span class="n">current_list_strand</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="n">prefix</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;R&#39;</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_crossings</span><span class="p">:</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="n">current_list</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span><span class="p">[</span><span class="n">component</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">current_list_strand</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span><span class="p">[</span><span class="n">component</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">current_list</span> <span class="o">!=</span> <span class="p">[]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">component_locations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_list</span><span class="p">)</span>
+                    <span class="n">component</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">component_locations_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">index</span><span class="p">:</span> <span class="n">list_</span> <span class="k">for</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">list_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">component_locations</span><span class="p">)}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">component_locations</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top_crossing_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_component</span><span class="p">(</span><span class="n">location</span><span class="p">)</span> <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_input_state_locations</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom_crossing_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_component</span><span class="p">(</span><span class="n">location</span><span class="p">)</span> <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_input_state_locations</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closed_strand_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_component</span><span class="p">(</span><span class="n">location</span><span class="p">)</span> <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_strands</span><span class="p">)]]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">strand_types</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strand_endpoints</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">endpoint_crossing_indices</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strand_endpoints</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_s</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">strand_locations</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_s_total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_s</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+<div class="viewcode-block" id="BraidTopology.get_component">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.braid.topology.BraidTopology.get_component">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the component index for a given location.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">component_locations_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">key</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BraidTopology.get_state">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.braid.topology.BraidTopology.get_state">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the state at a given location.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_at_location</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">location</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BraidTopology.label_from_location">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.braid.topology.BraidTopology.label_from_location">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">label_from_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the label for a location.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">location</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">tuple</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_info</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">(</span><span class="n">location</span><span class="p">)]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">location</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BraidTopology.a_resolution_components">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.braid.topology.BraidTopology.a_resolution_components">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">a_resolution_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the A-resolution components.&quot;&quot;&quot;</span>
+        <span class="n">unvisited_locations</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_locations</span><span class="p">)</span>
+        <span class="n">component_locations</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">while</span> <span class="n">unvisited_locations</span><span class="p">:</span>
+            <span class="n">current_loc</span> <span class="o">=</span> <span class="n">unvisited_locations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">current_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">up</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">while</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_list</span><span class="p">:</span>
+                <span class="n">old_location</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">up</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_input_state_locations</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">top_input_state_locations</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">))]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                            <span class="n">up</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">elif</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_input_state_locations</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_input_state_locations</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">))]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                            <span class="n">up</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">elif</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_crossings</span><span class="p">:</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_output_state_locations</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">top_output_state_locations</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">))]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                            <span class="n">up</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">elif</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_output_state_locations</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_output_state_locations</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">))]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                            <span class="n">up</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">elif</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_crossings</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">current_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">old_location</span><span class="p">))</span>
+                <span class="n">unvisited_locations</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">old_location</span><span class="p">))</span>
+            <span class="n">component_locations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_list</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">component_locations</span><span class="p">),</span> <span class="n">component_locations</span></div>
+
+
+<div class="viewcode-block" id="BraidTopology.b_resolution_components">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.braid.topology.BraidTopology.b_resolution_components">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">b_resolution_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the B-resolution components.&quot;&quot;&quot;</span>
+        <span class="n">unvisited_locations</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_locations</span><span class="p">)</span>
+        <span class="n">component_locations</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">while</span> <span class="n">unvisited_locations</span><span class="p">:</span>
+            <span class="n">current_loc</span> <span class="o">=</span> <span class="n">unvisited_locations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">current_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">up</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">while</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current_list</span><span class="p">:</span>
+                <span class="n">old_location</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">up</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_input_state_locations</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">top_input_state_locations</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">))]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                            <span class="n">up</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_input_state_locations</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_input_state_locations</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">))]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                            <span class="n">up</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+                    <span class="k">elif</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_crossings</span><span class="p">:</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_output_state_locations</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">top_output_state_locations</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">))]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                            <span class="n">up</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottom_output_state_locations</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">crossing_signs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom_output_state_locations</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">current_loc</span><span class="p">))]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                            <span class="n">up</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_crossings</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">current_loc</span> <span class="o">=</span> <span class="p">[</span><span class="n">current_loc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">current_loc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">current_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">old_location</span><span class="p">))</span>
+                <span class="n">unvisited_locations</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">old_location</span><span class="p">))</span>
+            <span class="n">component_locations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_list</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">component_locations</span><span class="p">),</span> <span class="n">component_locations</span></div>
+
+
+<div class="viewcode-block" id="BraidTopology.Lobb">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.braid.topology.BraidTopology.Lobb">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Lobb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the Lobb bound.&quot;&quot;&quot;</span>
+        <span class="n">lower</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="o">-</span><span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">braid</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_strands</span><span class="p">)])</span>
+        <span class="n">upper</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">braid</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_strands</span><span class="p">)])</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writhe</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_strands</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">lower</span>
+        <span class="n">Delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_strands</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">upper</span> <span class="o">-</span> <span class="n">lower</span>
+        <span class="k">return</span> <span class="n">L</span> <span class="o">&lt;=</span> <span class="n">U</span> <span class="ow">and</span> <span class="n">L</span> <span class="o">&gt;=</span> <span class="n">U</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Delta</span></div>
+
+
+<div class="viewcode-block" id="BraidTopology.DL">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.braid.topology.BraidTopology.DL">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">DL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">L</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the DL bound.&quot;&quot;&quot;</span>
+        <span class="n">lower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b_resolution_components</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">braid</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">upper</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">braid</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">a_resolution_components</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">L</span> <span class="o">&lt;=</span> <span class="n">upper</span> <span class="ow">and</span> <span class="n">L</span> <span class="o">&gt;=</span> <span class="n">lower</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

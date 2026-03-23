@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Output Format &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/design-tabs.js?v=f930bc37"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Computation Pipeline" href="pipeline.html" />
+    <link rel="prev" title="Configuration Files" href="configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Files</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Output Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#top-level-result">Top-Level Result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#terms"><code class="docutils literal notranslate"><span class="pre">terms</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-trefoil-knot">Example — Trefoil Knot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#metadata"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fields-written-by-the-c-backend">Fields Written by the C++ Backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fields-added-by-the-python-layer">Fields Added by the Python Layer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#symbolic-output">Symbolic Output</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#output-formats">Output Formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variable-naming">Variable Naming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#converting-to-sympy">Converting to SymPy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#saved-files">Saved Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reformat-without-recomputing">Reformat Without Recomputing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Output Format</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/output.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="output-format">
+<h1>Output Format<a class="headerlink" href="#output-format" title="Link to this heading"></a></h1>
+<p>Every FK computation returns a single Python dictionary (or a dictionary of
+dictionaries in batch mode) with a uniform structure.</p>
+<section id="top-level-result">
+<h2>Top-Level Result<a class="headerlink" href="#top-level-result" title="Link to this heading"></a></h2>
+<p>Single computation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;terms&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">...</span><span class="p">],</span>       <span class="c1"># sparse polynomial terms</span>
+  <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">},</span>    <span class="c1"># auxiliary information</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Batch computation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;trefoil&quot;</span><span class="p">:</span>      <span class="p">{</span><span class="s2">&quot;terms&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">...</span><span class="p">],</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}},</span>
+  <span class="s2">&quot;figure_eight&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;terms&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">...</span><span class="p">],</span> <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="terms">
+<h2><code class="docutils literal notranslate"><span class="pre">terms</span></code><a class="headerlink" href="#terms" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">terms</span></code> list encodes the FK polynomial as a sparse collection of
+monomials.  Each monomial is a product of a x-variable term
+<span class="math notranslate nohighlight">\(x_1^{a_1} \cdots x_\ell^{a_\ell}\)</span> and a polynomial in the quantum
+parameter <span class="math notranslate nohighlight">\(q\)</span>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>        <span class="c1"># exponents of the x-variables</span>
+  <span class="s2">&quot;q_terms&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">k1</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="s2">&quot;n1&quot;</span><span class="p">},</span>    <span class="c1"># n1 * q^k1</span>
+    <span class="p">{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">k2</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="s2">&quot;n2&quot;</span><span class="p">},</span>    <span class="c1"># n2 * q^k2</span>
+    <span class="o">...</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Field descriptions:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 20.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p>list[int]</p></td>
+<td><p>Exponents for each x-variable.  Length equals
+<code class="docutils literal notranslate"><span class="pre">metadata[&quot;num_x_variables&quot;]</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">q_terms</span></code></p></td>
+<td><p>list</p></td>
+<td><p>Sparse list of <span class="math notranslate nohighlight">\((k, c)\)</span> pairs where <span class="math notranslate nohighlight">\(c \cdot q^k\)</span> is a
+term of the q-polynomial coefficient.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">q_terms[i][&quot;q&quot;]</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Exponent of <span class="math notranslate nohighlight">\(q\)</span> (may be negative).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">q_terms[i][&quot;c&quot;]</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Integer coefficient as a decimal string (arbitrary precision).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Coefficients are stored as strings by the C++ backend to preserve
+arbitrary precision.  Convert to Python integers with <code class="docutils literal notranslate"><span class="pre">int(c)</span></code> or use
+the <a class="reference internal" href="api/output.html#fkcompute.output.symbolic.matrix_to_polynomial" title="fkcompute.output.symbolic.matrix_to_polynomial"><code class="xref py py-func docutils literal notranslate"><span class="pre">matrix_to_polynomial()</span></code></a> helper.</p>
+</div>
+<section id="example-trefoil-knot">
+<h3>Example — Trefoil Knot<a class="headerlink" href="#example-trefoil-knot" title="Link to this heading"></a></h3>
+<p>A typical result for the trefoil at degree 2 looks like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;terms&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+      <span class="s2">&quot;q_terms&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="s2">&quot;-1&quot;</span><span class="p">}]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+      <span class="s2">&quot;q_terms&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">}]</span>
+    <span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This encodes the polynomial</p>
+<div class="math notranslate nohighlight">
+\[F_K(x, q) = (q^{-2} - 1) + x^2 q^4 + \cdots\]</div>
+</section>
+</section>
+<section id="metadata">
+<h2><code class="docutils literal notranslate"><span class="pre">metadata</span></code><a class="headerlink" href="#metadata" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> dictionary contains fields written by both the C++ backend
+and the Python layer.</p>
+<section id="fields-written-by-the-c-backend">
+<h3>Fields Written by the C++ Backend<a class="headerlink" href="#fields-written-by-the-c-backend" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">num_x_variables</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Number of x-variables (<span class="math notranslate nohighlight">\(= \ell\)</span>, the number of link
+components).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_x_degrees</span></code></p></td>
+<td><p>list[int]</p></td>
+<td><p>Maximum <span class="math notranslate nohighlight">\(x\)</span>-variable exponent actually appearing, one per
+variable.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">storage_type</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Internal coefficient storage format, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;flint&quot;</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="fields-added-by-the-python-layer">
+<h3>Fields Added by the Python Layer<a class="headerlink" href="#fields-added-by-the-python-layer" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 15.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">braid</span></code></p></td>
+<td><p>list[int]</p></td>
+<td><p>The braid word actually used for the computation (may differ from the
+input if a cyclic shift was applied during inversion).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">inversion</span></code></p></td>
+<td><p>dict or null</p></td>
+<td><p>The inversion data (component → sign list), or <code class="docutils literal notranslate"><span class="pre">null</span></code> when an ILP
+file was supplied directly.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">components</span></code></p></td>
+<td><p>int</p></td>
+<td><p>Number of link components, computed from the braid topology.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">symbolic</span></code></p></td>
+<td><p>string</p></td>
+<td><p>Pretty-printed polynomial string (present only when <code class="docutils literal notranslate"><span class="pre">symbolic=True</span></code>
+and SymPy is installed).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="symbolic-output">
+<h2>Symbolic Output<a class="headerlink" href="#symbolic-output" title="Link to this heading"></a></h2>
+<p>When <code class="docutils literal notranslate"><span class="pre">symbolic=True</span></code> (or <code class="docutils literal notranslate"><span class="pre">--symbolic</span></code> on the CLI), fkcompute uses
+SymPy to convert the sparse term list into a human-readable polynomial and
+attaches it as <code class="docutils literal notranslate"><span class="pre">metadata[&quot;symbolic&quot;]</span></code>.</p>
+<section id="output-formats">
+<h3>Output Formats<a class="headerlink" href="#output-formats" title="Link to this heading"></a></h3>
+<p>The symbolic output supports five format types:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Format</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pretty</span></code></p></td>
+<td><p>Multi-line Unicode pretty-print (SymPy’s <code class="docutils literal notranslate"><span class="pre">sp.pretty</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">inline</span></code></p></td>
+<td><p>One-line Python-style string (SymPy’s <code class="docutils literal notranslate"><span class="pre">str</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">latex</span></code></p></td>
+<td><p>LaTeX string (e.g. <code class="docutils literal notranslate"><span class="pre">x^{2}</span> <span class="pre">q^{4}</span> <span class="pre">-</span> <span class="pre">1</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mathematica</span></code></p></td>
+<td><p>Mathematica/Wolfram Language syntax.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>Alias for <code class="docutils literal notranslate"><span class="pre">inline</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--symbolic
+fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--format<span class="w"> </span>latex
+fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--format<span class="w"> </span>mathematica
+</pre></div>
+</div>
+<p>Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_symbolic_output</span>
+
+<span class="c1"># result is a previously computed result dict</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">format_symbolic_output</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;latex&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="variable-naming">
+<h3>Variable Naming<a class="headerlink" href="#variable-naming" title="Link to this heading"></a></h3>
+<p>Variable names for x-variables are chosen automatically:</p>
+<ul class="simple">
+<li><p><strong>1 component:</strong> <code class="docutils literal notranslate"><span class="pre">x</span></code></p></li>
+<li><p><strong>2 components:</strong> <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code></p></li>
+<li><p><strong>3+ components:</strong> <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, … (skipping <code class="docutils literal notranslate"><span class="pre">q</span></code>)</p></li>
+</ul>
+</section>
+<section id="converting-to-sympy">
+<h3>Converting to SymPy<a class="headerlink" href="#converting-to-sympy" title="Link to this heading"></a></h3>
+<p>Use <a class="reference internal" href="api/output.html#fkcompute.output.symbolic.matrix_to_polynomial" title="fkcompute.output.symbolic.matrix_to_polynomial"><code class="xref py py-func docutils literal notranslate"><span class="pre">matrix_to_polynomial()</span></code></a> to obtain a
+full SymPy expression object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix_to_polynomial</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">matrix_to_polynomial</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>              <span class="c1"># SymPy expression</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">)</span> <span class="c1"># {x, q}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="saved-files">
+<h2>Saved Files<a class="headerlink" href="#saved-files" title="Link to this heading"></a></h2>
+<p>When <code class="docutils literal notranslate"><span class="pre">save_data=True</span></code> (or <code class="docutils literal notranslate"><span class="pre">--save</span></code> on the CLI), three files are written
+to the save directory:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 65.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>File</p></th>
+<th class="head"><p>Contents</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;_inversion.json</span></code></p></td>
+<td><p>Inversion data (sign assignment + braid metadata).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;_ilp.csv</span></code></p></td>
+<td><p>ILP constraint matrix consumed by the C++ backend.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;name&gt;.json</span></code></p></td>
+<td><p>Final FK result (terms + metadata), augmented by Python.</p></td>
+</tr>
+</tbody>
+</table>
+<section id="reformat-without-recomputing">
+<h3>Reformat Without Recomputing<a class="headerlink" href="#reformat-without-recomputing" title="Link to this heading"></a></h3>
+<p>If you saved the result, you can apply a different symbolic format at any
+time without running the computation again:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>print-as<span class="w"> </span>data/trefoil.json<span class="w"> </span>--format<span class="w"> </span>mathematica
+</pre></div>
+</div>
+<p>Or from Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_symbolic_output</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/trefoil.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">format_symbolic_output</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;latex&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="configuration.html" class="btn btn-neutral float-left" title="Configuration Files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pipeline.html" class="btn btn-neutral float-right" title="Computation Pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

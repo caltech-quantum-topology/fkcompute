@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fkcompute.interactive.progress &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fkcompute.interactive.progress</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fkcompute.interactive.progress</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Progress tracking for FK computations.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.progress</span><span class="w"> </span><span class="kn">import</span> <span class="n">Progress</span><span class="p">,</span> <span class="n">SpinnerColumn</span><span class="p">,</span> <span class="n">TextColumn</span><span class="p">,</span> <span class="n">BarColumn</span><span class="p">,</span> <span class="n">TimeElapsedColumn</span><span class="p">,</span> <span class="n">TimeRemainingColumn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.live</span><span class="w"> </span><span class="kn">import</span> <span class="n">Live</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Panel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">Text</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="FKProgressTracker">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FKProgressTracker</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tracks and displays progress during FK computation phases.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress</span> <span class="o">=</span> <span class="n">Progress</span><span class="p">(</span>
+            <span class="n">SpinnerColumn</span><span class="p">(),</span>
+            <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&quot;[progress.description]</span><span class="si">{task.description}</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="n">BarColumn</span><span class="p">(),</span>
+            <span class="n">TextColumn</span><span class="p">(</span><span class="s2">&quot;[progress.percentage]</span><span class="si">{task.percentage:&gt;3.0f}</span><span class="s2">%&quot;</span><span class="p">),</span>
+            <span class="n">TimeElapsedColumn</span><span class="p">(),</span>
+            <span class="n">TimeRemainingColumn</span><span class="p">(),</span>
+            <span class="n">console</span><span class="o">=</span><span class="n">console</span><span class="p">,</span>
+            <span class="n">transient</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">live</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start progress tracking context.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">live</span> <span class="o">=</span> <span class="n">Live</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="p">,</span> <span class="n">console</span><span class="o">=</span><span class="n">console</span><span class="p">,</span> <span class="n">refresh_per_second</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop progress tracking.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">live</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">live</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+    
+<div class="viewcode-block" id="FKProgressTracker.start_inversion">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.start_inversion">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_inversion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">braid</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">degree</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start inversion calculation phase.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">task_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;🔍 Computing inversion (degree </span><span class="si">{</span><span class="n">degree</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> 
+                <span class="n">total</span><span class="o">=</span><span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;inversion&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">=</span> <span class="s2">&quot;inversion&quot;</span>
+            
+            <span class="n">StatusMessage</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting inversion computation for </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span><span class="si">}</span><span class="s2">-crossing braid&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">task_id</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.update_inversion_progress">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.update_inversion_progress">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_inversion_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update inversion progress.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;inversion&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;inversion&#39;</span><span class="p">],</span> 
+                        <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;🔍 </span><span class="si">{</span><span class="n">description</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="n">completed</span><span class="o">=</span><span class="n">current</span><span class="p">,</span>
+                        <span class="n">total</span><span class="o">=</span><span class="n">total</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;inversion&#39;</span><span class="p">],</span>
+                        <span class="n">completed</span><span class="o">=</span><span class="n">current</span><span class="p">,</span>
+                        <span class="n">total</span><span class="o">=</span><span class="n">total</span>
+                    <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.complete_inversion">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.complete_inversion">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">complete_inversion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mark inversion as complete.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;inversion&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;inversion&#39;</span><span class="p">],</span>
+                    <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;✅ Inversion complete (</span><span class="si">{</span><span class="n">components</span><span class="si">}</span><span class="s2"> components)&quot;</span><span class="p">,</span>
+                    <span class="n">completed</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="mi">100</span>
+                <span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># Brief pause to show completion</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.start_ilp_generation">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.start_ilp_generation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_ilp_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start ILP generation phase.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">task_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                <span class="s2">&quot;📋 Generating ILP formulation&quot;</span><span class="p">,</span>
+                <span class="n">total</span><span class="o">=</span><span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;ilp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">=</span> <span class="s2">&quot;ilp&quot;</span>
+            <span class="n">StatusMessage</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Generating Integer Linear Programming formulation&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">task_id</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.complete_ilp_generation">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.complete_ilp_generation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">complete_ilp_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constraints</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mark ILP generation as complete.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;ilp&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;ilp&#39;</span><span class="p">],</span>
+                    <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;✅ ILP complete (</span><span class="si">{</span><span class="n">constraints</span><span class="si">}</span><span class="s2"> constraints)&quot;</span><span class="p">,</span>
+                    <span class="n">completed</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="mi">100</span>
+                <span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.start_fk_computation">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.start_fk_computation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_fk_computation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">total_points</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start FK computation phase.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">task_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;⚡ Computing FK invariant (</span><span class="si">{</span><span class="n">threads</span><span class="si">}</span><span class="s2"> threads)&quot;</span><span class="p">,</span>
+                <span class="n">total</span><span class="o">=</span><span class="n">total_points</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;fk&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">=</span> <span class="s2">&quot;fk&quot;</span>
+            <span class="n">StatusMessage</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computing FK invariant for </span><span class="si">{</span><span class="n">total_points</span><span class="si">}</span><span class="s2"> points&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">task_id</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.update_fk_progress">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.update_fk_progress">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_fk_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">point_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update FK computation progress.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;fk&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">point_info</span><span class="p">:</span>
+                    <span class="n">description</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;⚡ Computing point </span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2"> (deg </span><span class="si">{</span><span class="n">point_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;degree&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;?&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">description</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;⚡ Computing FK invariant (</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">)&quot;</span>
+                
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;fk&#39;</span><span class="p">],</span>
+                    <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+                    <span class="n">completed</span><span class="o">=</span><span class="n">current</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="n">total</span>
+                <span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.complete_fk_computation">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.complete_fk_computation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">complete_fk_computation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">terms_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mark FK computation as complete.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;fk&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;fk&#39;</span><span class="p">],</span>
+                    <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;✅ FK complete (</span><span class="si">{</span><span class="n">terms_count</span><span class="si">}</span><span class="s2"> terms)&quot;</span><span class="p">,</span>
+                    <span class="n">completed</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="mi">100</span>
+                <span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.start_symbolic_generation">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.start_symbolic_generation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_symbolic_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start symbolic output generation.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">task_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                <span class="s2">&quot;🎨 Generating symbolic representation&quot;</span><span class="p">,</span>
+                <span class="n">total</span><span class="o">=</span><span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;symbolic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span> <span class="o">=</span> <span class="s2">&quot;symbolic&quot;</span>
+            <span class="n">StatusMessage</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Converting to symbolic polynomial format&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">task_id</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.complete_symbolic_generation">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.complete_symbolic_generation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">complete_symbolic_generation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mark symbolic generation as complete.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;symbolic&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;symbolic&#39;</span><span class="p">],</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;✅ Symbolic generation complete&quot;</span><span class="p">,</span>
+                    <span class="n">completed</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="mi">100</span>
+                <span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.start_file_operations">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.start_file_operations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_file_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start file operations (saving/loading).&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="n">task_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;💾 </span><span class="si">{</span><span class="n">operation</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">total</span><span class="o">=</span><span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;file_ops&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">task_id</span>
+            <span class="k">return</span> <span class="n">task_id</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.complete_file_operations">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.complete_file_operations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">complete_file_operations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mark file operations as complete.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;file_ops&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="s1">&#39;file_ops&#39;</span><span class="p">],</span>
+                    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;✅ File operations complete&quot;</span><span class="p">,</span>
+                    <span class="n">completed</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                    <span class="n">total</span><span class="o">=</span><span class="mi">100</span>
+                <span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="FKProgressTracker.show_phase_summary">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.show_phase_summary">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_phase_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Display a summary of current computation phase.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
+            <span class="k">return</span>
+        
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+        
+        <span class="c1"># Create summary panel</span>
+        <span class="n">summary_text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">()</span>
+        <span class="n">summary_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Computation Status</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold blue&quot;</span><span class="p">)</span>
+        <span class="n">summary_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elapsed time: </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">:</span>
+            <span class="n">phase_descriptions</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;inversion&#39;</span><span class="p">:</span> <span class="s1">&#39;Calculating sign assignments&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;ilp&#39;</span><span class="p">:</span> <span class="s1">&#39;Generating ILP constraints&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;fk&#39;</span><span class="p">:</span> <span class="s1">&#39;Computing FK invariant&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;symbolic&#39;</span><span class="p">:</span> <span class="s1">&#39;Creating symbolic output&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;file_ops&#39;</span><span class="p">:</span> <span class="s1">&#39;Saving/loading files&#39;</span>
+            <span class="p">}</span>
+            
+            <span class="n">current_desc</span> <span class="o">=</span> <span class="n">phase_descriptions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_phase</span><span class="p">,</span> <span class="s1">&#39;Processing&#39;</span><span class="p">)</span>
+            <span class="n">summary_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current phase: </span><span class="si">{</span><span class="n">current_desc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">)</span>
+        
+        <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+            <span class="n">summary_text</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span>
+            <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+            <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>
+        
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="StatusMessage">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.StatusMessage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">StatusMessage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display status messages during computation.&quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="StatusMessage.info">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.StatusMessage.info">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ℹ️  </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold blue&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StatusMessage.success">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.StatusMessage.success">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">success</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold green&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StatusMessage.warning">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.StatusMessage.warning">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">warning</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠️  </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold yellow&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StatusMessage.error">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.StatusMessage.error">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold red&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ResourceMonitor">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.ResourceMonitor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ResourceMonitor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Monitor and display system resources during computation.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitoring</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
+    
+<div class="viewcode-block" id="ResourceMonitor.start_monitoring">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.ResourceMonitor.start_monitoring">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_monitoring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start resource monitoring.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitoring</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    
+<div class="viewcode-block" id="ResourceMonitor.stop_monitoring">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.ResourceMonitor.stop_monitoring">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop_monitoring</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop resource monitoring.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">monitoring</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    
+<div class="viewcode-block" id="ResourceMonitor.get_status">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.ResourceMonitor.get_status">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get current resource status.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        
+        <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+        
+        <span class="c1"># Basic status (in a real implementation, you might use psutil for detailed monitoring)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;elapsed&#39;</span><span class="p">:</span> <span class="n">elapsed</span><span class="p">,</span>
+            <span class="s1">&#39;memory_usage&#39;</span><span class="p">:</span> <span class="s1">&#39;N/A&#39;</span><span class="p">,</span>  <span class="c1"># Would require psutil</span>
+            <span class="s1">&#39;cpu_usage&#39;</span><span class="p">:</span> <span class="s1">&#39;N/A&#39;</span>     <span class="c1"># Would require psutil</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">status</span></div>
+
+    
+<div class="viewcode-block" id="ResourceMonitor.display_status">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.progress.ResourceMonitor.display_status">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">display_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Display current resource status.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">monitoring</span><span class="p">:</span>
+            <span class="k">return</span>
+        
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_status</span><span class="p">()</span>
+        
+        <span class="c1"># Create status table</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">show_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Metric&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold&quot;</span><span class="p">)</span>
+        
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Elapsed&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">status</span><span class="p">[</span><span class="s1">&#39;elapsed&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Memory&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">[</span><span class="s1">&#39;memory_usage&#39;</span><span class="p">])</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;CPU&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">[</span><span class="s1">&#39;cpu_usage&#39;</span><span class="p">])</span>
+        
+        <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+            <span class="n">table</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Resources&quot;</span><span class="p">,</span>
+            <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+            <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+        
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

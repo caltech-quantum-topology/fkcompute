@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C++ Backend &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api/index.html" />
+    <link rel="prev" title="Computation Pipeline" href="pipeline.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">C++ Backend</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#source-layout">Source Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#polynomial-arithmetic-strategy">Polynomial Arithmetic Strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parallelism">Parallelism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-backend">Building the Backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#binary-resolution">Binary Resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#input-output-format">Input / Output Format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#input-csv">Input (<code class="docutils literal notranslate"><span class="pre">.csv</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output-json">Output (<code class="docutils literal notranslate"><span class="pre">.json</span></code>)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">C++ Backend</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/cpp_backend.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="c-backend">
+<h1>C++ Backend<a class="headerlink" href="#c-backend" title="Link to this heading"></a></h1>
+<p>The C++ backend, compiled to the <code class="docutils literal notranslate"><span class="pre">fk_main</span></code> binary, performs the
+computationally intensive state-sum evaluation of the FK polynomial.  It is
+invoked automatically during Phase 3 of the computation pipeline.</p>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<p>The backend is organized around four main concerns:</p>
+<ol class="arabic simple">
+<li><p><strong>Input parsing</strong> — reads the ILP <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file produced by the Python layer.</p></li>
+<li><p><strong>State enumeration</strong> — iterates over all valid state assignments compatible
+with the constraint system.</p></li>
+<li><p><strong>Polynomial arithmetic</strong> — accumulates the FK polynomial using
+arbitrary-precision coefficients.</p></li>
+<li><p><strong>Output serialization</strong> — writes the sparse polynomial to a JSON file.</p></li>
+</ol>
+</section>
+<section id="source-layout">
+<h2>Source Layout<a class="headerlink" href="#source-layout" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>cpp/
+├── main.cpp                    # Binary entry point
+├── src/
+│   ├── fk_computation.cpp      # Core state-sum driver
+│   ├── fmpoly.cpp              # FLINT modular polynomial wrapper
+│   ├── fmpoly_class.cpp        # FLINT polynomial class
+│   ├── qalg_links.cpp          # Link-specific computations
+│   ├── linalg.cpp              # Linear algebra (BLAS/OpenMP)
+│   └── inequality_solver.cpp   # Constraint checking
+└── include/
+    └── *.h                     # Corresponding header files
+</pre></div>
+</div>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 40.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Library</p></th>
+<th class="head"><p>Role</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>FLINT</strong></p></td>
+<td><p>Arbitrary-precision polynomial arithmetic</p></td>
+<td><p>Also brings in <strong>GMP</strong> as a dependency</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>OpenMP</strong></p></td>
+<td><p>Shared-memory parallelism</p></td>
+<td><p>Controlled via <code class="docutils literal notranslate"><span class="pre">--threads</span> <span class="pre">N</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>BLAS</strong> (OpenBLAS)</p></td>
+<td><p>Dense linear algebra</p></td>
+<td><p>Used in <code class="docutils literal notranslate"><span class="pre">linalg.cpp</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="polynomial-arithmetic-strategy">
+<h2>Polynomial Arithmetic Strategy<a class="headerlink" href="#polynomial-arithmetic-strategy" title="Link to this heading"></a></h2>
+<p>FK polynomial coefficients can grow very large for high-degree computations
+(thousands of decimal digits).  The backend uses FLINT to manage large integer
+computations.</p>
+</section>
+<section id="parallelism">
+<h2>Parallelism<a class="headerlink" href="#parallelism" title="Link to this heading"></a></h2>
+<p>The outer loop over state assignments is parallelised with OpenMP:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#pragma omp parallel for schedule(dynamic) num_threads(n_threads)</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">assignment</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">all_assignments</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// evaluate R-matrices and accumulate contribution</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Each thread accumulates its own partial polynomial; the master thread
+reduces them with a lock-protected sum at the end.</p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">threads</span></code> in your configuration file or <code class="docutils literal notranslate"><span class="pre">--threads</span> <span class="pre">N</span></code> on the CLI
+to control the thread count.</p>
+</section>
+<section id="building-the-backend">
+<h2>Building the Backend<a class="headerlink" href="#building-the-backend" title="Link to this heading"></a></h2>
+<p>The preferred build system is <strong>CMake</strong> via scikit-build-core (invoked
+automatically by <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build during pip install (automatic)</span>
+pip<span class="w"> </span>install<span class="w"> </span>.
+
+<span class="c1"># Manual CMake build for development</span>
+cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-S<span class="w"> </span>.
+cmake<span class="w"> </span>--build<span class="w"> </span>build
+
+<span class="c1"># Copy the binary into the Python package location</span>
+cp<span class="w"> </span>build/fk_main<span class="w"> </span>src/fkcompute/_bin/fk_main
+</pre></div>
+</div>
+<p>A legacy <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> in <code class="docutils literal notranslate"><span class="pre">cpp/</span></code> is retained for reference but CMake is
+preferred for reproducibility.</p>
+</section>
+<section id="binary-resolution">
+<h2>Binary Resolution<a class="headerlink" href="#binary-resolution" title="Link to this heading"></a></h2>
+<p>When <code class="docutils literal notranslate"><span class="pre">run_fk_binary</span></code> is called, the binary is located in this order:</p>
+<ol class="arabic simple">
+<li><p>An <code class="docutils literal notranslate"><span class="pre">fk_main</span></code> binary on the system <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p></li>
+<li><p>The bundled binary at <code class="docutils literal notranslate"><span class="pre">fkcompute/_bin/fk_main</span></code> (packaged inside the
+wheel at install time).</p></li>
+</ol>
+<p>You can override the bundled binary by placing your own <code class="docutils literal notranslate"><span class="pre">fk_main</span></code> earlier
+on <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p>
+</section>
+<section id="input-output-format">
+<h2>Input / Output Format<a class="headerlink" href="#input-output-format" title="Link to this heading"></a></h2>
+<section id="input-csv">
+<h3>Input (<code class="docutils literal notranslate"><span class="pre">.csv</span></code>)<a class="headerlink" href="#input-csv" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file is a custom constraint format produced by
+<a class="reference internal" href="api/solver.html#fkcompute.solver.ilp.ilp" title="fkcompute.solver.ilp.ilp"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.solver.ilp.ilp()</span></code></a>.  It encodes:</p>
+<ul class="simple">
+<li><p>The degree bound.</p></li>
+<li><p>The number and ranges of the free integer variables.</p></li>
+<li><p>The constraint matrix (inequalities and conservation laws).</p></li>
+<li><p>R-matrix type assignments for each crossing.</p></li>
+</ul>
+</section>
+<section id="output-json">
+<h3>Output (<code class="docutils literal notranslate"><span class="pre">.json</span></code>)<a class="headerlink" href="#output-json" title="Link to this heading"></a></h3>
+<p>The backend writes a JSON file with this structure:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;terms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;q_terms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;q&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">-2</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;c&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;q&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;c&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-1&quot;</span><span class="p">}]},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;x&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;q_terms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;q&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;c&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">}]}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;num_x_variables&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;max_x_degrees&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;storage_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;flint&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="output.html"><span class="doc">Output Format</span></a> for the full description of this format.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pipeline.html" class="btn btn-neutral float-left" title="Computation Pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

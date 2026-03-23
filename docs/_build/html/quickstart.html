@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quickstart &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/design-tabs.js?v=f930bc37"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Mathematical Overview" href="overview.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#braid-word-conventions">Braid Word Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line-interface">Command-Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python-api">Python API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-files">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quickstart</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/quickstart.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h1>
+<p>This page shows the fastest path from installation to a working FK
+computation.  For a deeper explanation of what the results mean, see
+<a class="reference internal" href="overview.html"><span class="doc">Mathematical Overview</span></a>.</p>
+<section id="braid-word-conventions">
+<h2>Braid Word Conventions<a class="headerlink" href="#braid-word-conventions" title="Link to this heading"></a></h2>
+<p>Braids are written as a list of <strong>signed generator indices</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\sigma_1^{+1}\; \sigma_2^{-1}\; \sigma_1^{+1} \;\longmapsto\; [1, -2, 1]\]</div>
+<ul class="simple">
+<li><p>Each integer <span class="math notranslate nohighlight">\(k\)</span> represents the standard braid generator
+<span class="math notranslate nohighlight">\(\sigma_{|k|}\)</span>.</p></li>
+<li><p>A <strong>positive</strong> integer corresponds to a positive crossing.</p></li>
+<li><p>A <strong>negative</strong> integer corresponds to a negative crossing.</p></li>
+<li><p>Strands are 0-indexed; generators are 1-indexed up to
+<span class="math notranslate nohighlight">\(n_\text{strands} - 1\)</span>.</p></li>
+</ul>
+<p>The FK invariant is computed for the <strong>closure</strong> of the braid.</p>
+</section>
+<section id="command-line-interface">
+<h2>Command-Line Interface<a class="headerlink" href="#command-line-interface" title="Link to this heading"></a></h2>
+<p>The simplest invocation uses the <code class="docutils literal notranslate"><span class="pre">simple</span></code> sub-command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<p>This computes <span class="math notranslate nohighlight">\(F_K(x, q)\)</span> for the <strong>trefoil knot</strong> (braid closure of
+<span class="math notranslate nohighlight">\(\sigma_1^3\)</span>) truncated at degree 2.</p>
+<p>The braid argument accepts several equivalent formats:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w">        </span><span class="c1"># JSON-array style</span>
+fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;1,1,1&quot;</span><span class="w"> </span><span class="m">2</span><span class="w">          </span><span class="c1"># comma-separated</span>
+fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;1 1 1&quot;</span><span class="w"> </span><span class="m">2</span><span class="w">          </span><span class="c1"># space-separated</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Always quote the braid argument so that negative integers are not
+misinterpreted as CLI flags:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,-2,1,-2]&quot;</span><span class="w"> </span><span class="m">3</span><span class="w">   </span><span class="c1"># correct</span>
+fk<span class="w"> </span>simple<span class="w">  </span><span class="m">1</span>,-2,1,-2<span class="w">  </span><span class="m">3</span><span class="w">     </span><span class="c1"># may fail – leading dash</span>
+</pre></div>
+</div>
+</div>
+<p>Symbolic output (requires <code class="docutils literal notranslate"><span class="pre">fkcompute[symbolic]</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--symbolic<span class="w">          </span><span class="c1"># pretty Unicode</span>
+fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--format<span class="w"> </span>latex<span class="w">      </span><span class="c1"># LaTeX string</span>
+fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--format<span class="w"> </span>mathematica
+</pre></div>
+</div>
+<p>Interactive wizard (requires <code class="docutils literal notranslate"><span class="pre">fkcompute[interactive]</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w">                 </span><span class="c1"># full wizard</span>
+fk<span class="w"> </span>interactive<span class="w">     </span><span class="c1"># same</span>
+</pre></div>
+</div>
+</section>
+<section id="python-api">
+<h2>Python API<a class="headerlink" href="#python-api" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+
+<span class="c1"># Simplest call: braid + degree</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The returned dictionary has two top-level keys:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;terms&quot;</span><span class="p">]</span>     <span class="c1"># sparse polynomial terms</span>
+<span class="n">result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span>  <span class="c1"># auxiliary information</span>
+</pre></div>
+</div>
+<p>Print the number of link components:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;components&quot;</span><span class="p">])</span>   <span class="c1"># 1  (trefoil is a knot)</span>
+</pre></div>
+</div>
+<p>Get all terms:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;terms&quot;</span><span class="p">]:</span>
+    <span class="n">x_powers</span> <span class="o">=</span> <span class="n">term</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">qt</span> <span class="ow">in</span> <span class="n">term</span><span class="p">[</span><span class="s2">&quot;q_terms&quot;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  x^</span><span class="si">{</span><span class="n">x_powers</span><span class="si">}</span><span class="s2"> * </span><span class="si">{</span><span class="n">qt</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> * q^</span><span class="si">{</span><span class="n">qt</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Symbolic polynomial (requires SymPy):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;symbolic&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-files">
+<h2>Configuration Files<a class="headerlink" href="#configuration-files" title="Link to this heading"></a></h2>
+<p>For reproducible computations or batch jobs, use a YAML (or JSON) config file.</p>
+<p>Create a template:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>template<span class="w"> </span>create<span class="w"> </span>my_run.yaml
+</pre></div>
+</div>
+<p>Minimal <code class="docutils literal notranslate"><span class="pre">my_run.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">]</span>
+<span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</pre></div>
+</div>
+<p>Run it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>config<span class="w"> </span>my_run.yaml
+</pre></div>
+</div>
+<p>Or from Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span><span class="s2">&quot;my_run.yaml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="configuration.html"><span class="doc">Configuration Files</span></a> for all available options.</p>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="overview.html"><span class="doc">Mathematical Overview</span></a> — The mathematics behind the FK invariant.</p></li>
+<li><p><a class="reference internal" href="tutorials/index.html"><span class="doc">Tutorials</span></a> — Worked examples for knots, links, and batch jobs.</p></li>
+<li><p><a class="reference internal" href="cli.html"><span class="doc">Command-Line Interface</span></a> — Complete CLI reference.</p></li>
+<li><p><a class="reference internal" href="api/index.html"><span class="doc">API Reference</span></a> — Full Python API documentation.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-right" title="Mathematical Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

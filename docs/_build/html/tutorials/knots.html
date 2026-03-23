@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Computing FK for Knots &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Computing FK for Links" href="links.html" />
+    <link rel="prev" title="Tutorials" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Computing FK for Knots</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-trefoil-knot">The Trefoil Knot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#symbolic-output">Symbolic Output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#saving-results">Saving Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#the-figure-eight-knot">The Figure-Eight Knot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#speeding-up-with-parallel-workers">Speeding Up with Parallel Workers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#torus-knots">Torus Knots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comparing-multiple-degrees">Comparing Multiple Degrees</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-a-configuration-file">Using a Configuration File</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="links.html">Computing FK for Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="batch.html">Batch Computations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html">Advanced Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Computing FK for Knots</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/tutorials/knots.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="computing-fk-for-knots">
+<h1>Computing FK for Knots<a class="headerlink" href="#computing-fk-for-knots" title="Link to this heading"></a></h1>
+<p>This tutorial computes the FK invariant for several classical knots
+and demonstrates the main output options.</p>
+<section id="the-trefoil-knot">
+<h2>The Trefoil Knot<a class="headerlink" href="#the-trefoil-knot" title="Link to this heading"></a></h2>
+<p>The trefoil knot is the closure of the 3-braid
+<span class="math notranslate nohighlight">\(\sigma_1^3 = \sigma_1 \sigma_1 \sigma_1\)</span>, encoded as <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">1,</span> <span class="pre">1]</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Components:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;components&quot;</span><span class="p">])</span>  <span class="c1"># 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of terms:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;terms&quot;</span><span class="p">]))</span>
+
+<span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;terms&quot;</span><span class="p">]:</span>
+    <span class="n">x_pow</span> <span class="o">=</span> <span class="n">term</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">qt</span> <span class="ow">in</span> <span class="n">term</span><span class="p">[</span><span class="s2">&quot;q_terms&quot;</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">qt</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> * x^</span><span class="si">{</span><span class="n">x_pow</span><span class="si">}</span><span class="s2"> * q^</span><span class="si">{</span><span class="n">qt</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>CLI equivalent:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<section id="symbolic-output">
+<h3>Symbolic Output<a class="headerlink" href="#symbolic-output" title="Link to this heading"></a></h3>
+<p>Install SymPy (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;fkcompute[symbolic]&quot;</span></code>) to obtain a
+human-readable polynomial:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">symbolic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;symbolic&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--symbolic
+fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--format<span class="w"> </span>latex
+</pre></div>
+</div>
+<p>Or convert manually:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix_to_polynomial</span><span class="p">,</span> <span class="n">format_symbolic_output</span>
+
+<span class="c1"># Get a SymPy expression</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">matrix_to_polynomial</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
+
+<span class="c1"># Format as LaTeX</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">format_symbolic_output</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;latex&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="saving-results">
+<h3>Saving Results<a class="headerlink" href="#saving-results" title="Link to this heading"></a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">save_data=True</span></code> to write intermediate and result files:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">save_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;trefoil_d2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This writes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data/trefoil_d2_inversion.json</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data/trefoil_d2_ilp.csv</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data/trefoil_d2.json</span></code></p></li>
+</ul>
+<p>Reformat the saved result at a later time without recomputing:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>print-as<span class="w"> </span>data/trefoil_d2.json<span class="w"> </span>--format<span class="w"> </span>mathematica
+</pre></div>
+</div>
+</section>
+</section>
+<section id="the-figure-eight-knot">
+<h2>The Figure-Eight Knot<a class="headerlink" href="#the-figure-eight-knot" title="Link to this heading"></a></h2>
+<p>The figure-eight knot <span class="math notranslate nohighlight">\(4_1\)</span> is the closure of
+<span class="math notranslate nohighlight">\(\sigma_1 \sigma_2^{-1} \sigma_1 \sigma_2^{-1}\)</span>,
+encoded as <code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">-2,</span> <span class="pre">1,</span> <span class="pre">-2]</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Components:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;components&quot;</span><span class="p">])</span>  <span class="c1"># 1</span>
+</pre></div>
+</div>
+<section id="speeding-up-with-parallel-workers">
+<h3>Speeding Up with Parallel Workers<a class="headerlink" href="#speeding-up-with-parallel-workers" title="Link to this heading"></a></h3>
+<p>For non-homogeneous braids at higher degrees, use multiple workers:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">degree</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>   <span class="c1"># Python inversion workers</span>
+    <span class="n">threads</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>       <span class="c1"># C++ compute threads</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Or via a config file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">]</span>
+<span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nt">preset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">parallel</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="torus-knots">
+<h2>Torus Knots<a class="headerlink" href="#torus-knots" title="Link to this heading"></a></h2>
+<p>The torus knot <span class="math notranslate nohighlight">\(T(2, n)\)</span> is the closure of <span class="math notranslate nohighlight">\(\sigma_1^n\)</span>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># T(2,3) = trefoil</span>
+<span class="n">result_t23</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># T(2,5) = cinquefoil (5_1)</span>
+<span class="n">result_t25</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># T(2,7)</span>
+<span class="n">result_t27</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">degree</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These are all positive homogeneous braids; Phase 1 completes instantly.</p>
+<p>The torus knot <span class="math notranslate nohighlight">\(T(3, 4)\)</span> uses a 3-strand braid:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># T(3,4) = 8_19 in Rolfsen table</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="comparing-multiple-degrees">
+<h2>Comparing Multiple Degrees<a class="headerlink" href="#comparing-multiple-degrees" title="Link to this heading"></a></h2>
+<p>Compare results at several truncation degrees to see convergence:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix_to_polynomial</span><span class="p">,</span> <span class="n">collect_by_variables</span>
+
+<span class="n">braid</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="n">deg</span><span class="p">)</span>
+    <span class="n">poly</span> <span class="o">=</span> <span class="n">matrix_to_polynomial</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;degree=</span><span class="si">{</span><span class="n">deg</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">collect_by_variables</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-a-configuration-file">
+<h2>Using a Configuration File<a class="headerlink" href="#using-a-configuration-file" title="Link to this heading"></a></h2>
+<p>The same computations can be run from a YAML file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># knots.yaml</span>
+<span class="nt">computations</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trefoil_d2</span>
+<span class="w">    </span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">symbolic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">figure_eight_d3</span>
+<span class="w">    </span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">    </span><span class="nt">preset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">parallel</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">torus_t25_d4</span>
+<span class="w">    </span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>config<span class="w"> </span>knots.yaml
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span><span class="s2">&quot;knots.yaml&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>  <span class="c1"># dict_keys([&#39;trefoil_d2&#39;, &#39;figure_eight_d3&#39;, &#39;torus_t25_d4&#39;])</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="links.html" class="btn btn-neutral float-right" title="Computing FK for Links" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

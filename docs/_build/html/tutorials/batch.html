@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Batch Computations &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Advanced Usage" href="advanced.html" />
+    <link rel="prev" title="Computing FK for Links" href="links.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="knots.html">Computing FK for Knots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="links.html">Computing FK for Links</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Batch Computations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#batch-config-files">Batch Config Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#processing-results">Processing Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#programmatic-batch-invocation">Programmatic Batch Invocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exporting-to-json">Exporting to JSON</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-and-reformatting-later">Loading and Reformatting Later</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiple-config-files-in-one-cli-call">Multiple Config Files in One CLI Call</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-tips-for-batch-jobs">Performance Tips for Batch Jobs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-resuming-a-failed-job">Example: Resuming a Failed Job</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="advanced.html">Advanced Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Batch Computations</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/tutorials/batch.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="batch-computations">
+<h1>Batch Computations<a class="headerlink" href="#batch-computations" title="Link to this heading"></a></h1>
+<p>This tutorial shows how to compute FK invariants for many braids in a single
+invocation, collect the results programmatically, and export them for further
+analysis.</p>
+<section id="batch-config-files">
+<h2>Batch Config Files<a class="headerlink" href="#batch-config-files" title="Link to this heading"></a></h2>
+<p>A config file with a top-level <code class="docutils literal notranslate"><span class="pre">computations</span></code> list runs multiple braids in
+sequence and returns a dictionary keyed by computation name.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># batch.yaml</span>
+<span class="nt">preset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">parallel</span>
+<span class="nt">save_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">save_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">results</span>
+
+<span class="nt">computations</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trefoil</span>
+<span class="w">    </span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">symbolic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">figure_eight</span>
+<span class="w">    </span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">torus_knot_t25</span>
+<span class="w">    </span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hopf_link</span>
+<span class="w">    </span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">symbolic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latex</span>
+</pre></div>
+</div>
+<p>Run from the CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>config<span class="w"> </span>batch.yaml
+</pre></div>
+</div>
+<p>Run from Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span><span class="s2">&quot;batch.yaml&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="c1"># dict_keys([&#39;trefoil&#39;, &#39;figure_eight&#39;, &#39;torus_knot_t25&#39;, &#39;hopf_link&#39;])</span>
+</pre></div>
+</div>
+</section>
+<section id="processing-results">
+<h2>Processing Results<a class="headerlink" href="#processing-results" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">matrix_to_polynomial</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span><span class="s2">&quot;batch.yaml&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">n_components</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;components&quot;</span><span class="p">]</span>
+    <span class="n">n_terms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;terms&quot;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">n_components</span><span class="si">}</span><span class="s2"> component(s), </span><span class="si">{</span><span class="n">n_terms</span><span class="si">}</span><span class="s2"> terms&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Symbolic representation (requires SymPy)</span>
+    <span class="n">poly</span> <span class="o">=</span> <span class="n">matrix_to_polynomial</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  poly: </span><span class="si">{</span><span class="n">poly</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="programmatic-batch-invocation">
+<h2>Programmatic Batch Invocation<a class="headerlink" href="#programmatic-batch-invocation" title="Link to this heading"></a></h2>
+<p>You can also drive a batch loop directly in Python without a config file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_symbolic_output</span>
+
+<span class="n">knot_table</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;trefoil&quot;</span><span class="p">:</span>       <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>            <span class="mi">2</span><span class="p">),</span>
+    <span class="s2">&quot;figure_eight&quot;</span><span class="p">:</span>  <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>       <span class="mi">3</span><span class="p">),</span>
+    <span class="s2">&quot;5_1&quot;</span><span class="p">:</span>           <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>       <span class="mi">3</span><span class="p">),</span>
+    <span class="s2">&quot;5_2&quot;</span><span class="p">:</span>           <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>     <span class="mi">3</span><span class="p">),</span>
+    <span class="s2">&quot;6_2&quot;</span><span class="p">:</span>           <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>  <span class="mi">3</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="n">all_results</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">degree</span><span class="p">)</span> <span class="ow">in</span> <span class="n">knot_table</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computing </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">all_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Print LaTeX table</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">all_results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">latex</span> <span class="o">=</span> <span class="n">format_symbolic_output</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;latex&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: $</span><span class="si">{</span><span class="n">latex</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="exporting-to-json">
+<h2>Exporting to JSON<a class="headerlink" href="#exporting-to-json" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span><span class="s2">&quot;batch.yaml&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;all_results.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="loading-and-reformatting-later">
+<h2>Loading and Reformatting Later<a class="headerlink" href="#loading-and-reformatting-later" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_symbolic_output</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;results/trefoil.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">format_symbolic_output</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;mathematica&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Or with the CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>print-as<span class="w"> </span>results/trefoil.json<span class="w"> </span>--format<span class="w"> </span>mathematica
+</pre></div>
+</div>
+</section>
+<section id="multiple-config-files-in-one-cli-call">
+<h2>Multiple Config Files in One CLI Call<a class="headerlink" href="#multiple-config-files-in-one-cli-call" title="Link to this heading"></a></h2>
+<p>Pass multiple config files to <code class="docutils literal notranslate"><span class="pre">fk</span> <span class="pre">config</span></code>; they are executed in order:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>config<span class="w"> </span>knots.yaml<span class="w"> </span>links.yaml<span class="w"> </span>torus_knots.yaml
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each config file is independent.  Global defaults defined in one file do
+not carry over to the next.</p>
+</div>
+</section>
+<section id="performance-tips-for-batch-jobs">
+<h2>Performance Tips for Batch Jobs<a class="headerlink" href="#performance-tips-for-batch-jobs" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">preset:</span> <span class="pre">parallel</span></code> to make full use of available CPUs.</p></li>
+<li><p>For large tables, consider distributing files across multiple processes or
+machines using your own orchestration (e.g. <code class="docutils literal notranslate"><span class="pre">xargs</span></code>, GNU Parallel,
+or a workflow manager like Snakemake).</p></li>
+<li><p>Pre-compute and cache inversion data for braids that appear in multiple
+computations at different degrees (use <code class="docutils literal notranslate"><span class="pre">inversion_file</span></code>).</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">save_data:</span> <span class="pre">true</span></code> to preserve intermediate files; then resume failed
+jobs by supplying <code class="docutils literal notranslate"><span class="pre">ilp_file</span></code> directly.</p></li>
+</ul>
+<section id="example-resuming-a-failed-job">
+<h3>Example: Resuming a Failed Job<a class="headerlink" href="#example-resuming-a-failed-job" title="Link to this heading"></a></h3>
+<p>If the C++ computation fails or times out, you can resume from the ILP file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">]</span>
+<span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">6</span>
+<span class="nt">ilp_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">results/my_knot_ilp.csv</span>
+<span class="nt">threads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="links.html" class="btn btn-neutral float-left" title="Computing FK for Links" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="advanced.html" class="btn btn-neutral float-right" title="Advanced Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

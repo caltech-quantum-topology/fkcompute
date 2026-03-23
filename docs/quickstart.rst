@@ -12,12 +12,12 @@ Braids are written as a list of **signed generator indices**:
 
 .. math::
 
-   \sigma_1^{+1},\; \sigma_2^{-1},\; \sigma_1^{+1} \;\longmapsto\; [1, -2, 1]
+   \sigma_1^{+1}\; \sigma_2^{-1}\; \sigma_1^{+1} \;\longmapsto\; [1, -2, 1]
 
 - Each integer :math:`k` represents the standard braid generator
   :math:`\sigma_{|k|}`.
-- A **positive** integer means the over-strand goes left-to-right.
-- A **negative** integer means the inverse crossing.
+- A **positive** integer corresponds to a positive crossing.
+- A **negative** integer corresponds to a negative crossing.
 - Strands are 0-indexed; generators are 1-indexed up to
   :math:`n_\text{strands} - 1`.
 

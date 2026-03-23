@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mathematical Overview &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/design-tabs.js?v=f930bc37"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorials" href="tutorials/index.html" />
+    <link rel="prev" title="Quickstart" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Mathematical Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-fk-invariant">The FK Invariant</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#relationship-to-other-invariants">Relationship to Other Invariants</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#state-sum-r-matrix-computation">State-Sum / R-Matrix Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sign-assignment-inversion-phase">Sign Assignment (Inversion Phase)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integer-linear-programming">Integer Linear Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#c-backend">C++ Backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#degree-truncation">Degree Truncation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Mathematical Overview</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/overview.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mathematical-overview">
+<h1>Mathematical Overview<a class="headerlink" href="#mathematical-overview" title="Link to this heading"></a></h1>
+<p>This page provides background on the FK invariant and explains at a
+high level how <strong>fkcompute</strong> computes it.  Knowledge of knot theory at
+the level of braid groups and quantum invariants is helpful but not
+required for using the package.</p>
+<section id="the-fk-invariant">
+<h2>The FK Invariant<a class="headerlink" href="#the-fk-invariant" title="Link to this heading"></a></h2>
+<p>The <strong>FK invariant</strong> <span class="math notranslate nohighlight">\(F_K(x, q)\)</span> is a two-variable power series
+introduced by Gukov and Manolescu <a class="reference internal" href="#gukovmanolescu2021" id="id1"><span>[GukovManolescu2021]</span></a>.
+It is an invariant of knot and link complements: two equivalent knots
+have the same <span class="math notranslate nohighlight">\(F_K\)</span>.</p>
+<p>For a knot <span class="math notranslate nohighlight">\(K\)</span>, the invariant takes the form</p>
+<div class="math notranslate nohighlight">
+\[F_K(x, q) = \sum_{n, k} a_{n,k}\, x^n\, q^k \;\in\; \mathbb{Z}[\![x, q^{\pm 1}]\!],\]</div>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> ranges over non-negative integers, <span class="math notranslate nohighlight">\(k\)</span> ranges over
+integers and <span class="math notranslate nohighlight">\(a_{n,k}\in\mathbb{Z}\)</span>.</p>
+<p>For a link <span class="math notranslate nohighlight">\(L\)</span> with <span class="math notranslate nohighlight">\(\ell\)</span> components, each component contributes
+its own <span class="math notranslate nohighlight">\(x\)</span> variable, so the invariant lives in</p>
+<div class="math notranslate nohighlight">
+\[F_L(x_1, \ldots, x_\ell, q) \;\in\; \mathbb{Z}[\![x_1, \ldots, x_\ell, q^{\pm 1}]\!].\]</div>
+<section id="relationship-to-other-invariants">
+<h3>Relationship to Other Invariants<a class="headerlink" href="#relationship-to-other-invariants" title="Link to this heading"></a></h3>
+<p><span class="math notranslate nohighlight">\(F_K\)</span> extends several classical quantum invariants:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(F_K\)</span> agrees with the WRT invariant at certain roots of unity.</p></li>
+<li><p><span class="math notranslate nohighlight">\(F_K\)</span> can be regarded as an extension of the <span class="math notranslate nohighlight">\(\widehat{Z}\)</span> invariant to manifolds with boundary.</p></li>
+</ul>
+</section>
+</section>
+<section id="state-sum-r-matrix-computation">
+<h2>State-Sum / R-Matrix Computation<a class="headerlink" href="#state-sum-r-matrix-computation" title="Link to this heading"></a></h2>
+<p><strong>fkcompute</strong> implements the <strong>large-colour R-matrix / inverted state-sum</strong>
+approach developed by Park <a class="reference internal" href="#park2020a" id="id2"><span>[Park2020a]</span></a> <a class="reference internal" href="#park2020b" id="id3"><span>[Park2020b]</span></a>.</p>
+<p>Intuitively, the braid closure is cut into elementary crossings.  At each
+crossing an <em>R-matrix</em> or its inverse acts,
+depending on the crossing sign and the <em>sign assignment</em> (see below).
+The FK polynomial is then assembled as a weighted sum over all <em>states</em>
+— assignments of integers to the strands at each intermediate slice of
+the braid.</p>
+<p>Formally, the state sum reads</p>
+<div class="math notranslate nohighlight">
+\[F_K(x,q) = \sum_{\text{states } s} \, \prod_{\text{crossings}} R_{\text{type}}(s).\]</div>
+</section>
+<section id="sign-assignment-inversion-phase">
+<h2>Sign Assignment (Inversion Phase)<a class="headerlink" href="#sign-assignment-inversion-phase" title="Link to this heading"></a></h2>
+<p>A crucial ingredient in the Park approach is a <strong>sign assignment</strong>: a
+choice of <span class="math notranslate nohighlight">\(\pm 1\)</span> for each strand segment of the braid.  Not
+every assignment is consistent with the R-matrix equations; finding a
+valid one is referred to internally as <em>inversion</em>.</p>
+<p>For <strong>homogeneous braids</strong> (every generator appears with a single sign),
+the sign assignment is determined uniquely and computed automatically.</p>
+<p>For general braids, fkcompute searches for a valid sign assignment by:</p>
+<ol class="arabic simple">
+<li><p>Generating <em>braid variants</em> — cyclic shifts and reflections of the
+braid word.</p></li>
+<li><p>For each variant, enumerating sign-assignment <em>permutation candidates</em>
+(derived from a combinatorial structure on the sign diagrams).</p></li>
+<li><p>Testing each candidate against the constraint system using Gurobi.</p></li>
+</ol>
+<p>See <a class="reference internal" href="pipeline.html"><span class="doc">Computation Pipeline</span></a> for implementation details.</p>
+</section>
+<section id="integer-linear-programming">
+<h2>Integer Linear Programming<a class="headerlink" href="#integer-linear-programming" title="Link to this heading"></a></h2>
+<p>Once a sign assignment is found, the state-sum constraints are cast as
+an <strong>integer linear program (ILP)</strong>.  The constraint variables are the
+integer values assigned to each braid state, and the constraints encode:</p>
+<ul class="simple">
+<li><p>R-matrix consistency (equality, inequality, and conservation laws).</p></li>
+<li><p>Degree bounds derived from the truncation parameter.</p></li>
+</ul>
+<p>The ILP feasibility check (using Gurobi) validates the constraint system,
+and the reduced constraint matrix is written to a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file consumed
+by the C++ backend.</p>
+</section>
+<section id="c-backend">
+<h2>C++ Backend<a class="headerlink" href="#c-backend" title="Link to this heading"></a></h2>
+<p>The heavy computation — evaluating the state sum at each term — is
+performed by the compiled <code class="docutils literal notranslate"><span class="pre">fk_main</span></code> binary.  The backend uses:</p>
+<ul class="simple">
+<li><p><strong>FLINT</strong> for arbitrary-precision polynomial arithmetic (coefficients
+can grow very large for high-degree computations).</p></li>
+<li><p><strong>OpenMP</strong> for shared-memory parallelism across state assignments.</p></li>
+<li><p><strong>BLAS/OpenBLAS</strong> for dense linear algebra sub-routines.</p></li>
+</ul>
+<p>The binary reads the ILP <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file and writes a JSON result containing
+sparse polynomial terms.</p>
+</section>
+<section id="degree-truncation">
+<h2>Degree Truncation<a class="headerlink" href="#degree-truncation" title="Link to this heading"></a></h2>
+<p>Computing <span class="math notranslate nohighlight">\(F_K\)</span> exactly requires an infinite state sum.  The
+<code class="docutils literal notranslate"><span class="pre">degree</span></code> parameter limits the maximum power of <span class="math notranslate nohighlight">\(x\)</span> (and
+equivalently of <span class="math notranslate nohighlight">\(x_1, \ldots, x_\ell\)</span> for links) that appears in
+the output.  Higher degrees are more expensive but recover more terms.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="gukovmanolescu2021" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">GukovManolescu2021</a><span class="fn-bracket">]</span></span>
+<p>S. Gukov and C. Manolescu,
+“A two-variable series for knot complements,”
+<em>Quantum Topology</em> <strong>12</strong> (2021), no. 1, 1–109.
+<a class="reference external" href="https://arxiv.org/abs/1904.06057">arXiv:1904.06057</a>.</p>
+</div>
+<div class="citation" id="park2020a" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Park2020a</a><span class="fn-bracket">]</span></span>
+<p>S. Park,
+“Large color R-matrix for knot complements and strange identities,”
+<em>Journal of Knot Theory and Its Ramifications</em> <strong>29</strong> (2020).
+<a class="reference external" href="https://arxiv.org/abs/2004.02087">arXiv:2004.02087</a>.</p>
+</div>
+<div class="citation" id="park2020b" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Park2020b</a><span class="fn-bracket">]</span></span>
+<p>S. Park,
+“Inverted state sums, inverted Habiro series, and indefinite theta functions,”
+2021. <a class="reference external" href="https://arxiv.org/abs/2106.03495">arXiv:2106.03495</a>.</p>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorials/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

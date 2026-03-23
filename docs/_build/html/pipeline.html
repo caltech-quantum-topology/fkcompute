@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Computation Pipeline &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/design-tabs.js?v=f930bc37"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="C++ Backend" href="cpp_backend.html" />
+    <link rel="prev" title="Output Format" href="output.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Computation Pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-0-parameter-setup">Phase 0 — Parameter Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-1-sign-assignment-inversion">Phase 1 — Sign Assignment (Inversion)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#braid-type-detection">Braid Type Detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parallel-search-non-homogeneous-braids">Parallel Search (Non-Homogeneous Braids)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-2-constraint-system-and-ilp-generation">Phase 2 — Constraint System and ILP Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-3-c-computation">Phase 3 — C++ Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#phase-4-assembly-and-formatting">Phase 4 — Assembly and Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#progress-callbacks-interactive-mode">Progress Callbacks (Interactive Mode)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Computation Pipeline</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/pipeline.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="computation-pipeline">
+<h1>Computation Pipeline<a class="headerlink" href="#computation-pipeline" title="Link to this heading"></a></h1>
+<p>This page describes the internal four-phase pipeline that executes when you
+call <a class="reference internal" href="api/fkcompute.html#fkcompute.fk" title="fkcompute.fk"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.fk()</span></code></a>.  Understanding the pipeline helps you choose the
+right performance knobs and debug unexpected results.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>A call to <a class="reference internal" href="api/fkcompute.html#fkcompute.fk" title="fkcompute.fk"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.fk()</span></code></a> with a braid word and degree passes through
+four sequential phases before returning the result dictionary.</p>
+<p><strong>Phase 0 — Parameter setup.</strong>
+Input parameters are normalised, presets are merged, and file-saving paths
+are resolved.</p>
+<p><strong>Phase 1 — Sign assignment (inversion).</strong>
+A valid <span class="math notranslate nohighlight">\(\pm 1\)</span> sign assignment for the braid strands is determined.
+For homogeneous braids this is immediate; for others a parallel search over
+sign-assignment candidates is performed.</p>
+<p><strong>Phase 2 — ILP generation.</strong>
+The braid topology and sign assignment are translated into a reduced
+constraint system, validated for feasibility by Gurobi, and written to a
+<code class="docutils literal notranslate"><span class="pre">.csv</span></code> file for the C++ backend.</p>
+<p><strong>Phase 3 — C++ computation.</strong>
+The compiled <code class="docutils literal notranslate"><span class="pre">fk_main</span></code> binary reads the <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file and evaluates the
+FK state sum, accumulating the polynomial coefficients using
+arbitrary-precision arithmetic.</p>
+<p><strong>Phase 4 — Assembly and formatting.</strong>
+Python reads the JSON output of the binary, attaches metadata (braid used,
+sign assignment, component count), optionally converts the result to a
+symbolic SymPy expression, and returns the final dictionary.</p>
+</section>
+<section id="phase-0-parameter-setup">
+<h2>Phase 0 — Parameter Setup<a class="headerlink" href="#phase-0-parameter-setup" title="Link to this heading"></a></h2>
+<p>Before any computation, the <a class="reference internal" href="api/fkcompute.html#fkcompute.fk" title="fkcompute.fk"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.fk()</span></code></a> function normalises
+parameters:</p>
+<ul class="simple">
+<li><p>Applies the selected <strong>preset</strong> (<code class="docutils literal notranslate"><span class="pre">&quot;single</span> <span class="pre">thread&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;parallel&quot;</span></code>)
+by merging its values into the parameter dict.</p></li>
+<li><p>Explicit keyword arguments take precedence over preset values.</p></li>
+<li><p>Sets up file-saving paths if <code class="docutils literal notranslate"><span class="pre">save_data=True</span></code>.</p></li>
+</ul>
+<p>Relevant source: <code class="docutils literal notranslate"><span class="pre">src/fkcompute/api/presets.py</span></code>.</p>
+<p><strong>Skip logic:</strong>  if you provide an <code class="docutils literal notranslate"><span class="pre">ilp_file</span></code>, Phases 1 and 2 are skipped
+entirely.  If you provide an <code class="docutils literal notranslate"><span class="pre">inversion</span></code> dict or <code class="docutils literal notranslate"><span class="pre">inversion_file</span></code>, only
+Phase 1 is skipped.</p>
+</section>
+<section id="phase-1-sign-assignment-inversion">
+<h2>Phase 1 — Sign Assignment (Inversion)<a class="headerlink" href="#phase-1-sign-assignment-inversion" title="Link to this heading"></a></h2>
+<p><strong>Goal:</strong> find a valid <span class="math notranslate nohighlight">\(\pm 1\)</span> sign assignment for each strand segment
+of the braid so that the R-matrix equations are satisfiable.</p>
+<p>Entry point: <a class="reference internal" href="api/inversion.html#fkcompute.inversion.api.find_sign_assignment" title="fkcompute.inversion.api.find_sign_assignment"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.inversion.api.find_sign_assignment()</span></code></a>.</p>
+<section id="braid-type-detection">
+<h3>Braid Type Detection<a class="headerlink" href="#braid-type-detection" title="Link to this heading"></a></h3>
+<p>The function first classifies the braid:</p>
+<ul class="simple">
+<li><p><strong>Homogeneous:</strong> every braid generator <span class="math notranslate nohighlight">\(\sigma_k\)</span> appears with a
+consistent sign throughout the word.  The sign assignment is then
+determined analytically and computed immediately — no search required.</p></li>
+<li><p><strong>Non-homogeneous (fibered):</strong> at least one generator appears with mixed
+signs.  A parallel search is performed.</p></li>
+</ul>
+</section>
+<section id="parallel-search-non-homogeneous-braids">
+<h3>Parallel Search (Non-Homogeneous Braids)<a class="headerlink" href="#parallel-search-non-homogeneous-braids" title="Link to this heading"></a></h3>
+<p>The search, implemented in
+<a class="reference internal" href="api/inversion.html#fkcompute.inversion.search.parallel_try_sign_assignments" title="fkcompute.inversion.search.parallel_try_sign_assignments"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.inversion.search.parallel_try_sign_assignments()</span></code></a>, proceeds
+as follows:</p>
+<ol class="arabic simple">
+<li><p><strong>Braid variants</strong> — cyclic shifts and (optionally) horizontal reflections
+of the braid word are generated by
+<a class="reference internal" href="api/inversion.html#fkcompute.inversion.variants.generate_braid_variants" title="fkcompute.inversion.variants.generate_braid_variants"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.inversion.variants.generate_braid_variants()</span></code></a>.</p></li>
+<li><p><strong>Permutation candidates</strong> — for each variant, a set of sign-assignment
+candidates is derived from the <em>sign diagram</em> of the braid (a combinatorial
+structure encoding which strand-crossing patterns are compatible).  Candidates
+are generated by
+<a class="reference internal" href="api/inversion.html#fkcompute.inversion.permutations.iter_perms_rot_closed" title="fkcompute.inversion.permutations.iter_perms_rot_closed"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.inversion.permutations.iter_perms_rot_closed()</span></code></a>.</p></li>
+<li><p><strong>Parallel evaluation</strong> — candidates are distributed across Python
+worker processes (<code class="docutils literal notranslate"><span class="pre">max_workers</span></code>) in chunks of <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code>.  Each
+worker tests its batch by calling the constraint reducer and the Gurobi
+ILP checker.</p></li>
+<li><p><strong>Early exit</strong> — as soon as one worker finds a valid assignment, the
+remaining workers are cancelled.</p></li>
+</ol>
+<p>Performance knobs:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_workers</span></code></p></td>
+<td><p>Number of Python processes.  Set to <code class="docutils literal notranslate"><span class="pre">cpu_count</span></code> for maximum
+throughput.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">chunk_size</span></code></p></td>
+<td><p>Candidates per task.  Smaller values increase responsiveness to an
+early hit; larger values reduce inter-process overhead.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">include_flip</span></code></p></td>
+<td><p>Whether to include reflected braid variants.  Roughly doubles the
+search space; may help for certain knot types.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_shifts</span></code></p></td>
+<td><p>Cap on the number of cyclic shifts tried.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="phase-2-constraint-system-and-ilp-generation">
+<h2>Phase 2 — Constraint System and ILP Generation<a class="headerlink" href="#phase-2-constraint-system-and-ilp-generation" title="Link to this heading"></a></h2>
+<p><strong>Goal:</strong> translate the braid topology and sign assignment into a constraint
+system that the C++ backend can use.</p>
+<p>Entry point: internal helper <code class="docutils literal notranslate"><span class="pre">_generate_ilp</span></code> in
+<code class="docutils literal notranslate"><span class="pre">src/fkcompute/api/compute.py</span></code>.</p>
+<p>Steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Relation generation</strong> —
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">fkcompute.domain.braid.states.BraidStates.get_state_relations()</span></code>
+generates the full list of constraints (equalities, inequalities,
+conservation laws) implied by the R-matrix structure.</p></li>
+<li><p><strong>Constraint reduction</strong> —
+<a class="reference internal" href="api/domain.html#fkcompute.domain.constraints.reduction.full_reduce" title="fkcompute.domain.constraints.reduction.full_reduce"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.domain.constraints.reduction.full_reduce()</span></code></a> applies
+fixed-point propagation: alias substitution, constant propagation, and
+variable elimination.  This dramatically reduces the number of free
+variables.</p></li>
+<li><p><strong>Symbolic assignment</strong> — the reduced system is solved symbolically,
+expressing each state in terms of a small number of independent
+integer variables (the “free variables”).</p></li>
+<li><p><strong>ILP feasibility check</strong> — Gurobi verifies that the system has at least
+one bounded integer solution.  This step catches degenerate cases before
+invoking the expensive C++ computation.</p></li>
+<li><p><strong>ILP file generation</strong> —
+<a class="reference internal" href="api/solver.html#fkcompute.solver.ilp.ilp" title="fkcompute.solver.ilp.ilp"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.solver.ilp.ilp()</span></code></a> writes the constraint data to a <code class="docutils literal notranslate"><span class="pre">.csv</span></code>
+file in a custom format expected by the C++ backend.</p></li>
+</ol>
+</section>
+<section id="phase-3-c-computation">
+<h2>Phase 3 — C++ Computation<a class="headerlink" href="#phase-3-c-computation" title="Link to this heading"></a></h2>
+<p><strong>Goal:</strong> evaluate the FK state sum and accumulate polynomial coefficients.</p>
+<p>Entry point: <a class="reference internal" href="api/infra.html#fkcompute.infra.binary.run_fk_binary" title="fkcompute.infra.binary.run_fk_binary"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.infra.binary.run_fk_binary()</span></code></a>.</p>
+<p>The Python layer executes the <code class="docutils literal notranslate"><span class="pre">fk_main</span></code> binary as a subprocess:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk_main<span class="w"> </span>&lt;ilp_base&gt;<span class="w"> </span>&lt;output_base&gt;<span class="w"> </span>--threads<span class="w"> </span>N
+</pre></div>
+</div>
+<p><strong>Binary resolution:</strong></p>
+<ol class="arabic simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">fk_main</span></code> is on <code class="docutils literal notranslate"><span class="pre">PATH</span></code>, that binary is used.</p></li>
+<li><p>Otherwise the packaged binary at <code class="docutils literal notranslate"><span class="pre">fkcompute/_bin/fk_main</span></code> is used.</p></li>
+</ol>
+<p><strong>Inside the binary:</strong></p>
+<ul class="simple">
+<li><p>Reads the <code class="docutils literal notranslate"><span class="pre">.csv</span></code> constraint file produced in Phase 2.</p></li>
+<li><p>Uses <strong>OpenMP</strong> to parallelise the outer loop over state assignments.</p></li>
+<li><p>Accumulates the FK polynomial using <strong>FLINT</strong> arbitrary-precision
+arithmetic.</p></li>
+<li><p>Writes the result to <code class="docutils literal notranslate"><span class="pre">&lt;output_base&gt;.json</span></code>.</p></li>
+</ul>
+<p>See <a class="reference internal" href="cpp_backend.html"><span class="doc">C++ Backend</span></a> for details on the C++ architecture.</p>
+</section>
+<section id="phase-4-assembly-and-formatting">
+<h2>Phase 4 — Assembly and Formatting<a class="headerlink" href="#phase-4-assembly-and-formatting" title="Link to this heading"></a></h2>
+<p>After the binary finishes, Python:</p>
+<ol class="arabic simple">
+<li><p>Reads <code class="docutils literal notranslate"><span class="pre">&lt;output_base&gt;.json</span></code>.</p></li>
+<li><p>Augments <code class="docutils literal notranslate"><span class="pre">metadata</span></code> with:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">braid</span></code> — the braid word actually used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inversion</span></code> — the sign assignment found in Phase 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">components</span></code> — number of link components (from
+<a class="reference internal" href="api/domain.html#fkcompute.domain.braid.states.BraidStates" title="fkcompute.domain.braid.states.BraidStates"><code class="xref py py-class docutils literal notranslate"><span class="pre">fkcompute.domain.braid.states.BraidStates</span></code></a>).</p></li>
+</ul>
+</li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">symbolic=True</span></code> and SymPy is available, computes and attaches a
+pretty-printed polynomial string as <code class="docutils literal notranslate"><span class="pre">metadata[&quot;symbolic&quot;]</span></code>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">save_data=False</span></code> (the default), deletes the intermediate
+<code class="docutils literal notranslate"><span class="pre">_inversion.json</span></code>, <code class="docutils literal notranslate"><span class="pre">_ilp.csv</span></code>, and <code class="docutils literal notranslate"><span class="pre">.json</span></code> files.</p></li>
+<li><p>Returns the result dictionary to the caller.</p></li>
+</ol>
+</section>
+<section id="progress-callbacks-interactive-mode">
+<h2>Progress Callbacks (Interactive Mode)<a class="headerlink" href="#progress-callbacks-interactive-mode" title="Link to this heading"></a></h2>
+<p>When the interactive wizard is active, the internal
+<code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.api.compute._fk_compute()</span></code> function accepts a private
+<code class="docutils literal notranslate"><span class="pre">_progress_callback</span></code> argument — a
+<a class="reference internal" href="api/interactive.html#fkcompute.interactive.progress.FKProgressTracker" title="fkcompute.interactive.progress.FKProgressTracker"><code class="xref py py-class docutils literal notranslate"><span class="pre">fkcompute.interactive.progress.FKProgressTracker</span></code></a> instance.</p>
+<p>The tracker receives start/update/complete events from each phase and
+renders live progress panels in the terminal using Rich.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="output.html" class="btn btn-neutral float-left" title="Output Format" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cpp_backend.html" class="btn btn-neutral float-right" title="C++ Backend" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

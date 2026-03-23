@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mathematica / Wolfram Language Integration &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Troubleshooting" href="troubleshooting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Mathematica / Wolfram Language Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#symbolic-output-from-the-python-layer">Symbolic Output from the Python Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reformatting-a-saved-result">Reformatting a Saved Result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#architecture-of-the-paclet">Architecture of the Paclet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#python-not-found-by-mathematica">Python Not Found by Mathematica</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wrong-python-environment">Wrong Python Environment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Mathematica / Wolfram Language Integration</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/mathematica.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mathematica-wolfram-language-integration">
+<h1>Mathematica / Wolfram Language Integration<a class="headerlink" href="#mathematica-wolfram-language-integration" title="Link to this heading"></a></h1>
+<p>A Wolfram Language paclet wrapper is included under <code class="docutils literal notranslate"><span class="pre">mathematica/FkCompute/</span></code>.
+It provides a thin Mathematica interface that delegates all computation to the
+Python <code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> package via a Python bridge.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>fkcompute</strong> installed and working in a Python environment (<code class="docutils literal notranslate"><span class="pre">fk</span> <span class="pre">--help</span></code>
+should succeed).</p></li>
+<li><p><strong>Wolfram Mathematica</strong> 12.0 or later (or a compatible Wolfram Engine).</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>Install the paclet from the repository:</p>
+<div class="highlight-mathematica notranslate"><div class="highlight"><pre><span></span><span class="c">(* From within Mathematica *)</span>
+<span class="n">PacletInstall</span><span class="p">[</span><span class="s">&quot;path/to/mathematica/FkCompute&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Or load it directly without installing:</p>
+<div class="highlight-mathematica notranslate"><div class="highlight"><pre><span></span><span class="n">Get</span><span class="p">[</span><span class="s">&quot;path/to/mathematica/FkCompute/FkCompute.wl&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<div class="highlight-mathematica notranslate"><div class="highlight"><pre><span></span><span class="c">(* Load the package *)</span>
+<span class="n">Needs</span><span class="p">[</span><span class="s">&quot;FkCompute`&quot;</span><span class="p">]</span>
+
+<span class="c">(* Compute FK for the trefoil knot *)</span>
+<span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FKCompute</span><span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span>
+
+<span class="c">(* result is an Association with &quot;terms&quot; and &quot;metadata&quot; keys *)</span>
+<span class="n">result</span><span class="p">[</span><span class="s">&quot;metadata&quot;</span><span class="p">][</span><span class="s">&quot;components&quot;</span><span class="p">]</span><span class="w">    </span><span class="c">(* 1 *)</span>
+
+<span class="c">(* Pretty polynomial display *)</span>
+<span class="n">FKPolynomial</span><span class="p">[{</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">},</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="symbolic-output-from-the-python-layer">
+<h2>Symbolic Output from the Python Layer<a class="headerlink" href="#symbolic-output-from-the-python-layer" title="Link to this heading"></a></h2>
+<p>The Python backend can produce LaTeX or Mathematica-syntax strings directly:</p>
+<p>From Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_symbolic_output</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">mma_str</span> <span class="o">=</span> <span class="n">format_symbolic_output</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;mathematica&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mma_str</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From the CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--format<span class="w"> </span>mathematica
+</pre></div>
+</div>
+<p>The resulting string can be pasted directly into a Mathematica notebook.</p>
+</section>
+<section id="reformatting-a-saved-result">
+<h2>Reformatting a Saved Result<a class="headerlink" href="#reformatting-a-saved-result" title="Link to this heading"></a></h2>
+<p>If you saved an FK result to JSON, you can reformat it for Mathematica at
+any time:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>print-as<span class="w"> </span>data/trefoil.json<span class="w"> </span>--format<span class="w"> </span>mathematica
+</pre></div>
+</div>
+<p>Or from Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_symbolic_output</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data/trefoil.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">format_symbolic_output</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;mathematica&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="architecture-of-the-paclet">
+<h2>Architecture of the Paclet<a class="headerlink" href="#architecture-of-the-paclet" title="Link to this heading"></a></h2>
+<p>The paclet calls:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>fkcompute.mathematica_bridge<span class="w"> </span>&lt;braid_json&gt;<span class="w"> </span>&lt;degree&gt;
+</pre></div>
+</div>
+<p>and parses the JSON output.  The bridge module simply wraps
+<a class="reference internal" href="api/fkcompute.html#fkcompute.fk" title="fkcompute.fk"><code class="xref py py-func docutils literal notranslate"><span class="pre">fkcompute.fk()</span></code></a> and serialises the result.</p>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="python-not-found-by-mathematica">
+<h3>Python Not Found by Mathematica<a class="headerlink" href="#python-not-found-by-mathematica" title="Link to this heading"></a></h3>
+<p>Set the Python executable path explicitly before loading the paclet:</p>
+<div class="highlight-mathematica notranslate"><div class="highlight"><pre><span></span><span class="nn">FkCompute`</span><span class="n">PythonPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/usr/bin/python3&quot;</span><span class="p">;</span>
+<span class="n">Needs</span><span class="p">[</span><span class="s">&quot;FkCompute`&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="wrong-python-environment">
+<h3>Wrong Python Environment<a class="headerlink" href="#wrong-python-environment" title="Link to this heading"></a></h3>
+<p>If <code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> is installed in a virtual environment, activate it or point
+<code class="docutils literal notranslate"><span class="pre">FkCompute`PythonPath</span></code> to the environment’s Python binary:</p>
+<div class="highlight-mathematica notranslate"><div class="highlight"><pre><span></span><span class="nn">FkCompute`</span><span class="n">PythonPath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/home/user/myenv/bin/python3&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="troubleshooting.html" class="btn btn-neutral float-left" title="Troubleshooting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,571 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fkcompute.interactive.ui &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fkcompute.interactive.ui</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fkcompute.interactive.ui</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Rich UI components for enhanced interactive experience.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Panel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.prompt</span><span class="w"> </span><span class="kn">import</span> <span class="n">Prompt</span><span class="p">,</span> <span class="n">Confirm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">Text</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.progress</span><span class="w"> </span><span class="kn">import</span> <span class="n">Progress</span><span class="p">,</span> <span class="n">SpinnerColumn</span><span class="p">,</span> <span class="n">TextColumn</span><span class="p">,</span> <span class="n">BarColumn</span><span class="p">,</span> <span class="n">TimeElapsedColumn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.live</span><span class="w"> </span><span class="kn">import</span> <span class="n">Live</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">Layout</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.align</span><span class="w"> </span><span class="kn">import</span> <span class="n">Align</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.rule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rule</span>
+
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="BorderedSection">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.BorderedSection">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BorderedSection</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Creates a bordered section with consistent styling.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">border_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">border_style</span> <span class="o">=</span> <span class="n">border_style</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Display header with title</span>
+        <span class="n">title_text</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;bold </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">Rule</span><span class="p">(</span><span class="n">title_text</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">border_style</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="c1"># Display footer</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">Rule</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">border_style</span><span class="p">))</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="StatusMessage">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.StatusMessage">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">StatusMessage</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Displays colored status messages with appropriate icons.&quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="StatusMessage.success">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.StatusMessage.success">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">success</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Display success message with green checkmark.&quot;&quot;&quot;</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold green&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StatusMessage.error">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.StatusMessage.error">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Display error message with red X.&quot;&quot;&quot;</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold red&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StatusMessage.warning">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.StatusMessage.warning">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">warning</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Display warning message with yellow warning sign.&quot;&quot;&quot;</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;⚠️  </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold yellow&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StatusMessage.info">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.StatusMessage.info">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Display info message with blue info icon.&quot;&quot;&quot;</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ℹ️  </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold blue&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="StatusMessage.step">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.StatusMessage.step">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="n">step_num</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Display step indicator.&quot;&quot;&quot;</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">step_num</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ValidatedInput">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ValidatedInput">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ValidatedInput</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enhanced input handling with real-time validation.&quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="ValidatedInput.get_braid">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ValidatedInput.get_braid">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_braid</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Enter braid word&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get and validate braid input with examples and real-time feedback.&quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">BorderedSection</span><span class="p">(</span><span class="s2">&quot;Braid Input&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">):</span>
+                <span class="c1"># Show examples</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Examples:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • [1, -2, 3]  - JSON-style list&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • 1,-2,3      - Comma-separated&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • 1 -2 3      - Space-separated&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+                
+                <span class="c1"># Common braid examples</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Common braids:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • [1,1,1]    - Trefoil knot (3 crossings)&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • [1,-2,1,-2] - Figure-eight knot (4 crossings)&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+                
+                <span class="n">braid_input</span> <span class="o">=</span> <span class="n">console</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold]</span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="s2">:[/] &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">braid_input</span><span class="p">:</span>
+                    <span class="n">StatusMessage</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Braid cannot be empty&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                
+                <span class="c1"># Parse and validate braid</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">ValidatedInput</span><span class="o">.</span><span class="n">_parse_braid</span><span class="p">(</span><span class="n">braid_input</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">StatusMessage</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid braid: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="ValidatedInput.get_degree">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ValidatedInput.get_degree">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_degree</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Enter computation degree&quot;</span><span class="p">,</span> <span class="n">braid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get and validate degree with smart suggestions.&quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">BorderedSection</span><span class="p">(</span><span class="s2">&quot;Degree Selection&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">):</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">                if braid:</span>
+<span class="sd">                    # Provide degree suggestions based on braid complexity</span>
+<span class="sd">                    crossings = len(braid)</span>
+<span class="sd">                    suggestions = []</span>
+<span class="sd">                    if crossings &lt;= 3:</span>
+<span class="sd">                        suggestions = [(1, &quot;Quick test&quot;), (2, &quot;Recommended&quot;)]</span>
+<span class="sd">                    elif crossings &lt;= 6:</span>
+<span class="sd">                        suggestions = [(1, &quot;Basic&quot;), (2, &quot;Recommended&quot;), (3, &quot;Thorough&quot;)]</span>
+<span class="sd">                    else:</span>
+<span class="sd">                        suggestions = [(1, &quot;Basic&quot;), (2, &quot;Moderate&quot;), (3, &quot;Thorough&quot;), (4, &quot;Comprehensive&quot;)]</span>
+<span class="sd">                    </span>
+<span class="sd">                    console.print(f&quot;Based on {crossings} crossings, suggested degrees:&quot;, style=&quot;dim&quot;)</span>
+<span class="sd">                    for deg, desc in suggestions:</span>
+<span class="sd">                        console.print(f&quot;  • {deg} - {desc}&quot;)</span>
+<span class="sd">                    console.print()</span>
+<span class="sd">                &quot;&quot;&quot;</span>
+                
+                <span class="n">degree_input</span> <span class="o">=</span> <span class="n">console</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[bold]</span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="s2">:[/] &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">degree</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">degree_input</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">degree</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">StatusMessage</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Degree must be a positive integer&quot;</span><span class="p">)</span>
+                        <span class="k">continue</span>
+
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">                    # Warn about high degrees</span>
+<span class="sd">                    if degree &gt; 4:</span>
+<span class="sd">                        StatusMessage.warning(f&quot;Degree {degree} may take significant time to compute&quot;)</span>
+<span class="sd">                        if not Confirm.ask(&quot;Continue anyway?&quot;):</span>
+<span class="sd">                            continue</span>
+<span class="sd">                    &quot;&quot;&quot;</span>
+                    
+                    <span class="k">return</span> <span class="n">degree</span>
+                    
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="n">StatusMessage</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Please enter a valid integer&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="ValidatedInput.get_preset">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ValidatedInput.get_preset">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_preset</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Let user select from available presets.&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..api.presets</span><span class="w"> </span><span class="kn">import</span> <span class="n">PRESETS</span>
+        
+        <span class="n">presets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">PRESETS</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        
+        <span class="k">with</span> <span class="n">BorderedSection</span><span class="p">(</span><span class="s2">&quot;Preset Selection&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;magenta&quot;</span><span class="p">):</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Choose a computation preset for optimized settings:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+            
+            <span class="c1"># Create table for preset comparison</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">show_header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">header_style</span><span class="o">=</span><span class="s2">&quot;bold blue&quot;</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Preset&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;cyan&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Workers&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Threads&quot;</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Description&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+            
+            <span class="k">for</span> <span class="n">preset_name</span> <span class="ow">in</span> <span class="n">presets</span><span class="p">:</span>
+                <span class="n">preset</span> <span class="o">=</span> <span class="n">PRESETS</span><span class="p">[</span><span class="n">preset_name</span><span class="p">]</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span>
+                    <span class="n">preset_name</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">preset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_workers&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">)),</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">preset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;threads&#39;</span><span class="p">,</span> <span class="s1">&#39;N/A&#39;</span><span class="p">)),</span>
+                    <span class="p">{</span>
+                        <span class="s1">&#39;single thread&#39;</span><span class="p">:</span> <span class="s1">&#39;Quick computation, minimal resources&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;parallel&#39;</span><span class="p">:</span> <span class="s1">&#39;High-performance parallel processing (auto-detects CPU)&#39;</span>
+                    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">preset_name</span><span class="p">,</span> <span class="s1">&#39;Custom settings&#39;</span><span class="p">)</span>
+                <span class="p">)</span>
+            
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+            
+            <span class="c1"># Add custom option</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;0. [dim]Custom settings[/dim] - Configure all parameters manually&quot;</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+            
+            <span class="n">choice</span> <span class="o">=</span> <span class="n">Prompt</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                <span class="s2">&quot;Select preset&quot;</span><span class="p">,</span>
+                <span class="n">choices</span><span class="o">=</span><span class="n">presets</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;custom&quot;</span><span class="p">],</span>
+                <span class="n">default</span><span class="o">=</span><span class="s2">&quot;single thread&quot;</span>
+            <span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">choice</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;custom&quot;</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="n">choice</span></div>
+
+    
+<div class="viewcode-block" id="ValidatedInput.get_custom_parameters">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ValidatedInput.get_custom_parameters">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_custom_parameters</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get custom computation parameters interactively.&quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+        
+        <span class="k">with</span> <span class="n">BorderedSection</span><span class="p">(</span><span class="s2">&quot;Custom Parameters&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">):</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Configure computation parameters manually:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+            
+            <span class="c1"># Max workers</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;max_workers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Prompt</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                <span class="s2">&quot;Max workers&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">))</span>
+            
+            <span class="c1"># Chunk size</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;chunk_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Prompt</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                <span class="s2">&quot;Chunk size&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="mi">65536</span><span class="p">,</span>
+                <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">))</span>
+            
+            <span class="c1"># Include flip</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;include_flip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Confirm</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                <span class="s2">&quot;Include flip symmetry&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            
+            <span class="c1"># Max shifts</span>
+            <span class="k">if</span> <span class="n">Confirm</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s2">&quot;Limit shifts&quot;</span><span class="p">):</span>
+                <span class="n">params</span><span class="p">[</span><span class="s1">&#39;max_shifts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Prompt</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s2">&quot;Maximum shifts&quot;</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="s1">&#39;max_shifts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            
+            <span class="c1"># Verbose</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;verbose&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Confirm</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                <span class="s2">&quot;Enable verbose logging&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            
+            <span class="c1"># Save data</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;save_data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Confirm</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                <span class="s2">&quot;Save computation data&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            
+            <span class="k">return</span> <span class="n">params</span></div>
+
+    
+<div class="viewcode-block" id="ValidatedInput.get_threads">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ValidatedInput.get_threads">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_threads</span><span class="p">(</span><span class="n">preset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get thread count with preset-based suggestions.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">BorderedSection</span><span class="p">(</span><span class="s2">&quot;Thread Configuration&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">):</span>
+            <span class="n">preset_threads</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">preset</span><span class="p">:</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">..api.presets</span><span class="w"> </span><span class="kn">import</span> <span class="n">PRESETS</span>
+                <span class="n">preset_threads</span> <span class="o">=</span> <span class="n">PRESETS</span><span class="p">[</span><span class="n">preset</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;threads&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Preset &#39;</span><span class="si">{</span><span class="n">preset</span><span class="si">}</span><span class="s2">&#39; suggests </span><span class="si">{</span><span class="n">preset_threads</span><span class="si">}</span><span class="s2"> threads&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+            
+            <span class="n">threads</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Prompt</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                <span class="s2">&quot;Number of threads&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="n">preset_threads</span><span class="p">,</span>
+                <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">))</span>
+            
+            <span class="k">if</span> <span class="n">threads</span> <span class="o">&gt;</span> <span class="mi">8</span><span class="p">:</span>
+                <span class="n">StatusMessage</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">threads</span><span class="si">}</span><span class="s2"> threads may not provide additional benefit due to hardware limitations&quot;</span><span class="p">)</span>
+            
+            <span class="k">return</span> <span class="n">threads</span></div>
+
+    
+<div class="viewcode-block" id="ValidatedInput.get_name">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ValidatedInput.get_name">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_name</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get optional computation name.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">BorderedSection</span><span class="p">(</span><span class="s2">&quot;Computation Naming&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">):</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Name is optional and used for saved files&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+            
+            <span class="n">name</span> <span class="o">=</span> <span class="n">Prompt</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s2">&quot;Computation name (press Enter to skip)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+    
+<div class="viewcode-block" id="ValidatedInput.get_symbolic">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ValidatedInput.get_symbolic">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_symbolic</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get symbolic output preference and format type.</span>
+
+<span class="sd">        Returns a dict with keys ``&quot;symbolic&quot;`` (bool) and</span>
+<span class="sd">        ``&quot;format_type&quot;`` (str, one of pretty/inline/latex/mathematica).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">BorderedSection</span><span class="p">(</span><span class="s2">&quot;Output Format&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">):</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Choose output format:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • JSON - Machine-readable, standard format&quot;</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • Symbolic - Human-readable polynomial format (requires SymPy)&quot;</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+
+            <span class="n">symbolic</span> <span class="o">=</span> <span class="n">Confirm</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                <span class="s2">&quot;Generate symbolic output&quot;</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">format_type</span> <span class="o">=</span> <span class="s2">&quot;pretty&quot;</span>
+            <span class="k">if</span> <span class="n">symbolic</span><span class="p">:</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Choose symbolic format:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • [cyan]pretty[/cyan]       — Unicode pretty-print (default)&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • [cyan]inline[/cyan]       — Compact one-line string&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • [cyan]latex[/cyan]        — LaTeX expression&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;  • [cyan]mathematica[/cyan]  — Wolfram Language / Mathematica&quot;</span><span class="p">)</span>
+                <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+
+                <span class="n">format_type</span> <span class="o">=</span> <span class="n">Prompt</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+                    <span class="s2">&quot;Symbolic format&quot;</span><span class="p">,</span>
+                    <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;pretty&quot;</span><span class="p">,</span> <span class="s2">&quot;inline&quot;</span><span class="p">,</span> <span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;mathematica&quot;</span><span class="p">],</span>
+                    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;pretty&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;symbolic&quot;</span><span class="p">:</span> <span class="n">symbolic</span><span class="p">,</span> <span class="s2">&quot;format_type&quot;</span><span class="p">:</span> <span class="n">format_type</span><span class="p">}</span></div>
+
+    
+<div class="viewcode-block" id="ValidatedInput.get_save_preference">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ValidatedInput.get_save_preference">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_save_preference</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get save data preference.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Confirm</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+            <span class="s2">&quot;Save computation data to files&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span></div>
+
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_braid</span><span class="p">(</span><span class="n">braid_input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse braid string into list of integers.&quot;&quot;&quot;</span>
+        <span class="c1"># Remove surrounding brackets if present</span>
+        <span class="n">braid_input</span> <span class="o">=</span> <span class="n">braid_input</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">braid_input</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">braid_input</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">):</span>
+            <span class="n">braid_input</span> <span class="o">=</span> <span class="n">braid_input</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        
+        <span class="c1"># Try JSON first</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">braid_input</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">val</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+        
+        <span class="c1"># Try splitting on commas and spaces</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">braid_input</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parts</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Could not parse braid - no numbers found&quot;</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">parts</span></div>
+
+    
+
+
+<div class="viewcode-block" id="ComputationSummary">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ComputationSummary">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ComputationSummary</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display a summary of computation parameters before execution.&quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="ComputationSummary.show">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.ui.ComputationSummary.show">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Show parameter summary and ask for confirmation.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">BorderedSection</span><span class="p">(</span><span class="s2">&quot;Computation Summary&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">):</span>
+            <span class="c1"># Create summary table</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">show_header</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">box</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Parameter&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold cyan&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s2">&quot;Value&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Braid (show abbreviated if long)</span>
+            <span class="n">braid</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;braid&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">8</span><span class="p">:</span>
+                <span class="n">braid_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">braid</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span><span class="si">}</span><span class="s2">, ..., </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="w"> </span><span class="n">braid</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]))</span><span class="si">}</span><span class="s2">]&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">braid_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Braid&quot;</span><span class="p">,</span> <span class="n">braid_str</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Degree&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;degree&#39;</span><span class="p">]))</span>
+            
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;preset&#39;</span><span class="p">):</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Preset&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;preset&#39;</span><span class="p">])</span>
+            
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;threads&#39;</span><span class="p">):</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Threads&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;threads&#39;</span><span class="p">]))</span>
+            
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">):</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+            
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;symbolic&#39;</span><span class="p">):</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;format_type&#39;</span><span class="p">,</span> <span class="s1">&#39;pretty&#39;</span><span class="p">)</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Symbolic&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Yes (</span><span class="si">{</span><span class="n">fmt</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Symbolic&quot;</span><span class="p">,</span> <span class="s2">&quot;No&quot;</span><span class="p">)</span>
+            <span class="n">table</span><span class="o">.</span><span class="n">add_row</span><span class="p">(</span><span class="s2">&quot;Save data&quot;</span><span class="p">,</span> <span class="s2">&quot;Yes&quot;</span> <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;save_data&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;No&quot;</span><span class="p">)</span>
+            
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+            <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+            
+            <span class="k">return</span> <span class="n">Confirm</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s2">&quot;Proceed with computation?&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -20,8 +20,8 @@ For a knot :math:`K`, the invariant takes the form
 
    F_K(x, q) = \sum_{n, k} a_{n,k}\, x^n\, q^k \;\in\; \mathbb{Z}[\![x, q^{\pm 1}]\!],
 
-where :math:`n` ranges over non-negative integers and :math:`k` ranges over
-integers. 
+where :math:`n` ranges over non-negative integers, :math:`k` ranges over
+integers and :math:`a_{n,k}\in\mathbb{Z}`. 
 
 For a link :math:`L` with :math:`\ell` components, each component contributes
 its own :math:`x` variable, so the invariant lives in
@@ -45,7 +45,7 @@ State-Sum / R-Matrix Computation
 approach developed by Park [Park2020a]_ [Park2020b]_.
 
 Intuitively, the braid closure is cut into elementary crossings.  At each
-crossing one of two *R-matrices* and hteir inverses (:math:`R_1, R_2=R_1^{-1}, R_3, R_4=R_3^{-1}`) acts,
+crossing an *R-matrix* or its inverse acts,
 depending on the crossing sign and the *sign assignment* (see below).
 The FK polynomial is then assembled as a weighted sum over all *states*
 — assignments of integers to the strands at each intermediate slice of
@@ -55,10 +55,8 @@ Formally, the state sum reads
 
 .. math::
 
-   F_K(x,q) = \sum_{\text{states } s} w(s)\, \prod_{\text{crossings}} R_{\text{type}}(s),
+   F_K(x,q) = \sum_{\text{states } s} \, \prod_{\text{crossings}} R_{\text{type}}(s).
 
-where the weight :math:`w(s)` encodes the x-variables and the
-degree truncation cuts the sum to a finite computation.
 
 Sign Assignment (Inversion Phase)
 -----------------------------------

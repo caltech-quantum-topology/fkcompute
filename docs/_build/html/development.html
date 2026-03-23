@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Development Guide &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="fkcompute.interactive — Interactive Wizard" href="api/interactive.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#development-installation">Development Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#repository-layout">Repository Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-test-suite">Running the Test Suite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coding-conventions">Coding Conventions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#python-style">Python Style</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-architecture-invariants">Module Architecture Invariants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c-style">C++ Style</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-documentation">Building the Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Development Guide</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/development.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="development-guide">
+<h1>Development Guide<a class="headerlink" href="#development-guide" title="Link to this heading"></a></h1>
+<p>This page describes how to set up a development environment, run tests, and
+contribute to <strong>fkcompute</strong>.</p>
+<section id="development-installation">
+<h2>Development Installation<a class="headerlink" href="#development-installation" title="Link to this heading"></a></h2>
+<p>Clone the repository and install in editable mode so that changes to Python
+source files are immediately visible without reinstalling:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>&lt;repository-url&gt;
+<span class="nb">cd</span><span class="w"> </span>fk-compute
+
+<span class="c1"># Install all optional extras in editable mode</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[full]&quot;</span>
+
+<span class="c1"># Build the C++ backend</span>
+cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-S<span class="w"> </span>.
+cmake<span class="w"> </span>--build<span class="w"> </span>build
+
+<span class="c1"># Copy the binary into the package location</span>
+cp<span class="w"> </span>build/fk_main<span class="w"> </span>src/fkcompute/_bin/fk_main
+</pre></div>
+</div>
+<p>After any change to C++ source files, re-run <code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">build</span></code> and copy
+the binary again.</p>
+</section>
+<section id="repository-layout">
+<h2>Repository Layout<a class="headerlink" href="#repository-layout" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>fk-compute/
+├── CMakeLists.txt          # CMake build configuration
+├── pyproject.toml          # Python package metadata (scikit-build-core)
+├── README.md
+├── src/
+│   └── fkcompute/          # Python source
+│       ├── __init__.py     # Public API
+│       ├── api/            # High-level entry points
+│       ├── cli/            # Typer CLI commands
+│       ├── domain/         # Pure domain logic (braid, constraints)
+│       ├── inversion/      # Phase 1: sign assignment search
+│       ├── solver/         # Phase 2: ILP generation (Gurobi)
+│       ├── output/         # Symbolic formatting (SymPy)
+│       ├── infra/          # Binary execution, config I/O
+│       ├── interactive/    # Rich-based interactive UI
+│       └── _bin/           # Bundled fk_main binary (populated at build)
+├── cpp/                    # C++ backend source
+│   ├── main.cpp
+│   ├── src/
+│   ├── include/
+│   ├── tests/
+│   └── Makefile            # Legacy build (prefer CMake)
+├── tests/                  # Python test suite
+│   ├── test_fk_baseline.py
+│   ├── all_knots.yaml
+│   └── all_links.yaml
+├── mathematica/            # Wolfram Language paclet wrapper
+└── docs/                   # This documentation
+</pre></div>
+</div>
+</section>
+<section id="running-the-test-suite">
+<h2>Running the Test Suite<a class="headerlink" href="#running-the-test-suite" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all tests</span>
+pytest
+
+<span class="c1"># Run with verbose output</span>
+pytest<span class="w"> </span>-v
+
+<span class="c1"># Run a specific test file</span>
+pytest<span class="w"> </span>tests/test_fk_baseline.py
+
+<span class="c1"># Run tests matching a name pattern</span>
+pytest<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;trefoil&quot;</span>
+</pre></div>
+</div>
+<p>The baseline tests compare FK invariants against a set of pre-computed
+reference values for knots up to 11 crossings.</p>
+</section>
+<section id="coding-conventions">
+<h2>Coding Conventions<a class="headerlink" href="#coding-conventions" title="Link to this heading"></a></h2>
+<section id="python-style">
+<h3>Python Style<a class="headerlink" href="#python-style" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Type hints on all public functions and methods.</p></li>
+<li><p>NumPy-style docstrings (<code class="docutils literal notranslate"><span class="pre">Parameters</span></code>, <code class="docutils literal notranslate"><span class="pre">Returns</span></code>, <code class="docutils literal notranslate"><span class="pre">Examples</span></code>).</p></li>
+<li><p>No global mutable state in domain modules.</p></li>
+<li><p>No I/O in domain or constraint modules (only in <code class="docutils literal notranslate"><span class="pre">infra/</span></code>).</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">logging.getLogger(&quot;fk_logger&quot;)</span></code> for log output; never <code class="docutils literal notranslate"><span class="pre">print</span></code>
+except in CLI/output modules.</p></li>
+</ul>
+</section>
+<section id="module-architecture-invariants">
+<h3>Module Architecture Invariants<a class="headerlink" href="#module-architecture-invariants" title="Link to this heading"></a></h3>
+<p>The following rules maintain the layered architecture:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">domain/</span></code> — pure functions and data classes only; no subprocess calls,
+no file I/O, no Gurobi imports.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">solver/</span></code> — may import Gurobi; no CLI or output code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">infra/</span></code> — all file and process I/O; no domain logic.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">api/</span></code> — orchestrates domain and infra; no direct CLI code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cli/</span></code> — translates CLI arguments to API calls; minimal business logic.</p></li>
+</ul>
+</section>
+<section id="c-style">
+<h3>C++ Style<a class="headerlink" href="#c-style" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">#pragma</span> <span class="pre">omp</span> <span class="pre">parallel</span> <span class="pre">for</span></code> with <code class="docutils literal notranslate"><span class="pre">schedule(dynamic)</span></code> for the outer
+state loop.</p></li>
+<li><p>Allocate per-thread polynomial accumulators; reduce with a critical section.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">fmpz</span></code> (FLINT) for all coefficient arithmetic to avoid overflow.</p></li>
+</ul>
+</section>
+</section>
+<section id="building-the-documentation">
+<h2>Building the Documentation<a class="headerlink" href="#building-the-documentation" title="Link to this heading"></a></h2>
+<p>Install the documentation dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>sphinx<span class="w"> </span>sphinx-rtd-theme<span class="w"> </span>sphinx-copybutton<span class="w"> </span>sphinx-design
+</pre></div>
+</div>
+<p>Build the HTML documentation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>docs
+sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build/html
+</pre></div>
+</div>
+<p>Open <code class="docutils literal notranslate"><span class="pre">docs/_build/html/index.html</span></code> in a browser.</p>
+<p>Build with automatic rebuilding on changes (requires <code class="docutils literal notranslate"><span class="pre">sphinx-autobuild</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>sphinx-autobuild
+sphinx-autobuild<span class="w"> </span>docs<span class="w"> </span>docs/_build/html
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api/interactive.html" class="btn btn-neutral float-left" title="fkcompute.interactive — Interactive Wizard" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="troubleshooting.html" class="btn btn-neutral float-right" title="Troubleshooting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

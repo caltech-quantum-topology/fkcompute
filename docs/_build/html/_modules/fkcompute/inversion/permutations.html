@@ -1,0 +1,670 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fkcompute.inversion.permutations &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fkcompute.inversion.permutations</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fkcompute.inversion.permutations</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Permutation generation and sign-diagram conversion for braid arc labels.</span>
+
+<span class="sd">Ports the following Mathematica functions from ImproveSignDiagramSearch-Davide.nb:</span>
+<span class="sd">  topstrandQ, firstAppearance, lastAppearanceQ, nextgeneratorpos,</span>
+<span class="sd">  labelCrossings, NewRot, extendAndFilter, permsRot, permsRotClosed, permToSigns.</span>
+
+<span class="sd">Arc labels are 1-indexed throughout (matching Mathematica semantics).</span>
+<span class="sd">Crossing positions j are also 1-indexed.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">bisect</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect_right</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntEnum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..domain.braid.topology</span><span class="w"> </span><span class="kn">import</span> <span class="n">BraidTopology</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Private helpers</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_Corner</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Corner labels (Mathematica-compatible): 1..4.&quot;&quot;&quot;</span>
+
+    <span class="n">BOTTOM_LEFT</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">BOTTOM_RIGHT</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">TOP_LEFT</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">TOP_RIGHT</span> <span class="o">=</span> <span class="mi">4</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_OccurrenceIndex</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Index generator occurrences for O(1)/O(log n) queries.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">positions</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">g</span><span class="p">),</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">first</span> <span class="o">=</span> <span class="p">{</span><span class="n">gen</span><span class="p">:</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">gen</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">positions</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="p">{</span><span class="n">gen</span><span class="p">:</span> <span class="n">pos</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">gen</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">positions</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">first_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gen</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">g</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generator </span><span class="si">{</span><span class="n">gen</span><span class="si">}</span><span class="s2"> not found in braid&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="p">[</span><span class="n">g</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_last_appearance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="nb">abs</span><span class="p">(</span><span class="n">gen</span><span class="p">)]</span> <span class="o">==</span> <span class="n">j</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">next_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pos</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">idx</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="k">else</span> <span class="n">pos</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_paired_corner</span><span class="p">(</span><span class="n">corner</span><span class="p">:</span> <span class="n">_Corner</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Corner</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Move through a crossing: BL-&gt;TR, BR-&gt;TL.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">corner</span> <span class="o">==</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">BOTTOM_LEFT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">TOP_RIGHT</span>
+    <span class="k">if</span> <span class="n">corner</span> <span class="o">==</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">BOTTOM_RIGHT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">TOP_LEFT</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid entry corner: </span><span class="si">{</span><span class="n">corner</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_topstrand</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">occ</span><span class="p">:</span> <span class="n">_OccurrenceIndex</span><span class="p">,</span>
+    <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">gen_j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">corner</span><span class="p">:</span> <span class="n">_Corner</span><span class="p">,</span>
+    <span class="n">max_gen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if the (j, corner) position is on the top strand.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">occ</span><span class="o">.</span><span class="n">last</span><span class="p">[</span><span class="n">gen_j</span><span class="p">]</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">corner</span> <span class="o">==</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">TOP_LEFT</span> <span class="ow">and</span> <span class="n">gen_j</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">occ</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">gen_j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">j</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">corner</span> <span class="o">==</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">TOP_RIGHT</span> <span class="ow">and</span> <span class="n">gen_j</span> <span class="o">&lt;</span> <span class="n">max_gen</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">occ</span><span class="o">.</span><span class="n">last</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">gen_j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">j</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_next_crossing</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">occ</span><span class="p">:</span> <span class="n">_OccurrenceIndex</span><span class="p">,</span>
+    <span class="n">j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">corner</span><span class="p">:</span> <span class="n">_Corner</span><span class="p">,</span>
+    <span class="n">gen_j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">max_gen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the next 1-indexed crossing position j_next.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_is_topstrand</span><span class="p">(</span><span class="n">occ</span><span class="o">=</span><span class="n">occ</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="n">j</span><span class="p">,</span> <span class="n">gen_j</span><span class="o">=</span><span class="n">gen_j</span><span class="p">,</span> <span class="n">corner</span><span class="o">=</span><span class="n">corner</span><span class="p">,</span> <span class="n">max_gen</span><span class="o">=</span><span class="n">max_gen</span><span class="p">):</span>
+        <span class="c1"># Top strand: wrap around to the first appearance of adjacent generators.</span>
+        <span class="k">if</span> <span class="n">corner</span> <span class="o">==</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">TOP_LEFT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">gen_j</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">min</span><span class="p">(</span>
+                    <span class="n">occ</span><span class="o">.</span><span class="n">first_appearance</span><span class="p">(</span><span class="n">gen_j</span><span class="p">),</span>
+                    <span class="n">occ</span><span class="o">.</span><span class="n">first_appearance</span><span class="p">(</span><span class="n">gen_j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">occ</span><span class="o">.</span><span class="n">first_appearance</span><span class="p">(</span><span class="n">gen_j</span><span class="p">)</span>
+
+        <span class="c1"># corner == TOP_RIGHT</span>
+        <span class="k">if</span> <span class="n">gen_j</span> <span class="o">&lt;</span> <span class="n">max_gen</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">min</span><span class="p">(</span>
+                <span class="n">occ</span><span class="o">.</span><span class="n">first_appearance</span><span class="p">(</span><span class="n">gen_j</span><span class="p">),</span>
+                <span class="n">occ</span><span class="o">.</span><span class="n">first_appearance</span><span class="p">(</span><span class="n">gen_j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">occ</span><span class="o">.</span><span class="n">first_appearance</span><span class="p">(</span><span class="n">gen_j</span><span class="p">)</span>
+
+    <span class="c1"># Not top strand: find next crossing of same or adjacent generator.</span>
+    <span class="n">candidates</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">occ</span><span class="o">.</span><span class="n">is_last_appearance</span><span class="p">(</span><span class="n">gen_j</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">occ</span><span class="o">.</span><span class="n">next_pos</span><span class="p">(</span><span class="n">gen_j</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">corner</span> <span class="o">==</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">TOP_LEFT</span> <span class="ow">and</span> <span class="n">gen_j</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">occ</span><span class="o">.</span><span class="n">next_pos</span><span class="p">(</span><span class="n">gen_j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">corner</span> <span class="o">==</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">TOP_RIGHT</span> <span class="ow">and</span> <span class="n">gen_j</span> <span class="o">&lt;</span> <span class="n">max_gen</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">occ</span><span class="o">.</span><span class="n">next_pos</span><span class="p">(</span><span class="n">gen_j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No next crossing found (unexpected braid structure)&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_entry_corner</span><span class="p">(</span><span class="n">exit_corner</span><span class="p">:</span> <span class="n">_Corner</span><span class="p">,</span> <span class="n">same_generator</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Corner</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return entry corner (BL/BR) at the next crossing.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">exit_corner</span> <span class="o">==</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">TOP_LEFT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">BOTTOM_LEFT</span> <span class="k">if</span> <span class="n">same_generator</span> <span class="k">else</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">BOTTOM_RIGHT</span>
+    <span class="k">if</span> <span class="n">exit_corner</span> <span class="o">==</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">TOP_RIGHT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">BOTTOM_RIGHT</span> <span class="k">if</span> <span class="n">same_generator</span> <span class="k">else</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">BOTTOM_LEFT</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid exit corner: </span><span class="si">{</span><span class="n">exit_corner</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Core labelling</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="label_crossings">
+<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.permutations.label_crossings">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">label_crossings</span><span class="p">(</span><span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Label arc segments at every corner of every crossing.</span>
+
+<span class="sd">    Returns an n×4 matrix (list of lists) where entry [i][c] is the arc-segment</span>
+<span class="sd">    label at corner c+1 of crossing i+1.</span>
+
+<span class="sd">    Labels are 1-indexed. For a knot (single component) they run from 1 to</span>
+<span class="sd">    2n+1 where n = len(braid). For links with multiple components the range</span>
+<span class="sd">    extends to 2n+c, where c is the number of component cycles induced by the</span>
+<span class="sd">    entry-corner successor map.</span>
+
+<span class="sd">    Direct port of Mathematica ``labelCrossings``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="n">max_gen</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">braid</span><span class="p">)</span>
+    <span class="n">occ</span> <span class="o">=</span> <span class="n">_OccurrenceIndex</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+
+    <span class="c1"># 0-indexed rows, 0-indexed corners (corner c ↔ index c-1)</span>
+    <span class="n">labels_corners</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_find_next_start</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">_Corner</span><span class="p">]]:</span>
+        <span class="c1"># Prefer entry corners (bottom corners) only.</span>
+        <span class="k">for</span> <span class="n">row_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">labels_corners</span><span class="p">[</span><span class="n">row_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">row_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">BOTTOM_LEFT</span>
+            <span class="k">if</span> <span class="n">labels_corners</span><span class="p">[</span><span class="n">row_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">row_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">BOTTOM_RIGHT</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_walk_component</span><span class="p">(</span><span class="n">start_j</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">start_corner</span><span class="p">:</span> <span class="n">_Corner</span><span class="p">,</span> <span class="n">k_start</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Walk one closed cycle, starting from an already-labelled entry corner.&quot;&quot;&quot;</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">start_j</span>
+        <span class="n">corner</span> <span class="o">=</span> <span class="n">start_corner</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">k_start</span>
+
+        <span class="c1"># Each loop iteration assigns one new arc-segment label (k += 1) and</span>
+        <span class="c1"># propagates it to two corners: the exit (top) corner at j and the entry</span>
+        <span class="c1"># (bottom) corner at j_next.</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">steps</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">steps</span> <span class="o">&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;label_crossings exceeded step limit (cycle walk)&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Each step creates a new arc label.</span>
+            <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Move through the crossing: BL-&gt;TR, BR-&gt;TL (same crossing, top side)</span>
+            <span class="n">exit_corner</span> <span class="o">=</span> <span class="n">_paired_corner</span><span class="p">(</span><span class="n">corner</span><span class="p">)</span>
+            <span class="n">labels_corners</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">exit_corner</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>
+
+            <span class="c1"># Determine next crossing j_next and entry corner</span>
+            <span class="n">gen_j</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">braid</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">j_next</span> <span class="o">=</span> <span class="n">_next_crossing</span><span class="p">(</span>
+                <span class="n">occ</span><span class="o">=</span><span class="n">occ</span><span class="p">,</span>
+                <span class="n">j</span><span class="o">=</span><span class="n">j</span><span class="p">,</span>
+                <span class="n">corner</span><span class="o">=</span><span class="n">exit_corner</span><span class="p">,</span>
+                <span class="n">gen_j</span><span class="o">=</span><span class="n">gen_j</span><span class="p">,</span>
+                <span class="n">max_gen</span><span class="o">=</span><span class="n">max_gen</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">same_generator</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">braid</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="nb">abs</span><span class="p">(</span><span class="n">braid</span><span class="p">[</span><span class="n">j_next</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">entry_corner</span> <span class="o">=</span> <span class="n">_entry_corner</span><span class="p">(</span><span class="n">exit_corner</span><span class="p">,</span> <span class="n">same_generator</span><span class="p">)</span>
+
+            <span class="c1"># If the cycle closes, stop without overwriting the starting label.</span>
+            <span class="k">if</span> <span class="n">j_next</span> <span class="o">==</span> <span class="n">start_j</span> <span class="ow">and</span> <span class="n">entry_corner</span> <span class="o">==</span> <span class="n">start_corner</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">labels_corners</span><span class="p">[</span><span class="n">j_next</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">entry_corner</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Cycle walk hit an already-labelled entry corner (unexpected)&quot;</span>
+                <span class="p">)</span>
+
+            <span class="n">j</span> <span class="o">=</span> <span class="n">j_next</span>
+            <span class="n">corner</span> <span class="o">=</span> <span class="n">entry_corner</span>
+            <span class="n">labels_corners</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">corner</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>
+
+        <span class="k">return</span> <span class="n">k</span>
+
+    <span class="c1"># Walk each connected component cycle. The original Mathematica function</span>
+    <span class="c1"># starts from the first appearance of generator 1 at BL.</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">j_first</span> <span class="o">=</span> <span class="n">occ</span><span class="o">.</span><span class="n">first_appearance</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># 1-indexed</span>
+    <span class="n">corner_first</span> <span class="o">=</span> <span class="n">_Corner</span><span class="o">.</span><span class="n">BOTTOM_LEFT</span>
+    <span class="n">labels_corners</span><span class="p">[</span><span class="n">j_first</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">corner_first</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">_walk_component</span><span class="p">(</span><span class="n">j_first</span><span class="p">,</span> <span class="n">corner_first</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+    <span class="c1"># For links, the arc graph has multiple disjoint cycles. Continue from the</span>
+    <span class="c1"># next unlabelled entry corner until we&#39;ve used all available arc labels.</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">nxt</span> <span class="o">=</span> <span class="n">_find_next_start</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">nxt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">start_j</span><span class="p">,</span> <span class="n">start_corner</span> <span class="o">=</span> <span class="n">nxt</span>
+        <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">labels_corners</span><span class="p">[</span><span class="n">start_j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">start_corner</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">_walk_component</span><span class="p">(</span><span class="n">start_j</span><span class="p">,</span> <span class="n">start_corner</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+
+    <span class="c1"># After walking all cycles, all corners should typically be labelled.</span>
+    <span class="c1"># Keep a defensive fill for any remaining zeros.</span>
+    <span class="n">last_label</span> <span class="o">=</span> <span class="n">k</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">labels_corners</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">row</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_label</span>
+
+    <span class="k">return</span> <span class="n">labels_corners</span></div>
+
+
+
+<div class="viewcode-block" id="new_rot">
+<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.permutations.new_rot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">new_rot</span><span class="p">(</span><span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return a list of ``[sign, overstrand_label, understrand_label]`` per crossing.</span>
+
+<span class="sd">    For a positive crossing the overstrand labels are corners 1,2; for a</span>
+<span class="sd">    negative crossing they are corners 2,1 (swapped).</span>
+
+<span class="sd">    Direct port of Mathematica ``NewRot``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lc</span> <span class="o">=</span> <span class="n">label_crossings</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">n_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">)):</span>
+        <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">braid</span><span class="p">[</span><span class="n">n_idx</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="n">sign</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">sign</span><span class="p">,</span> <span class="n">lc</span><span class="p">[</span><span class="n">n_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">lc</span><span class="p">[</span><span class="n">n_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]])</span>  <span class="c1"># corners 1, 2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">sign</span><span class="p">,</span> <span class="n">lc</span><span class="p">[</span><span class="n">n_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">lc</span><span class="p">[</span><span class="n">n_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]])</span>  <span class="c1"># corners 2, 1</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Permutation generation helpers</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_extend_and_filter</span><span class="p">(</span>
+    <span class="n">current</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span>
+    <span class="n">next_options</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cross-product extend and filter.</span>
+
+<span class="sd">    Appends each option in *next_options* to each partial permutation in</span>
+<span class="sd">    *current*, keeping only those where all destination values are distinct.</span>
+
+<span class="sd">    Port of Mathematica ``extendAndFilter``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">extended</span> <span class="o">=</span> <span class="p">[</span><span class="n">partial</span> <span class="o">+</span> <span class="p">[</span><span class="n">rule</span><span class="p">]</span> <span class="k">for</span> <span class="n">partial</span> <span class="ow">in</span> <span class="n">current</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">next_options</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">extended</span> <span class="k">if</span> <span class="nb">len</span><span class="p">({</span><span class="n">dst</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">dst</span> <span class="ow">in</span> <span class="n">x</span><span class="p">})</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_perm_options</span><span class="p">(</span><span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">closed</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the sorted list of option groups used by perms_rot / perms_rot_closed.&quot;&quot;&quot;</span>
+    <span class="n">rot_vec</span> <span class="o">=</span> <span class="n">new_rot</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+    <span class="n">perm_options</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">rot_vec</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">label_a</span><span class="p">,</span> <span class="n">label_b</span> <span class="o">=</span> <span class="n">entry</span>
+        <span class="n">perm_options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">label_a</span><span class="p">,</span> <span class="n">label_a</span><span class="p">),</span> <span class="p">(</span><span class="n">label_a</span><span class="p">,</span> <span class="n">label_a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">label_a</span><span class="p">,</span> <span class="n">label_b</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="n">perm_options</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span><span class="n">label_b</span><span class="p">,</span> <span class="n">label_b</span><span class="p">),</span> <span class="p">(</span><span class="n">label_b</span><span class="p">,</span> <span class="n">label_b</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+
+    <span class="n">last</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">closed</span><span class="p">:</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">label_crossings</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">crossing</span> <span class="ow">in</span> <span class="n">labels</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">crossing</span><span class="p">)</span>
+        <span class="n">terminals</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">terminals</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">perm_options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">[(</span><span class="n">terminals</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">terminals</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="p">(</span><span class="n">terminals</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">terminals</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])]</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">perm_options</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span><span class="n">last</span><span class="p">,</span> <span class="n">last</span><span class="p">)])</span>
+
+    <span class="n">perm_options</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">group</span><span class="p">:</span> <span class="n">group</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">perm_options</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fold_to_perms</span><span class="p">(</span>
+    <span class="n">perm_options</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span> <span class="n">total</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fold option groups into valid permutation lists.&quot;&quot;&quot;</span>
+    <span class="n">partial_perms</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">_extend_and_filter</span><span class="p">,</span> <span class="n">perm_options</span><span class="p">,</span> <span class="p">[[]])</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[[</span><span class="n">dst</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">dst</span> <span class="ow">in</span> <span class="n">pp</span><span class="p">]</span> <span class="k">for</span> <span class="n">pp</span> <span class="ow">in</span> <span class="n">partial_perms</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_iter_fold_to_perms</span><span class="p">(</span><span class="n">perm_options</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Yield valid permutation lists lazily.</span>
+
+<span class="sd">    This is a generator equivalent of :func:`_fold_to_perms` that avoids</span>
+<span class="sd">    constructing the full cross-product in memory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_recurse</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">used_dsts</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">out</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">perm_options</span><span class="p">):</span>
+            <span class="c1"># out is already in the correct order (sorted by src label).</span>
+            <span class="k">yield</span> <span class="nb">list</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">dst</span> <span class="ow">in</span> <span class="n">perm_options</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">dst</span> <span class="ow">in</span> <span class="n">used_dsts</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">used_dsts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+            <span class="k">yield from</span> <span class="n">_recurse</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">used_dsts</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">used_dsts</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+
+    <span class="k">yield from</span> <span class="n">_recurse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">set</span><span class="p">(),</span> <span class="p">[])</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Public API</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="perms_rot">
+<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.permutations.perms_rot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">perms_rot</span><span class="p">(</span><span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate all valid arc-label permutations for the *open* braid.</span>
+
+<span class="sd">    Each permutation is a 1-indexed list of length 2n+1 (n = len(braid))</span>
+<span class="sd">    where entry i is the image of arc label i under the permutation.</span>
+
+<span class="sd">    The final arc 2n+1 maps only to itself (open-strand convention).</span>
+
+<span class="sd">    Port of Mathematica ``permsRot``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+    <span class="n">opts</span> <span class="o">=</span> <span class="n">_build_perm_options</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">_iter_fold_to_perms</span><span class="p">(</span><span class="n">opts</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="perms_rot_closed">
+<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.permutations.perms_rot_closed">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">perms_rot_closed</span><span class="p">(</span><span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate all valid arc-label permutations for the *closed* braid.</span>
+
+<span class="sd">    Same as :func:`perms_rot` except the final arc 2n+1 may also map to 1</span>
+<span class="sd">    (closure allows the open strand to loop back).</span>
+
+<span class="sd">    Port of Mathematica ``permsRotClosed``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+    <span class="n">opts</span> <span class="o">=</span> <span class="n">_build_perm_options</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">_iter_fold_to_perms</span><span class="p">(</span><span class="n">opts</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="iter_perms_rot">
+<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.permutations.iter_perms_rot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">iter_perms_rot</span><span class="p">(</span><span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterate valid arc-label permutations for the *open* braid.&quot;&quot;&quot;</span>
+    <span class="n">opts</span> <span class="o">=</span> <span class="n">_build_perm_options</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_iter_fold_to_perms</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="iter_perms_rot_closed">
+<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.permutations.iter_perms_rot_closed">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">iter_perms_rot_closed</span><span class="p">(</span><span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Iterate valid arc-label permutations for the *closed* braid.&quot;&quot;&quot;</span>
+    <span class="n">opts</span> <span class="o">=</span> <span class="n">_build_perm_options</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_iter_fold_to_perms</span><span class="p">(</span><span class="n">opts</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="perm_to_signs_metadata">
+<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.permutations.perm_to_signs_metadata">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">perm_to_signs_metadata</span><span class="p">(</span><span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Precompute metadata needed for fast perm -&gt; signs conversion.&quot;&quot;&quot;</span>
+    <span class="n">rot</span> <span class="o">=</span> <span class="n">new_rot</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+    <span class="n">topo</span> <span class="o">=</span> <span class="n">BraidTopology</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+    <span class="n">arc_comp</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">arc_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">crossing_sign</span><span class="p">,</span> <span class="n">label_a</span><span class="p">,</span> <span class="n">label_b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rot</span><span class="p">):</span>
+        <span class="n">top_c</span> <span class="o">=</span> <span class="n">topo</span><span class="o">.</span><span class="n">top_crossing_components</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">bottom_c</span> <span class="o">=</span> <span class="n">topo</span><span class="o">.</span><span class="n">bottom_crossing_components</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">top_c</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">bottom_c</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected missing component assignment&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">crossing_sign</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">arc_comp</span><span class="p">[</span><span class="n">label_a</span><span class="p">]</span> <span class="o">=</span> <span class="n">top_c</span>
+            <span class="n">arc_comp</span><span class="p">[</span><span class="n">label_b</span><span class="p">]</span> <span class="o">=</span> <span class="n">bottom_c</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">arc_comp</span><span class="p">[</span><span class="n">label_a</span><span class="p">]</span> <span class="o">=</span> <span class="n">bottom_c</span>
+            <span class="n">arc_comp</span><span class="p">[</span><span class="n">label_b</span><span class="p">]</span> <span class="o">=</span> <span class="n">top_c</span>
+        <span class="n">arc_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_a</span><span class="p">)</span>
+        <span class="n">arc_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_b</span><span class="p">)</span>
+
+    <span class="n">arc_labels</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">arc_labels</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arc_labels</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected number of arc labels for sign assignment&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">arc_labels</span><span class="p">,</span> <span class="n">arc_comp</span><span class="p">,</span> <span class="n">topo</span><span class="o">.</span><span class="n">n_components</span></div>
+
+
+
+<div class="viewcode-block" id="compile_perm_to_signs">
+<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.permutations.compile_perm_to_signs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compile_perm_to_signs</span><span class="p">(</span><span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a fast converter perm -&gt; strand_signs for this braid.&quot;&quot;&quot;</span>
+    <span class="n">arc_labels</span><span class="p">,</span> <span class="n">arc_comp</span><span class="p">,</span> <span class="n">n_components</span> <span class="o">=</span> <span class="n">perm_to_signs_metadata</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_convert</span><span class="p">(</span><span class="n">perm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">arc_labels</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_components</span><span class="p">)}</span>
+        <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">arc_labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Permutation too short for braid arc labels: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;need &gt;= </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">arc_labels</span><span class="p">)</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_components</span><span class="p">)}</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">arc_labels</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">arc_comp</span><span class="p">[</span><span class="n">label</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">perm</span><span class="p">[</span><span class="n">label</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">return</span> <span class="n">_convert</span></div>
+
+
+
+<div class="viewcode-block" id="perm_to_signs">
+<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.permutations.perm_to_signs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">perm_to_signs</span><span class="p">(</span><span class="n">perm</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a 1-indexed permutation to a dict mapping component index → list of ±1 signs.</span>
+
+<span class="sd">    Arc labels used by :func:`new_rot` are assigned to link components using</span>
+<span class="sd">    ``BraidTopology``. Signs within each component are collected in arc-label</span>
+<span class="sd">    order (ascending).</span>
+
+<span class="sd">    Port of Mathematica ``permToSigns``, extended to multi-component links.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rot</span> <span class="o">=</span> <span class="n">new_rot</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+    <span class="n">topo</span> <span class="o">=</span> <span class="n">BraidTopology</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+    <span class="n">arc_comp</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">arc_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">crossing_sign</span><span class="p">,</span> <span class="n">label_a</span><span class="p">,</span> <span class="n">label_b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rot</span><span class="p">):</span>
+        <span class="n">top_c</span> <span class="o">=</span> <span class="n">topo</span><span class="o">.</span><span class="n">top_crossing_components</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">bottom_c</span> <span class="o">=</span> <span class="n">topo</span><span class="o">.</span><span class="n">bottom_crossing_components</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">top_c</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">bottom_c</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected missing component assignment&quot;</span><span class="p">)</span>
+
+        <span class="c1"># new_rot returns labels as (over, under). For positive crossings the</span>
+        <span class="c1"># overstrand is the top strand; for negative crossings it&#39;s the bottom.</span>
+        <span class="k">if</span> <span class="n">crossing_sign</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">arc_comp</span><span class="p">[</span><span class="n">label_a</span><span class="p">]</span> <span class="o">=</span> <span class="n">top_c</span>
+            <span class="n">arc_comp</span><span class="p">[</span><span class="n">label_b</span><span class="p">]</span> <span class="o">=</span> <span class="n">bottom_c</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">arc_comp</span><span class="p">[</span><span class="n">label_a</span><span class="p">]</span> <span class="o">=</span> <span class="n">bottom_c</span>
+            <span class="n">arc_comp</span><span class="p">[</span><span class="n">label_b</span><span class="p">]</span> <span class="o">=</span> <span class="n">top_c</span>
+        <span class="n">arc_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_a</span><span class="p">)</span>
+        <span class="n">arc_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_b</span><span class="p">)</span>
+
+    <span class="c1"># The sign assignment is defined on the 2n arc labels appearing in new_rot.</span>
+    <span class="c1"># For links, these labels need not be exactly 1..2n.</span>
+    <span class="n">arc_labels</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">arc_labels</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arc_labels</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected number of arc labels for sign assignment&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">arc_labels</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">topo</span><span class="o">.</span><span class="n">n_components</span><span class="p">)}</span>
+    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="n">arc_labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Permutation too short for braid arc labels: &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;need &gt;= </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">arc_labels</span><span class="p">)</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">perm</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">topo</span><span class="o">.</span><span class="n">n_components</span><span class="p">)}</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">arc_labels</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">arc_comp</span><span class="p">[</span><span class="n">label</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">perm</span><span class="p">[</span><span class="n">label</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

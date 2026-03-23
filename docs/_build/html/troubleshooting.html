@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Troubleshooting &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script src="_static/design-tabs.js?v=f930bc37"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Mathematica / Wolfram Language Integration" href="mathematica.html" />
+    <link rel="prev" title="Development Guide" href="development.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation-issues">Installation Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cmake-cannot-find-flint">CMake Cannot Find FLINT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#openmp-not-found-macos">OpenMP Not Found (macOS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fk-main-binary-not-found"><code class="docutils literal notranslate"><span class="pre">fk_main</span></code> Binary Not Found</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gurobi-errors">Gurobi Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#no-gurobi-licence-found">No Gurobi Licence Found</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gurobi-licence-has-expired">Gurobi Licence Has Expired</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#computation-errors">Computation Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inversion-search-returns-no-result">Inversion Search Returns No Result</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ilp-infeasibility">ILP Infeasibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-errors-in-the-c-backend">Memory Errors in the C++ Backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sympy-not-available">SymPy Not Available</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yaml-not-available">YAML Not Available</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#large-coefficient-strings">Large Coefficient Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#verbose-logging">Verbose Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reporting-bugs">Reporting Bugs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Troubleshooting</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/troubleshooting.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="troubleshooting">
+<h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h1>
+<p>This page covers common error conditions and how to resolve them.</p>
+<section id="installation-issues">
+<h2>Installation Issues<a class="headerlink" href="#installation-issues" title="Link to this heading"></a></h2>
+<section id="cmake-cannot-find-flint">
+<h3>CMake Cannot Find FLINT<a class="headerlink" href="#cmake-cannot-find-flint" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CMake Error: Could not find FLINT.
+</pre></div>
+</div>
+<p>Install FLINT for your platform:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># macOS</span>
+brew<span class="w"> </span>install<span class="w"> </span>flint
+
+<span class="c1"># Ubuntu/Debian</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>libflint-dev
+
+<span class="c1"># RHEL/Fedora</span>
+sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>flint-devel
+</pre></div>
+</div>
+<p>If FLINT is installed in a non-standard location, set <code class="docutils literal notranslate"><span class="pre">CMAKE_PREFIX_PATH</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>--config-settings<span class="o">=</span><span class="s2">&quot;cmake.args=-DCMAKE_PREFIX_PATH=/opt/flint&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="openmp-not-found-macos">
+<h3>OpenMP Not Found (macOS)<a class="headerlink" href="#openmp-not-found-macos" title="Link to this heading"></a></h3>
+<p>On macOS, the system Clang does not include OpenMP by default.  Install the
+<code class="docutils literal notranslate"><span class="pre">libomp</span></code> runtime via Homebrew:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew<span class="w"> </span>install<span class="w"> </span>libomp
+</pre></div>
+</div>
+<p>Then reinstall the package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--force-reinstall<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="fk-main-binary-not-found">
+<h3><code class="docutils literal notranslate"><span class="pre">fk_main</span></code> Binary Not Found<a class="headerlink" href="#fk-main-binary-not-found" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>FileNotFoundError: fk_main binary not found
+</pre></div>
+</div>
+<p>The compiled binary is missing from <code class="docutils literal notranslate"><span class="pre">fkcompute/_bin/</span></code>.  This usually means
+the C++ build step failed silently during <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>.</p>
+<p>Check the build log:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>-v<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;error\|warning\|cmake&quot;</span>
+</pre></div>
+</div>
+<p>Then rebuild manually:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-S<span class="w"> </span>.
+cmake<span class="w"> </span>--build<span class="w"> </span>build
+cp<span class="w"> </span>build/fk_main<span class="w"> </span>src/fkcompute/_bin/fk_main
+</pre></div>
+</div>
+</section>
+</section>
+<section id="gurobi-errors">
+<h2>Gurobi Errors<a class="headerlink" href="#gurobi-errors" title="Link to this heading"></a></h2>
+<section id="no-gurobi-licence-found">
+<h3>No Gurobi Licence Found<a class="headerlink" href="#no-gurobi-licence-found" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>gurobipy.GurobiError: No Gurobi license found.
+</pre></div>
+</div>
+<p>If you did not install the optional ILP dependency, install it first:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;.[ilp]&quot;</span>
+</pre></div>
+</div>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">GRB_LICENSE_FILE</span></code> environment variable to the path of your
+<code class="docutils literal notranslate"><span class="pre">gurobi.lic</span></code> file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">GRB_LICENSE_FILE</span><span class="o">=</span>/home/user/gurobi.lic
+</pre></div>
+</div>
+<p>Add this to your shell profile for persistence.</p>
+<p>If you do not yet have a licence, Gurobi offers two free options that are
+both sufficient for typical <strong>fkcompute</strong> computations:</p>
+<ul class="simple">
+<li><p><strong>Limited free licence</strong> — no registration required; covers the constraint
+sizes generated by fkcompute for most knots and links at moderate degrees.
+Obtain it via <code class="docutils literal notranslate"><span class="pre">grbgetkey</span></code> after installing Gurobi, or from the
+<a class="reference external" href="https://www.gurobi.com/free-trial/">Gurobi free trial page</a>.</p></li>
+<li><p><strong>Academic licence</strong> — full-size, unrestricted; free for faculty, students,
+and staff at degree-granting institutions.  Apply at the
+<a class="reference external" href="https://www.gurobi.com/academia/academic-program-and-licenses/">Gurobi academic programme page</a>.</p></li>
+</ul>
+</section>
+<section id="gurobi-licence-has-expired">
+<h3>Gurobi Licence Has Expired<a class="headerlink" href="#gurobi-licence-has-expired" title="Link to this heading"></a></h3>
+<p>Renew your licence at <a class="reference external" href="https://www.gurobi.com/">the Gurobi website</a> and replace
+the <code class="docutils literal notranslate"><span class="pre">gurobi.lic</span></code> file.</p>
+</section>
+</section>
+<section id="computation-errors">
+<h2>Computation Errors<a class="headerlink" href="#computation-errors" title="Link to this heading"></a></h2>
+<section id="inversion-search-returns-no-result">
+<h3>Inversion Search Returns No Result<a class="headerlink" href="#inversion-search-returns-no-result" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>InversionResult(success=False, ...)
+</pre></div>
+</div>
+<p>The sign-assignment search did not find a valid assignment at the given
+degree.  This can happen when:</p>
+<ol class="arabic">
+<li><p><strong>The degree is too low</strong> for the constraint system to be satisfiable.
+Try increasing the degree.</p></li>
+<li><p><strong>The search space was limited</strong> by <code class="docutils literal notranslate"><span class="pre">max_shifts</span></code> or <code class="docutils literal notranslate"><span class="pre">max_workers=1</span></code>.
+Run with more workers and no shift limit:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">max_shifts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_flip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>The braid is not a fibered knot</strong> at this degree — some invariants are
+only defined above a threshold degree.</p></li>
+</ol>
+<p>To inspect what was tried:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.inversion.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_sign_assignment</span>
+
+<span class="n">inv</span> <span class="o">=</span> <span class="n">find_sign_assignment</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">inv</span><span class="o">.</span><span class="n">success</span><span class="p">,</span> <span class="n">inv</span><span class="o">.</span><span class="n">braid_type</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="ilp-infeasibility">
+<h3>ILP Infeasibility<a class="headerlink" href="#ilp-infeasibility" title="Link to this heading"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Gurobi: Infeasible
+</pre></div>
+</div>
+<p>The constraint system generated from the inversion data has no integer
+solution.  This usually means the sign assignment found in Phase 1 is not
+compatible with the degree.  Possible causes:</p>
+<ul class="simple">
+<li><p>The inversion was loaded from a file generated at a different degree.
+Make sure <code class="docutils literal notranslate"><span class="pre">inversion_data</span></code> matches the current <code class="docutils literal notranslate"><span class="pre">degree</span></code>.</p></li>
+<li><p>A manually supplied <code class="docutils literal notranslate"><span class="pre">inversion</span></code> is incorrect.  Verify the sign values.</p></li>
+</ul>
+</section>
+<section id="memory-errors-in-the-c-backend">
+<h3>Memory Errors in the C++ Backend<a class="headerlink" href="#memory-errors-in-the-c-backend" title="Link to this heading"></a></h3>
+<p>For very high degrees (≥ 10) with many-strand braids, the C++ backend may
+exhaust memory.  Mitigations:</p>
+<ul class="simple">
+<li><p>Reduce the number of threads (reduces peak memory from parallel buffers).</p></li>
+<li><p>Run on a machine with more RAM.</p></li>
+<li><p>Use intermediate save points: save the ILP file, then run the binary
+separately with <code class="docutils literal notranslate"><span class="pre">ulimit</span> <span class="pre">-v</span></code> to diagnose memory usage.</p></li>
+</ul>
+</section>
+</section>
+<section id="sympy-not-available">
+<h2>SymPy Not Available<a class="headerlink" href="#sympy-not-available" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ImportError: SymPy is required for symbolic output functionality.
+</pre></div>
+</div>
+<p>Install SymPy:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>sympy
+<span class="c1"># or</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;fkcompute[symbolic]&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="yaml-not-available">
+<h2>YAML Not Available<a class="headerlink" href="#yaml-not-available" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ImportError: PyYAML is required to load .yaml config files.
+</pre></div>
+</div>
+<p>Install PyYAML:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>PyYAML
+<span class="c1"># or</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;fkcompute[yaml]&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="large-coefficient-strings">
+<h2>Large Coefficient Strings<a class="headerlink" href="#large-coefficient-strings" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ValueError: Coefficient too large for symbolic computation: 12000 digits.
+</pre></div>
+</div>
+<p>Very high-degree computations produce coefficients with thousands of digits
+that SymPy cannot handle in a reasonable time.  Options:</p>
+<ul class="simple">
+<li><p>Use the raw <code class="docutils literal notranslate"><span class="pre">result[&quot;terms&quot;]</span></code> data directly.</p></li>
+<li><p>Work numerically: evaluate the polynomial at specific values of <span class="math notranslate nohighlight">\(q\)</span>.</p></li>
+<li><p>Reduce the degree.</p></li>
+</ul>
+</section>
+<section id="verbose-logging">
+<h2>Verbose Logging<a class="headerlink" href="#verbose-logging" title="Link to this heading"></a></h2>
+<p>Enable verbose logging to see per-phase progress:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,-2,1,-2]&quot;</span><span class="w"> </span><span class="m">3</span><span class="w"> </span>--verbose
+</pre></div>
+</div>
+<p>Log messages are prefixed with <code class="docutils literal notranslate"><span class="pre">[DEBUG]</span></code> or <code class="docutils literal notranslate"><span class="pre">[WARNING]</span></code> and written to
+stderr.</p>
+</section>
+<section id="reporting-bugs">
+<h2>Reporting Bugs<a class="headerlink" href="#reporting-bugs" title="Link to this heading"></a></h2>
+<p>Please report issues at the project issue tracker, including:</p>
+<ul class="simple">
+<li><p>The exact braid word and degree.</p></li>
+<li><p>The full error traceback.</p></li>
+<li><p>Output of <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">show</span> <span class="pre">fkcompute</span></code> and <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code>.</p></li>
+<li><p>Platform and OS version.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="development.html" class="btn btn-neutral float-left" title="Development Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mathematica.html" class="btn btn-neutral float-right" title="Mathematica / Wolfram Language Integration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

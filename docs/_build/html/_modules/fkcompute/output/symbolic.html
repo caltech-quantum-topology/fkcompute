@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fkcompute.output.symbolic &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fkcompute.output.symbolic</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fkcompute.output.symbolic</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Symbolic output functionality for FK computation results.</span>
+
+<span class="sd">This module provides functions to convert FK computation results from their</span>
+<span class="sd">numerical coefficient format into human-readable symbolic polynomials using SymPy.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">expand</span><span class="p">,</span> <span class="n">latex</span>
+    <span class="n">SYMPY_AVAILABLE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">SYMPY_AVAILABLE</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="check_sympy_available">
+<a class="viewcode-back" href="../../../api/output.html#fkcompute.check_sympy_available">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_sympy_available</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if SymPy is available, raise ImportError if not.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">SYMPY_AVAILABLE</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s2">&quot;SymPy is required for symbolic output functionality. &quot;</span>
+            <span class="s2">&quot;Install it with: pip install sympy&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="list_to_q_polynomial">
+<a class="viewcode-back" href="../../../api/output.html#fkcompute.list_to_q_polynomial">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_to_q_polynomial</span><span class="p">(</span><span class="n">q_polyL</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="s1">&#39;sp.Expr&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert FK coefficient data to SymPy polynomial expression in quantum parameter q.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q_polyL</span>
+<span class="sd">        List of [power, coefficient] pairs representing a polynomial in q.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sympy.Expr</span>
+<span class="sd">        Polynomial in the quantum parameter q.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_sympy_available</span><span class="p">()</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">)</span>
+    <span class="n">expr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">power</span><span class="p">,</span> <span class="n">coeff</span> <span class="ow">in</span> <span class="n">q_polyL</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">coeff</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coeff</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Coefficient too large for symbolic computation: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">coeff</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">))</span><span class="si">}</span><span class="s2"> digits.&quot;</span>
+                <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">coeff</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">coeff</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid coefficient string &#39;</span><span class="si">{</span><span class="n">coeff</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">expr</span> <span class="o">+=</span> <span class="n">coeff</span> <span class="o">*</span> <span class="n">q</span><span class="o">**</span><span class="n">power</span>
+    <span class="k">return</span> <span class="n">expr</span></div>
+
+
+
+<div class="viewcode-block" id="matrix_to_polynomial">
+<a class="viewcode-back" href="../../../api/output.html#fkcompute.matrix_to_polynomial">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">matrix_to_polynomial</span><span class="p">(</span><span class="n">fk_result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;sp.Expr&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert FK computation result to a complete symbolic polynomial expression.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fk_result</span>
+<span class="sd">        FK computation result dictionary.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sympy.Expr</span>
+<span class="sd">        Complete FK polynomial in topological variables and q.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_sympy_available</span><span class="p">()</span>
+
+    <span class="n">n_vars</span> <span class="o">=</span> <span class="n">fk_result</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;num_x_variables&#39;</span><span class="p">]</span>
+    <span class="n">terms_data</span> <span class="o">=</span> <span class="n">fk_result</span><span class="p">[</span><span class="s2">&quot;terms&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Create variable symbols based on the number of dimensions</span>
+    <span class="k">if</span> <span class="n">n_vars</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">var_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">n_vars</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">var_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">var_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">char_offset</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_vars</span><span class="p">):</span>
+            <span class="n">char</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">char_offset</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span>
+                <span class="n">char_offset</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">char</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">char_offset</span><span class="p">)</span>
+            <span class="n">var_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+
+    <span class="n">variables</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">var_names</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">n_vars</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">variables</span><span class="p">]</span>
+
+    <span class="n">fk_polynomial</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">terms_data</span><span class="p">:</span>
+        <span class="n">q_poly_data</span> <span class="o">=</span> <span class="p">[[</span><span class="n">q_term</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">],</span> <span class="n">q_term</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">q_term</span> <span class="ow">in</span> <span class="n">term</span><span class="p">[</span><span class="s1">&#39;q_terms&#39;</span><span class="p">]]</span>
+        <span class="n">new_term</span> <span class="o">=</span> <span class="n">list_to_q_polynomial</span><span class="p">(</span><span class="n">q_poly_data</span><span class="p">)</span>
+
+        <span class="n">x_powers</span> <span class="o">=</span> <span class="n">term</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pow_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x_powers</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">variables</span><span class="p">):</span>
+                <span class="n">new_term</span> <span class="o">*=</span> <span class="n">variables</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">**</span><span class="n">pow_val</span>
+
+        <span class="n">fk_polynomial</span> <span class="o">+=</span> <span class="n">new_term</span>
+
+    <span class="k">return</span> <span class="n">fk_polynomial</span></div>
+
+
+
+<div class="viewcode-block" id="collect_by_variables">
+<a class="viewcode-back" href="../../../api/output.html#fkcompute.collect_by_variables">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">collect_by_variables</span><span class="p">(</span><span class="n">polynomial</span><span class="p">:</span> <span class="s1">&#39;sp.Expr&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;sp.Expr&#39;</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reorganize polynomial by collecting terms with common powers of all</span>
+<span class="sd">    topological variables (everything except q).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    polynomial</span>
+<span class="sd">        SymPy polynomial expression.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    sympy.Expr</span>
+<span class="sd">        Polynomial with terms collected by all non-q variables.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_sympy_available</span><span class="p">()</span>
+
+    <span class="n">symbols_in_poly</span> <span class="o">=</span> <span class="n">polynomial</span><span class="o">.</span><span class="n">free_symbols</span>
+    <span class="n">collect_vars</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">symbols_in_poly</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span> <span class="o">!=</span> <span class="s1">&#39;q&#39;</span><span class="p">:</span>
+            <span class="n">collect_vars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">collect_vars</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">polynomial</span>
+
+    <span class="k">return</span> <span class="n">sp</span><span class="o">.</span><span class="n">collect</span><span class="p">(</span><span class="n">polynomial</span><span class="p">,</span> <span class="n">collect_vars</span><span class="p">,</span> <span class="n">evaluate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Backward-compatible alias</span>
+<span class="n">collect_by_x_powers</span> <span class="o">=</span> <span class="n">collect_by_variables</span>
+
+
+<div class="viewcode-block" id="format_symbolic_output">
+<a class="viewcode-back" href="../../../api/output.html#fkcompute.format_symbolic_output">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">format_symbolic_output</span><span class="p">(</span>
+    <span class="n">fk_result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">format_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pretty&quot;</span><span class="p">,</span>
+    <span class="n">max_degree</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Format FK computation result as human-readable symbolic expression.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fk_result</span>
+<span class="sd">        FK computation result dictionary.</span>
+<span class="sd">    format_type</span>
+<span class="sd">        Output format - &quot;pretty&quot;, &quot;latex&quot;, &quot;inline&quot;, &quot;mathematica&quot;, or &quot;str&quot;.</span>
+<span class="sd">    max_degree</span>
+<span class="sd">        Maximum degree to display (if None, shows all terms).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Formatted string representation of the FK polynomial.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_sympy_available</span><span class="p">()</span>
+
+    <span class="n">valid_formats</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;pretty&quot;</span><span class="p">,</span> <span class="s2">&quot;latex&quot;</span><span class="p">,</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span> <span class="s2">&quot;inline&quot;</span><span class="p">,</span> <span class="s2">&quot;mathematica&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">format_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_formats</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported format_type: </span><span class="si">{</span><span class="n">format_type</span><span class="si">}</span><span class="s2">. Choose from: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_formats</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">fk_polynomial</span> <span class="o">=</span> <span class="n">matrix_to_polynomial</span><span class="p">(</span><span class="n">fk_result</span><span class="p">)</span>
+        <span class="n">fk_polynomial_collected</span> <span class="o">=</span> <span class="n">collect_by_variables</span><span class="p">(</span><span class="n">fk_polynomial</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">format_type</span> <span class="o">==</span> <span class="s2">&quot;pretty&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">sp</span><span class="o">.</span><span class="n">pretty</span><span class="p">(</span><span class="n">fk_polynomial_collected</span><span class="p">,</span> <span class="n">use_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">format_type</span> <span class="o">==</span> <span class="s2">&quot;latex&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">latex</span><span class="p">(</span><span class="n">fk_polynomial_collected</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">format_type</span> <span class="o">==</span> <span class="s2">&quot;mathematica&quot;</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">sympy.printing.mathematica</span><span class="w"> </span><span class="kn">import</span> <span class="n">mathematica_code</span>
+            <span class="k">return</span> <span class="n">mathematica_code</span><span class="p">(</span><span class="n">fk_polynomial_collected</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># &quot;inline&quot; or &quot;str&quot;</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">fk_polynomial_collected</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Error formatting symbolic output: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="print_symbolic_result">
+<a class="viewcode-back" href="../../../api/output.html#fkcompute.print_symbolic_result">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">print_symbolic_result</span><span class="p">(</span>
+    <span class="n">fk_result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">format_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pretty&quot;</span><span class="p">,</span>
+    <span class="n">max_degree</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_matrix</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Print FK computation result in symbolic form.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fk_result</span>
+<span class="sd">        FK computation result dictionary.</span>
+<span class="sd">    format_type</span>
+<span class="sd">        Output format - &quot;pretty&quot;, &quot;latex&quot;, &quot;inline&quot;, &quot;mathematica&quot;, or &quot;str&quot;.</span>
+<span class="sd">    max_degree</span>
+<span class="sd">        Maximum degree to display.</span>
+<span class="sd">    show_matrix</span>
+<span class="sd">        If True, also display the coefficient matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_sympy_available</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">symbolic_output</span> <span class="o">=</span> <span class="n">format_symbolic_output</span><span class="p">(</span><span class="n">fk_result</span><span class="p">,</span> <span class="n">format_type</span><span class="p">,</span> <span class="n">max_degree</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">symbolic_output</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

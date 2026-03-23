@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fkcompute.solver — ILP Generation &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="fkcompute.output — Symbolic Formatting" href="output.html" />
+    <link rel="prev" title="fkcompute.inversion — Sign Assignment Search" href="inversion.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fkcompute.html"><code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> — Top-Level API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="domain.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.domain</span></code> — Braid and Constraint Domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inversion.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.inversion</span></code> — Sign Assignment Search</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">fkcompute.solver</span></code> — ILP Generation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-fkcompute.solver.ilp">ILP Generation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.solver.ilp.integral_bounded"><code class="docutils literal notranslate"><span class="pre">integral_bounded()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.solver.ilp.ilp"><code class="docutils literal notranslate"><span class="pre">ilp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.solver.ilp.print_symbolic_relations"><code class="docutils literal notranslate"><span class="pre">print_symbolic_relations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage-example">Usage Example</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#gurobi-integration">Gurobi Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ilp-file-format">ILP File Format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="output.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.output</span></code> — Symbolic Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="infra.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.infra</span></code> — Infrastructure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.interactive</span></code> — Interactive Wizard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-summary">Module Summary</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">fkcompute.solver</span></code> — ILP Generation</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/api/solver.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fkcompute-solver-ilp-generation">
+<h1><code class="docutils literal notranslate"><span class="pre">fkcompute.solver</span></code> — ILP Generation<a class="headerlink" href="#fkcompute-solver-ilp-generation" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">solver</span></code> subpackage implements Phase 2 of the computation pipeline:
+translating the reduced constraint system into a linear programming problem
+and writing the ILP <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file consumed by the C++ backend.</p>
+<section id="module-fkcompute.solver.ilp">
+<span id="ilp-generation"></span><h2>ILP Generation<a class="headerlink" href="#module-fkcompute.solver.ilp" title="Link to this heading"></a></h2>
+<p>ILP formulation and Gurobi integration for FK computation.</p>
+<p>This module provides functions for formulating and solving integer linear
+programs used in the FK computation pipeline.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.solver.ilp.integral_bounded">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.solver.ilp.</span></span><span class="sig-name descname"><span class="pre">integral_bounded</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multiples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">single_var_signs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/solver/ilp.html#integral_bounded"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.solver.ilp.integral_bounded" title="Link to this definition"></a></dt>
+<dd><p>Check if the constraint system has a bounded integer solution.</p>
+<p>Uses Gurobi to check if there exists a bounded integer solution
+satisfying all the inequality constraints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>multiples</strong> – List of symbolic inequality expressions (0 &lt;= expr).</p></li>
+<li><p><strong>single_var_signs</strong> – Dictionary mapping symbols to their signs (+1 or -1).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the system has a bounded integer solution.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.solver.ilp.ilp">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.solver.ilp.</span></span><span class="sig-name descname"><span class="pre">ilp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/solver/ilp.html#ilp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.solver.ilp.ilp" title="Link to this definition"></a></dt>
+<dd><p>Generate ILP formulation for FK computation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>degree</strong> – Degree bound for the computation.</p></li>
+<li><p><strong>relations</strong> – List of reduced constraint relations.</p></li>
+<li><p><strong>braid_states</strong> – BraidStates object with sign assignment.</p></li>
+<li><p><strong>write_to</strong> – Optional file path to write the ILP data.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress information.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>ILP data as a string, or None if no valid assignment exists.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.solver.ilp.print_symbolic_relations">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.solver.ilp.</span></span><span class="sig-name descname"><span class="pre">print_symbolic_relations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/solver/ilp.html#print_symbolic_relations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.solver.ilp.print_symbolic_relations" title="Link to this definition"></a></dt>
+<dd><p>Print the reduced relations in human-readable format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>degree</strong> – Degree bound for the computation.</p></li>
+<li><p><strong>relations</strong> – List of constraint relations.</p></li>
+<li><p><strong>braid_states</strong> – BraidStates object.</p></li>
+<li><p><strong>write_to</strong> – Optional file path to write output.</p></li>
+<li><p><strong>verbose</strong> – Whether to print additional information.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with criteria, multiples, single_signs, and assignment if valid.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="usage-example">
+<h3>Usage Example<a class="headerlink" href="#usage-example" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.domain.braid.states</span><span class="w"> </span><span class="kn">import</span> <span class="n">BraidStates</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.domain.constraints.reduction</span><span class="w"> </span><span class="kn">import</span> <span class="n">full_reduce</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.solver.ilp</span><span class="w"> </span><span class="kn">import</span> <span class="n">ilp</span>
+
+<span class="n">bs</span> <span class="o">=</span> <span class="n">BraidStates</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="n">bs</span><span class="o">.</span><span class="n">get_state_relations</span><span class="p">()</span>
+<span class="n">reduced</span> <span class="o">=</span> <span class="n">full_reduce</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+
+<span class="n">ilp_path</span> <span class="o">=</span> <span class="n">ilp</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">relations</span><span class="o">=</span><span class="n">reduced</span><span class="p">,</span> <span class="n">braid_states</span><span class="o">=</span><span class="n">bs</span><span class="p">,</span>
+               <span class="n">outfile</span><span class="o">=</span><span class="s2">&quot;trefoil_ilp.csv&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ILP written to:&quot;</span><span class="p">,</span> <span class="n">ilp_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="gurobi-integration">
+<h2>Gurobi Integration<a class="headerlink" href="#gurobi-integration" title="Link to this heading"></a></h2>
+<p>Gurobi (<code class="docutils literal notranslate"><span class="pre">gurobipy</span></code>) is used in two places:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#fkcompute.solver.ilp.integral_bounded" title="fkcompute.solver.ilp.integral_bounded"><code class="xref py py-func docutils literal notranslate"><span class="pre">integral_bounded()</span></code></a> — feasibility check.</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">_check_sign_assignment()</span></code> — validates a
+candidate sign assignment during the inversion search.</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">gurobipy</span></code> dependency is optional at install time. To enable ILP checks,
+install it with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">\&quot;.[ilp]\&quot;</span></code> and ensure your Gurobi license is
+configured.</p>
+<p>See <a class="reference internal" href="../installation.html"><span class="doc">Installation</span></a> for details.</p>
+</section>
+<section id="ilp-file-format">
+<h2>ILP File Format<a class="headerlink" href="#ilp-file-format" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file is a custom format (not standard LP or MPS).  It encodes:</p>
+<ul class="simple">
+<li><p>The degree bound and variable count.</p></li>
+<li><p>The integer domain of each free variable (lower and upper bounds).</p></li>
+<li><p>Inequality and conservation constraints as linear coefficient rows.</p></li>
+<li><p>R-matrix type labels for each crossing.</p></li>
+</ul>
+<p>This format is consumed exclusively by the <code class="docutils literal notranslate"><span class="pre">fk_main</span></code> binary and is
+considered an internal implementation detail.  Do not rely on it being
+stable across package versions.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="inversion.html" class="btn btn-neutral float-left" title="fkcompute.inversion — Sign Assignment Search" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="output.html" class="btn btn-neutral float-right" title="fkcompute.output — Symbolic Formatting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

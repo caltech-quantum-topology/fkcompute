@@ -1,0 +1,449 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fkcompute.domain.constraints.reduction &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fkcompute.domain.constraints.reduction</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fkcompute.domain.constraints.reduction</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Constraint reduction and propagation for FK computation.</span>
+
+<span class="sd">This module provides functions for reducing and simplifying constraint systems</span>
+<span class="sd">through various propagation rules.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..braid.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZERO_STATE</span><span class="p">,</span> <span class="n">NEG_ONE_STATE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.relations</span><span class="w"> </span><span class="kn">import</span> <span class="n">_sort_any</span><span class="p">,</span> <span class="n">Leq</span><span class="p">,</span> <span class="n">Less</span><span class="p">,</span> <span class="n">Zero</span><span class="p">,</span> <span class="n">NegOne</span><span class="p">,</span> <span class="n">Alias</span><span class="p">,</span> <span class="n">Conservation</span>
+
+
+<div class="viewcode-block" id="get_zeros">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.get_zeros">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_zeros</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all states constrained to be zero.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">state</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Zero</span><span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="get_neg_ones">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.get_neg_ones">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_neg_ones</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all states constrained to be negative unity.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">state</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">NegOne</span><span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="get_aliases">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.get_aliases">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all alias relations as a dictionary.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">r</span><span class="o">.</span><span class="n">alias</span><span class="p">:</span> <span class="n">r</span><span class="o">.</span><span class="n">state</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Alias</span><span class="p">)}</span></div>
+
+
+
+<div class="viewcode-block" id="get_sum_aliases">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.get_sum_aliases">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_sum_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all sum aliases from conservation relations.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">try_sum_alias</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Conservation</span><span class="p">)]</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_propagate_constant_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">constant_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Propagate constant constraints (Zero or NegOne) through aliases.</span>
+
+<span class="sd">    When an alias links two states and one is known to be a constant,</span>
+<span class="sd">    the other must also be that constant.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">constant_type</span> <span class="o">==</span> <span class="n">Zero</span><span class="p">:</span>
+        <span class="n">constants</span> <span class="o">=</span> <span class="n">get_zeros</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">constants</span> <span class="o">=</span> <span class="n">get_neg_ones</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+
+    <span class="n">new_relations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Alias</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">state</span> <span class="ow">in</span> <span class="n">constants</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reduction:&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">constant_type</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">state</span><span class="p">),</span> <span class="s1">&#39;===&gt;&#39;</span><span class="p">,</span> <span class="n">constant_type</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">alias</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">alias</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">constants</span><span class="p">:</span>
+                    <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">constant_type</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">alias</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">r</span><span class="o">.</span><span class="n">alias</span> <span class="ow">in</span> <span class="n">constants</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reduction:&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">constant_type</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">alias</span><span class="p">),</span> <span class="s1">&#39;===&gt;&#39;</span><span class="p">,</span> <span class="n">constant_type</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">state</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">constants</span><span class="p">:</span>
+                    <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">constant_type</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">state</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_relations</span>
+
+
+<div class="viewcode-block" id="propagate_zero_aliases">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.propagate_zero_aliases">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">propagate_zero_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Propagate zero constraints through aliases.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_propagate_constant_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">,</span> <span class="n">Zero</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="propagate_neg_one_aliases">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.propagate_neg_one_aliases">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">propagate_neg_one_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Propagate negative one constraints through aliases.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_propagate_constant_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">,</span> <span class="n">NegOne</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_resolve_variable</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">neg_ones</span><span class="p">,</span> <span class="n">aliases</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resolve a variable through zeros, neg_ones, and aliases.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">zeros</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ZERO_STATE</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">neg_ones</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">NEG_ONE_STATE</span>
+    <span class="k">elif</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">aliases</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">aliases</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">var</span>
+
+
+<div class="viewcode-block" id="de_alias_inequalities">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.de_alias_inequalities">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">de_alias_inequalities</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace aliased variables in inequalities with their canonical forms.&quot;&quot;&quot;</span>
+    <span class="n">zeros</span> <span class="o">=</span> <span class="n">get_zeros</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+    <span class="n">neg_ones</span> <span class="o">=</span> <span class="n">get_neg_ones</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="n">get_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+
+    <span class="n">new_relations</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="p">(</span><span class="n">Leq</span><span class="p">,</span> <span class="n">Less</span><span class="p">)):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">_resolve_variable</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">first</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">neg_ones</span><span class="p">,</span> <span class="n">aliases</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">_resolve_variable</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">second</span><span class="p">,</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">neg_ones</span><span class="p">,</span> <span class="n">aliases</span><span class="p">)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">r</span><span class="p">)(</span><span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+        <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_relations</span></div>
+
+
+
+<div class="viewcode-block" id="symmetric_inequality">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.symmetric_inequality">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">symmetric_inequality</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detect symmetric inequalities that imply equality.&quot;&quot;&quot;</span>
+    <span class="n">new_relations</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">]</span>
+    <span class="n">inequalities</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Leq</span><span class="p">)]</span>
+
+    <span class="k">for</span> <span class="n">r1</span> <span class="ow">in</span> <span class="n">inequalities</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">r2</span> <span class="ow">in</span> <span class="n">inequalities</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">r1</span><span class="o">.</span><span class="n">second</span> <span class="o">==</span> <span class="n">r2</span><span class="o">.</span><span class="n">first</span> <span class="ow">and</span> <span class="n">r2</span><span class="o">.</span><span class="n">second</span> <span class="o">==</span> <span class="n">r1</span><span class="o">.</span><span class="n">first</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">r1</span><span class="o">.</span><span class="n">first</span> <span class="o">==</span> <span class="n">ZERO_STATE</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="s1">&#39;=====&gt;&#39;</span><span class="p">,</span> <span class="n">Zero</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">second</span><span class="p">))</span>
+                    <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Zero</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">second</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">r1</span><span class="o">.</span><span class="n">first</span> <span class="o">==</span> <span class="n">NEG_ONE_STATE</span><span class="p">:</span>
+                    <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NegOne</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">second</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">r1</span><span class="o">.</span><span class="n">second</span> <span class="o">==</span> <span class="n">ZERO_STATE</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="s1">&#39;=====&gt;&#39;</span><span class="p">,</span> <span class="n">Zero</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">first</span><span class="p">))</span>
+                    <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Zero</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">first</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">r1</span><span class="o">.</span><span class="n">second</span> <span class="o">==</span> <span class="n">NEG_ONE_STATE</span><span class="p">:</span>
+                    <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NegOne</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">first</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="s1">&#39;=====&gt;&#39;</span><span class="p">,</span> <span class="n">Alias</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">first</span><span class="p">,</span> <span class="n">r1</span><span class="o">.</span><span class="n">second</span><span class="p">))</span>
+                    <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Alias</span><span class="p">(</span><span class="n">r1</span><span class="o">.</span><span class="n">first</span><span class="p">,</span> <span class="n">r1</span><span class="o">.</span><span class="n">second</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">new_relations</span></div>
+
+
+
+<div class="viewcode-block" id="conservation_zeros">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.conservation_zeros">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">conservation_zeros</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove zeros from conservation constraints.&quot;&quot;&quot;</span>
+    <span class="n">zeros</span> <span class="o">=</span> <span class="n">get_zeros</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+    <span class="n">new_relations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Conservation</span><span class="p">):</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">inputs</span> <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">ZERO_STATE</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">zeros</span><span class="p">]</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">outputs</span> <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">ZERO_STATE</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">zeros</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">!=</span> <span class="n">r</span><span class="o">.</span><span class="n">inputs</span> <span class="ow">or</span> <span class="n">outputs</span> <span class="o">!=</span> <span class="n">r</span><span class="o">.</span><span class="n">outputs</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;remove zeros:&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="s1">&#39;=====&gt;&#39;</span><span class="p">,</span> <span class="n">Conservation</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">))</span>
+            <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Conservation</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_relations</span></div>
+
+
+
+<div class="viewcode-block" id="conservation_alias">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.conservation_alias">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">conservation_alias</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace aliased variables in conservation constraints.&quot;&quot;&quot;</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="n">get_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+    <span class="n">new_relations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Conservation</span><span class="p">):</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">inputs</span><span class="p">]</span>
+            <span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">aliases</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">outputs</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="p">(</span><span class="n">inputs</span> <span class="o">!=</span> <span class="n">r</span><span class="o">.</span><span class="n">inputs</span> <span class="ow">or</span> <span class="n">outputs</span> <span class="o">!=</span> <span class="n">r</span><span class="o">.</span><span class="n">outputs</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;conservation alias:&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="s1">&#39;=====&gt;&#39;</span><span class="p">,</span> <span class="n">Conservation</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">))</span>
+            <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Conservation</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_relations</span></div>
+
+
+
+<div class="viewcode-block" id="unary_conservation_is_alias">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.unary_conservation_is_alias">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">unary_conservation_is_alias</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert unary conservation constraints to aliases.&quot;&quot;&quot;</span>
+    <span class="n">new_relations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">Conservation</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">alias</span> <span class="o">=</span> <span class="n">Alias</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;unary conservation is alias&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="s1">&#39;=====&gt;&#39;</span><span class="p">,</span> <span class="n">alias</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_relations</span></div>
+
+
+
+<div class="viewcode-block" id="is_vacuous">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.is_vacuous">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_vacuous</span><span class="p">(</span><span class="n">relation</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a relation is vacuously true.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">relation</span><span class="p">,</span> <span class="n">Leq</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">relation</span><span class="o">.</span><span class="n">first</span> <span class="o">==</span> <span class="n">relation</span><span class="o">.</span><span class="n">second</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">relation</span><span class="p">,</span> <span class="n">Alias</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">relation</span><span class="o">.</span><span class="n">alias</span> <span class="o">==</span> <span class="n">relation</span><span class="o">.</span><span class="n">state</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">relation</span><span class="p">,</span> <span class="n">Zero</span><span class="p">)</span> <span class="ow">and</span> <span class="n">relation</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">ZERO_STATE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">relation</span><span class="p">,</span> <span class="n">NegOne</span><span class="p">)</span> <span class="ow">and</span> <span class="n">relation</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">NEG_ONE_STATE</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="remove_vacuous">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.remove_vacuous">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">remove_vacuous</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove vacuously true relations.&quot;&quot;&quot;</span>
+    <span class="n">new_relations</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_vacuous</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+            <span class="n">new_relations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;removing vacuous:&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_relations</span></div>
+
+
+
+<div class="viewcode-block" id="reduce_relations">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.reduce_relations">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reduce_relations</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply all reduction rules once.</span>
+
+<span class="sd">    Rule order matters: de-aliasing inequalities first allows symmetric_inequality</span>
+<span class="sd">    to detect equalities. Propagation rules then simplify through the new equalities.</span>
+<span class="sd">    Conservation rules run after propagation to benefit from resolved aliases/zeros.</span>
+<span class="sd">    Vacuous removal runs last to clean up any trivially true results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">reduction_rules</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">de_alias_inequalities</span><span class="p">,</span>
+        <span class="n">symmetric_inequality</span><span class="p">,</span>
+        <span class="n">propagate_zero_aliases</span><span class="p">,</span>
+        <span class="n">propagate_neg_one_aliases</span><span class="p">,</span>
+        <span class="n">conservation_alias</span><span class="p">,</span>
+        <span class="n">conservation_zeros</span><span class="p">,</span>
+        <span class="n">unary_conservation_is_alias</span><span class="p">,</span>
+        <span class="n">remove_vacuous</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">reduction_rules</span><span class="p">:</span>
+        <span class="n">relations</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">relations</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="n">relations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">relations</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_sort_any</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="full_reduce">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.full_reduce">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">full_reduce</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fully reduce relations by repeatedly applying reduction rules until fixed point.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">max_depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;max reduction recursion depth exceeded&#39;</span><span class="p">)</span>
+
+    <span class="n">new_relations</span> <span class="o">=</span> <span class="n">reduce_relations</span><span class="p">(</span><span class="n">relations</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">new_relations</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">new_relations</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">full_reduce</span><span class="p">(</span><span class="n">new_relations</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="all_variables">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.all_variables">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">all_variables</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all variables appearing in relations.&quot;&quot;&quot;</span>
+    <span class="n">all_vars</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">variables</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">ZERO_STATE</span> <span class="ow">and</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">NEG_ONE_STATE</span><span class="p">:</span>
+                <span class="n">all_vars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="n">all_vars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_vars</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">all_vars</span></div>
+
+
+
+<div class="viewcode-block" id="free_variables">
+<a class="viewcode-back" href="../../../../api/domain.html#fkcompute.domain.constraints.reduction.free_variables">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">free_variables</span><span class="p">(</span><span class="n">relations</span><span class="p">:</span> <span class="n">List</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get all free (unbound) variables in relations.&quot;&quot;&quot;</span>
+    <span class="n">all_vars</span> <span class="o">=</span> <span class="n">all_variables</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+    <span class="n">zeros</span> <span class="o">=</span> <span class="n">get_zeros</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+    <span class="n">neg_ones</span> <span class="o">=</span> <span class="n">get_neg_ones</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="n">get_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+    <span class="n">sum_aliases</span> <span class="o">=</span> <span class="n">get_sum_aliases</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">all_vars</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">zeros</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">neg_ones</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">aliases</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sum_aliases</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_sort_any</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

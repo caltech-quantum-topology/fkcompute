@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Usage &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Command-Line Interface" href="../cli.html" />
+    <link rel="prev" title="Batch Computations" href="batch.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="knots.html">Computing FK for Knots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="links.html">Computing FK for Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="batch.html">Batch Computations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Advanced Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#supplying-precomputed-inversion-data">Supplying Precomputed Inversion Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#partial-sign-constraints">Partial Sign Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#braid-variants-in-the-inversion-search">Braid Variants in the Inversion Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#low-level-api-braidstates">Low-Level API — BraidStates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#checking-braid-properties">Checking Braid Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#low-level-api-inversion">Low-Level API — Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#low-level-api-constraint-system">Low-Level API — Constraint System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#low-level-api-symbolic-output">Low-Level API — Symbolic Output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-tuning">Performance Tuning</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Advanced Usage</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/tutorials/advanced.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="advanced-usage">
+<h1>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading"></a></h1>
+<p>This tutorial covers less common but powerful features: supplying precomputed
+inversion data, constraining the sign search, tuning performance, and using
+the low-level Python API.</p>
+<section id="supplying-precomputed-inversion-data">
+<h2>Supplying Precomputed Inversion Data<a class="headerlink" href="#supplying-precomputed-inversion-data" title="Link to this heading"></a></h2>
+<p>If you have already found a valid sign assignment (e.g. from a previous run
+or from theoretical knowledge), you can skip Phase 1 entirely.</p>
+<p>Via Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+
+<span class="c1"># Previously computed sign assignment for the figure-eight knot</span>
+<span class="n">inversion_data</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]}</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">degree</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">inversion</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;inversion_data&quot;</span><span class="p">:</span> <span class="n">inversion_data</span><span class="p">,</span> <span class="s2">&quot;braid&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;degree&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Via config file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">]</span>
+<span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nt">inversion</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">0</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-1</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>Via a saved inversion file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">]</span>
+<span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nt">inversion_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/figure_eight_inversion.json</span>
+</pre></div>
+</div>
+<p>Saving and reusing inversion data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.inversion.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_sign_assignment</span>
+
+<span class="n">braid</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">inv_result</span> <span class="o">=</span> <span class="n">find_sign_assignment</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">inv_dict</span> <span class="o">=</span> <span class="n">inv_result</span><span class="o">.</span><span class="n">to_result_dict</span><span class="p">()</span>
+
+<span class="c1"># Save for later</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;figure_eight_inversion.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">inv_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># Reuse</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">inversion</span><span class="o">=</span><span class="n">inv_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="partial-sign-constraints">
+<h2>Partial Sign Constraints<a class="headerlink" href="#partial-sign-constraints" title="Link to this heading"></a></h2>
+<p>For large braids where the full inversion search is slow, you can fix the
+signs of some strand segments and let the search fill in the rest.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+
+<span class="c1"># Fix the first sign of component 0, leave the rest free (0 = unknown)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">],</span>
+    <span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">partial_signs</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Via config file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-4</span><span class="p p-Indicator">]</span>
+<span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="nt">partial_signs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">0</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>A value of <code class="docutils literal notranslate"><span class="pre">1</span></code> or <code class="docutils literal notranslate"><span class="pre">-1</span></code> pins that strand segment; <code class="docutils literal notranslate"><span class="pre">0</span></code> means the
+searcher may choose either sign.  This reduces the search space from
+<span class="math notranslate nohighlight">\(2^n\)</span> to <span class="math notranslate nohighlight">\(2^{n - \text{fixed}}\)</span> candidates.</p>
+</section>
+<section id="braid-variants-in-the-inversion-search">
+<h2>Braid Variants in the Inversion Search<a class="headerlink" href="#braid-variants-in-the-inversion-search" title="Link to this heading"></a></h2>
+<p>By default, the inversion search tries cyclic shifts of the braid word.
+You can also include the horizontally flipped braid:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">degree</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">include_flip</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_shifts</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>      <span class="c1"># limit number of cyclic shifts</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">include_flip=True</span></code> roughly doubles the search space but may find a valid
+assignment faster for certain knot classes.</p>
+</section>
+<section id="low-level-api-braidstates">
+<h2>Low-Level API — BraidStates<a class="headerlink" href="#low-level-api-braidstates" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="../api/domain.html#fkcompute.domain.braid.states.BraidStates" title="fkcompute.domain.braid.states.BraidStates"><code class="xref py py-class docutils literal notranslate"><span class="pre">fkcompute.domain.braid.states.BraidStates</span></code></a> exposes the full
+topological structure of the braid:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.domain.braid.states</span><span class="w"> </span><span class="kn">import</span> <span class="n">BraidStates</span>
+
+<span class="n">bs</span> <span class="o">=</span> <span class="n">BraidStates</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Strands:&quot;</span><span class="p">,</span> <span class="n">bs</span><span class="o">.</span><span class="n">n_strands</span><span class="p">)</span>             <span class="c1"># 3</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Crossings:&quot;</span><span class="p">,</span> <span class="n">bs</span><span class="o">.</span><span class="n">n_crossings</span><span class="p">)</span>          <span class="c1"># 4</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Components:&quot;</span><span class="p">,</span> <span class="n">bs</span><span class="o">.</span><span class="n">n_components</span><span class="p">)</span>        <span class="c1"># 1  (figure-eight is a knot)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Writhe:&quot;</span><span class="p">,</span> <span class="n">bs</span><span class="o">.</span><span class="n">writhe</span><span class="p">)</span>                  <span class="c1"># 0</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Crossing signs:&quot;</span><span class="p">,</span> <span class="n">bs</span><span class="o">.</span><span class="n">crossing_signs</span><span class="p">)</span>  <span class="c1"># [1, -1, 1, -1]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;States:&quot;</span><span class="p">,</span> <span class="n">bs</span><span class="o">.</span><span class="n">states</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="checking-braid-properties">
+<h2>Checking Braid Properties<a class="headerlink" href="#checking-braid-properties" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.domain.braid.word</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_positive_braid</span><span class="p">,</span> <span class="n">is_homogeneous_braid</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">is_positive_braid</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>          <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_positive_braid</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]))</span>     <span class="c1"># False</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_homogeneous_braid</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>       <span class="c1"># True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">is_homogeneous_braid</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]))</span>  <span class="c1"># False</span>
+</pre></div>
+</div>
+</section>
+<section id="low-level-api-inversion">
+<h2>Low-Level API — Inversion<a class="headerlink" href="#low-level-api-inversion" title="Link to this heading"></a></h2>
+<p>Run the inversion phase standalone:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.inversion.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_sign_assignment</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">find_sign_assignment</span><span class="p">(</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">degree</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">chunk_size</span><span class="o">=</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="n">include_flip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Braid type:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">braid_type</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sign assignment:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">sign_assignment</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No valid sign assignment found at this degree&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="low-level-api-constraint-system">
+<h2>Low-Level API — Constraint System<a class="headerlink" href="#low-level-api-constraint-system" title="Link to this heading"></a></h2>
+<p>Inspect the constraint system generated from a braid:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.domain.braid.states</span><span class="w"> </span><span class="kn">import</span> <span class="n">BraidStates</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.domain.constraints.reduction</span><span class="w"> </span><span class="kn">import</span> <span class="n">full_reduce</span>
+
+<span class="n">bs</span> <span class="o">=</span> <span class="n">BraidStates</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="n">bs</span><span class="o">.</span><span class="n">get_state_relations</span><span class="p">()</span>
+<span class="n">reduced</span> <span class="o">=</span> <span class="n">full_reduce</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Relations before reduction: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Relations after reduction:  </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">reduced</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">reduced</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="low-level-api-symbolic-output">
+<h2>Low-Level API — Symbolic Output<a class="headerlink" href="#low-level-api-symbolic-output" title="Link to this heading"></a></h2>
+<p>Convert a result to SymPy and manipulate it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">matrix_to_polynomial</span><span class="p">,</span>
+    <span class="n">collect_by_variables</span><span class="p">,</span>
+    <span class="n">format_symbolic_output</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">matrix_to_polynomial</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c1"># Collect by powers of x</span>
+<span class="n">collected</span> <span class="o">=</span> <span class="n">collect_by_variables</span><span class="p">(</span><span class="n">poly</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">collected</span><span class="p">)</span>
+
+<span class="c1"># Extract coefficient of x^2</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">coeff_x2</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Poly</span><span class="p">(</span><span class="n">collected</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficient of x^2:&quot;</span><span class="p">,</span> <span class="n">coeff_x2</span><span class="p">)</span>
+
+<span class="c1"># Evaluate at q=1</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Symbol</span><span class="p">(</span><span class="s2">&quot;q&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;F_K(x, 1):&quot;</span><span class="p">,</span> <span class="n">collected</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-tuning">
+<h2>Performance Tuning<a class="headerlink" href="#performance-tuning" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Recommendation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">threads</span></code></p></td>
+<td><p>Set to the number of physical CPU cores for the C++ backend.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_workers</span></code></p></td>
+<td><p>Set to <code class="docutils literal notranslate"><span class="pre">cpu_count</span> <span class="pre">-</span> <span class="pre">1</span></code> for the Python inversion search.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">chunk_size</span></code></p></td>
+<td><p>Default (<code class="docutils literal notranslate"><span class="pre">16384</span></code>) works well.  Reduce to <code class="docutils literal notranslate"><span class="pre">4096</span></code> for fast
+interactive feedback; increase to <code class="docutils literal notranslate"><span class="pre">65536</span></code> for deep searches.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">include_flip</span></code></p></td>
+<td><p>Disable (default) unless the standard search fails.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_shifts</span></code></p></td>
+<td><p>Leave <code class="docutils literal notranslate"><span class="pre">null</span></code> unless you want to bound search time strictly.</p></td>
+</tr>
+</tbody>
+</table>
+<p>For high-degree computations (<code class="docutils literal notranslate"><span class="pre">degree</span> <span class="pre">&gt;=</span> <span class="pre">10</span></code>), the C++ backend dominates
+runtime.  For non-homogeneous braids, inversion can dominate at low degrees.
+Profile both phases by enabling <code class="docutils literal notranslate"><span class="pre">verbose=True</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="batch.html" class="btn btn-neutral float-left" title="Batch Computations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../cli.html" class="btn btn-neutral float-right" title="Command-Line Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

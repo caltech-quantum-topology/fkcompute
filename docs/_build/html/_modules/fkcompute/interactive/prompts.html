@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fkcompute.interactive.prompts &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fkcompute.interactive.prompts</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fkcompute.interactive.prompts</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;High-level prompts and menu functions for interactive mode.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.prompt</span><span class="w"> </span><span class="kn">import</span> <span class="n">Prompt</span><span class="p">,</span> <span class="n">Confirm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.panel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Panel</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.ui</span><span class="w"> </span><span class="kn">import</span> <span class="n">ValidatedInput</span><span class="p">,</span> <span class="n">ComputationSummary</span>
+
+<span class="n">console</span> <span class="o">=</span> <span class="n">Console</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="show_main_menu">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.prompts.show_main_menu">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">show_main_menu</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display main interactive menu.&quot;&quot;&quot;</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+
+    <span class="n">menu_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[bold cyan]FK Computation - Interactive Mode[/bold cyan]</span>
+
+<span class="s2">[bold]Choose an option:[/bold]</span>
+
+<span class="s2">1. 🧮 [cyan]New Computation[/cyan] - Start a new FK computation</span>
+<span class="s2">2. ❓ [cyan]Help &amp; Examples[/cyan] - Learn about FK invariants</span>
+<span class="s2">3. 🚪 [cyan]Exit[/cyan] - Leave interactive mode</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+        <span class="n">menu_text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Main Menu&quot;</span><span class="p">,</span> <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span>
+
+    <span class="n">choice</span> <span class="o">=</span> <span class="n">Prompt</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span>
+        <span class="s2">&quot;Select option&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">choice</span></div>
+
+
+
+<div class="viewcode-block" id="get_computation_parameters">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.prompts.get_computation_parameters">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_computation_parameters</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect all computation parameters interactively.&quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Step 1: Get basic inputs</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[bold blue]Step 1: Basic Parameters[/bold blue]&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Let&#39;s start with the essential information for your computation.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">braid</span> <span class="o">=</span> <span class="n">ValidatedInput</span><span class="o">.</span><span class="n">get_braid</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;braid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">braid</span>
+
+    <span class="n">degree</span> <span class="o">=</span> <span class="n">ValidatedInput</span><span class="o">.</span><span class="n">get_degree</span><span class="p">(</span><span class="n">braid</span><span class="o">=</span><span class="n">braid</span><span class="p">)</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;degree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">degree</span>
+
+    <span class="c1"># Step 2: Preset selection</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[bold blue]Step 2: Computation Preset[/bold blue]&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Choose a preset for optimized settings, or configure manually.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">preset</span> <span class="o">=</span> <span class="n">ValidatedInput</span><span class="o">.</span><span class="n">get_preset</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">preset</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;preset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">preset</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_get_preset_parameters</span><span class="p">(</span><span class="n">preset</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">custom_params</span> <span class="o">=</span> <span class="n">ValidatedInput</span><span class="o">.</span><span class="n">get_custom_parameters</span><span class="p">()</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">custom_params</span><span class="p">)</span>
+
+    <span class="c1"># Step 3: Thread configuration</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[bold blue]Step 3: Thread Configuration[/bold blue]&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Configure parallel computation for your system.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">preset</span><span class="p">:</span>
+        <span class="n">threads</span> <span class="o">=</span> <span class="n">ValidatedInput</span><span class="o">.</span><span class="n">get_threads</span><span class="p">(</span><span class="n">preset</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..api.presets</span><span class="w"> </span><span class="kn">import</span> <span class="n">PRESETS</span>
+        <span class="n">threads</span> <span class="o">=</span> <span class="n">PRESETS</span><span class="p">[</span><span class="n">preset</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;threads&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;threads&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">threads</span>
+
+    <span class="c1"># Step 4: Optional settings</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[bold blue]Step 4: Optional Settings[/bold blue]&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Configure output format and data saving.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">ValidatedInput</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="n">symbolic_opts</span> <span class="o">=</span> <span class="n">ValidatedInput</span><span class="o">.</span><span class="n">get_symbolic</span><span class="p">()</span>
+    <span class="n">symbolic</span> <span class="o">=</span> <span class="n">symbolic_opts</span><span class="p">[</span><span class="s2">&quot;symbolic&quot;</span><span class="p">]</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;symbolic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbolic</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;format_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbolic_opts</span><span class="p">[</span><span class="s2">&quot;format_type&quot;</span><span class="p">]</span>
+
+    <span class="n">save_data</span> <span class="o">=</span> <span class="n">ValidatedInput</span><span class="o">.</span><span class="n">get_save_preference</span><span class="p">()</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;save_data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">save_data</span>
+
+    <span class="c1"># Step 5: Review and confirm</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[bold blue]Step 5: Review &amp; Confirm[/bold blue]&quot;</span><span class="p">)</span>
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Please review your computation settings before starting.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ComputationSummary</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">params</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Computation cancelled.&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="show_help_menu">
+<a class="viewcode-back" href="../../../api/interactive.html#fkcompute.interactive.prompts.show_help_menu">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">show_help_menu</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display help and examples.&quot;&quot;&quot;</span>
+    <span class="n">help_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">[bold cyan]FK Invariant Computation - Help[/bold cyan]</span>
+
+<span class="s2">[bold]What is the FK Invariant?[/bold]</span>
+<span class="s2">The FK invariant is a mathematical invariant of knots and links </span>
+<span class="s2">used in knot theory. It was introduced by Gukov and Manolescu in</span>
+<span class="s2">arXiv:1904.060597. Here we compute it using the large color R-matrix formalism </span>
+<span class="s2">which was introduced by Park in arXiv:2004.02087. This program implements </span>
+<span class="s2">a search for inversion data, as well as a sum over R-matrix indices</span>
+
+<span class="s2">[bold]Basic Concepts:[/bold]</span>
+<span class="s2">• [green]Braid[/green]: A sequence of integers representing crossings</span>
+<span class="s2">• [green]Degree[/green]: The degree in the x-variables</span>
+<span class="s2">• [green]Components[/green]: The number of components in the link (one for knots)</span>
+<span class="s2">• [green]Homogeneous[/green]: Braids with trivial sign diagrams</span>
+<span class="s2">• [green]Fibered[/green]: Braids requiring additional inversion data</span>
+
+<span class="s2">[bold]Common Examples:[/bold]</span>
+<span class="s2">• Trefoil knot: [1, 1, 1]</span>
+<span class="s2">• Figure-eight knot: [1, -2, 1, -2]</span>
+<span class="s2">• Hopf link: [1, -1]</span>
+
+<span class="s2">[bold]Preset Configurations:[/bold]</span>
+<span class="s2">• [cyan]Fast[/cyan]: Quick computation, minimal resources (degree 1, 1 worker)</span>
+<span class="s2">• [cyan]Accurate[/cyan]: Thorough computation, saves data (degree 2, 4 workers)</span>
+<span class="s2">• [cyan]Parallel[/cyan]: High-performance (degree 3, 8 workers, 4 threads)</span>
+
+<span class="s2">[bold]Tips:[/bold]</span>
+<span class="s2">• Start with low degrees for testing</span>
+<span class="s2">• Use homogeneous braids for faster computation</span>
+<span class="s2">• Increase threads for parallel computations</span>
+<span class="s2">• Always check the results against the q-&gt;1 limit and the MMR expansion</span>
+
+<span class="s2">[bold]For more information:[/bold]</span>
+<span class="s2">• Run &#39;fk --help&#39; for command-line options</span>
+<span class="s2">• Read the manual with &#39;man fk&#39; (after &#39;fk-install-man&#39;)</span>
+<span class="s2">• Visit the project documentation online</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">panel</span> <span class="o">=</span> <span class="n">Panel</span><span class="p">(</span>
+        <span class="n">help_text</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Help &amp; Examples&quot;</span><span class="p">,</span> <span class="n">border_style</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">console</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">panel</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_preset_parameters</span><span class="p">(</span><span class="n">preset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get parameters for a specific preset.&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..api.presets</span><span class="w"> </span><span class="kn">import</span> <span class="n">PRESETS</span>
+
+    <span class="n">preset</span> <span class="o">=</span> <span class="n">PRESETS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">preset_name</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;max_workers&quot;</span><span class="p">:</span> <span class="n">preset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_workers&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="s2">&quot;chunk_size&quot;</span><span class="p">:</span> <span class="n">preset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;chunk_size&quot;</span><span class="p">,</span> <span class="mi">65536</span><span class="p">),</span>
+        <span class="s2">&quot;include_flip&quot;</span><span class="p">:</span> <span class="n">preset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;include_flip&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+        <span class="s2">&quot;max_shifts&quot;</span><span class="p">:</span> <span class="n">preset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max_shifts&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="n">preset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;verbose&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+        <span class="s2">&quot;save_data&quot;</span><span class="p">:</span> <span class="n">preset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;save_data&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+        <span class="c1"># Note: intentionally NOT including &#39;degree&#39; to avoid overriding user&#39;s choice</span>
+    <span class="p">}</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

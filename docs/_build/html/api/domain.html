@@ -1,0 +1,1180 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fkcompute.domain — Braid and Constraint Domain &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="fkcompute.inversion — Sign Assignment Search" href="inversion.html" />
+    <link rel="prev" title="fkcompute — Top-Level API" href="fkcompute.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fkcompute.html"><code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> — Top-Level API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">fkcompute.domain</span></code> — Braid and Constraint Domain</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fkcompute-domain-braid"><code class="docutils literal notranslate"><span class="pre">fkcompute.domain.braid</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#braid-topology">Braid Topology</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#signed-braid">Signed Braid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#braid-states-high-level-wrapper">Braid States (High-Level Wrapper)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fkcompute.domain.braid.word">Braid Word Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fkcompute.domain.braid.types">State Types</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#fkcompute-domain-constraints"><code class="docutils literal notranslate"><span class="pre">fkcompute.domain.constraints</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-fkcompute.domain.constraints.relations">Constraint Relation Classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fkcompute.domain.constraints.reduction">Constraint Reduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-fkcompute.domain.constraints.symbols">Symbolic Constraint System</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-fkcompute.domain.solver.assignment"><code class="docutils literal notranslate"><span class="pre">fkcompute.domain.solver</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.domain.solver.assignment.equivalence_assignment"><code class="docutils literal notranslate"><span class="pre">equivalence_assignment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.domain.solver.assignment.find_expressions"><code class="docutils literal notranslate"><span class="pre">find_expressions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.domain.solver.assignment.minimal_free"><code class="docutils literal notranslate"><span class="pre">minimal_free()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.domain.solver.assignment.extend_variable_assignment"><code class="docutils literal notranslate"><span class="pre">extend_variable_assignment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.domain.solver.assignment.symbolic_variable_assignment"><code class="docutils literal notranslate"><span class="pre">symbolic_variable_assignment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.domain.solver.symbolic_constraints.minimum_degree_symbolic"><code class="docutils literal notranslate"><span class="pre">minimum_degree_symbolic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.domain.solver.symbolic_constraints.inequality_manager"><code class="docutils literal notranslate"><span class="pre">inequality_manager()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fkcompute.domain.solver.symbolic_constraints.process_assignment"><code class="docutils literal notranslate"><span class="pre">process_assignment()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="inversion.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.inversion</span></code> — Sign Assignment Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.solver</span></code> — ILP Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="output.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.output</span></code> — Symbolic Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="infra.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.infra</span></code> — Infrastructure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.interactive</span></code> — Interactive Wizard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#module-summary">Module Summary</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">fkcompute.domain</span></code> — Braid and Constraint Domain</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/api/domain.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fkcompute-domain-braid-and-constraint-domain">
+<h1><code class="docutils literal notranslate"><span class="pre">fkcompute.domain</span></code> — Braid and Constraint Domain<a class="headerlink" href="#fkcompute-domain-braid-and-constraint-domain" title="Link to this heading"></a></h1>
+<p>The domain subpackage contains all pure mathematical logic with no I/O
+or side effects.  It is organised into two main areas:</p>
+<ul class="simple">
+<li><p><strong>Braid</strong> — data structures for braid words, topological data, and sign
+assignments.</p></li>
+<li><p><strong>Constraints</strong> — classes and reduction algorithms for the constraint system
+derived from R-matrix equations.</p></li>
+</ul>
+<section id="fkcompute-domain-braid">
+<h2><code class="docutils literal notranslate"><span class="pre">fkcompute.domain.braid</span></code><a class="headerlink" href="#fkcompute-domain-braid" title="Link to this heading"></a></h2>
+<section id="braid-topology">
+<h3>Braid Topology<a class="headerlink" href="#braid-topology" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.topology.BraidTopology">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.braid.topology.</span></span><span class="sig-name descname"><span class="pre">BraidTopology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/topology.html#BraidTopology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.topology.BraidTopology" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Pure topological data for a braid closure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>braid</strong> – Braid word as a list of signed generator indices.</p>
+</dd>
+</dl>
+<p><strong>Attributes set by</strong> <code class="docutils literal notranslate"><span class="pre">__init__</span></code></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">braid</span></code></p></td>
+<td><p>The braid word as <code class="docutils literal notranslate"><span class="pre">list[int]</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_strand</span></code></p></td>
+<td><p>Largest generator index present.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_strands</span></code></p></td>
+<td><p>Total number of strands (<code class="docutils literal notranslate"><span class="pre">max_strand</span> <span class="pre">+</span> <span class="pre">1</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_crossings</span></code></p></td>
+<td><p>Number of crossings (<code class="docutils literal notranslate"><span class="pre">len(braid)</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">crossing_signs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list[int]</span></code> of +1 / −1 per crossing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">writhe</span></code></p></td>
+<td><p>Sum of crossing signs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_components</span></code></p></td>
+<td><p>Number of components in the braid closure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">states</span></code></p></td>
+<td><p>Canonical state representatives (strand, column) tuples.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">state_equivalence_classes</span></code></p></td>
+<td><p>Groups of locations that map to the same state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">strand_endpoints</span></code></p></td>
+<td><p>Dict mapping component index → list of endpoint location pairs.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.topology.BraidTopology.get_component">
+<span class="sig-name descname"><span class="pre">get_component</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/topology.html#BraidTopology.get_component"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.topology.BraidTopology.get_component" title="Link to this definition"></a></dt>
+<dd><p>Get the component index for a given location.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.topology.BraidTopology.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/topology.html#BraidTopology.get_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.topology.BraidTopology.get_state" title="Link to this definition"></a></dt>
+<dd><p>Get the state at a given location.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.topology.BraidTopology.label_from_location">
+<span class="sig-name descname"><span class="pre">label_from_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/topology.html#BraidTopology.label_from_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.topology.BraidTopology.label_from_location" title="Link to this definition"></a></dt>
+<dd><p>Get the label for a location.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.topology.BraidTopology.a_resolution_components">
+<span class="sig-name descname"><span class="pre">a_resolution_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/topology.html#BraidTopology.a_resolution_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.topology.BraidTopology.a_resolution_components" title="Link to this definition"></a></dt>
+<dd><p>Compute the A-resolution components.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.topology.BraidTopology.b_resolution_components">
+<span class="sig-name descname"><span class="pre">b_resolution_components</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/topology.html#BraidTopology.b_resolution_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.topology.BraidTopology.b_resolution_components" title="Link to this definition"></a></dt>
+<dd><p>Compute the B-resolution components.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.topology.BraidTopology.Lobb">
+<span class="sig-name descname"><span class="pre">Lobb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/topology.html#BraidTopology.Lobb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.topology.BraidTopology.Lobb" title="Link to this definition"></a></dt>
+<dd><p>Check the Lobb bound.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.topology.BraidTopology.DL">
+<span class="sig-name descname"><span class="pre">DL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/topology.html#BraidTopology.DL"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.topology.BraidTopology.DL" title="Link to this definition"></a></dt>
+<dd><p>Check the DL bound.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="signed-braid">
+<h3>Signed Braid<a class="headerlink" href="#signed-braid" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.braid.signed.</span></span><span class="sig-name descname"><span class="pre">SignedBraid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topology</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#fkcompute.domain.braid.topology.BraidTopology" title="fkcompute.domain.braid.topology.BraidTopology"><span class="pre">BraidTopology</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A braid with sign assignment data.</p>
+<p>Holds a BraidTopology reference and adds sign-dependent state:
+strand_signs, matrices, r_matrices, sign_assignment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>topology</strong> – BraidTopology instance providing the pure topological data.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.compute_r_matrices">
+<span class="sig-name descname"><span class="pre">compute_r_matrices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.compute_r_matrices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.compute_r_matrices" title="Link to this definition"></a></dt>
+<dd><p>Compute R-matrices for each crossing based on sign assignments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.validate" title="Link to this definition"></a></dt>
+<dd><p>Validate the current sign assignment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.none_count">
+<span class="sig-name descname"><span class="pre">none_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.none_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.none_count" title="Link to this definition"></a></dt>
+<dd><p>Count the number of None values in a matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.sign_at_position">
+<span class="sig-name descname"><span class="pre">sign_at_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.sign_at_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.sign_at_position" title="Link to this definition"></a></dt>
+<dd><p>Get the sign at a given position in the crossing matrices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.generate_strand_signs">
+<span class="sig-name descname"><span class="pre">generate_strand_signs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.generate_strand_signs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.generate_strand_signs" title="Link to this definition"></a></dt>
+<dd><p>Generate strand signs from the current assignment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.generate_position_assignments">
+<span class="sig-name descname"><span class="pre">generate_position_assignments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.generate_position_assignments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.generate_position_assignments" title="Link to this definition"></a></dt>
+<dd><p>Generate position assignments from strand signs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.compute_matrices">
+<span class="sig-name descname"><span class="pre">compute_matrices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.compute_matrices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.compute_matrices" title="Link to this definition"></a></dt>
+<dd><p>Compute crossing matrices from strand signs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.update" title="Link to this definition"></a></dt>
+<dd><p>Update a position in the crossing matrices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.propagate">
+<span class="sig-name descname"><span class="pre">propagate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.propagate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.propagate" title="Link to this definition"></a></dt>
+<dd><p>Propagate sign constraints through the crossing matrices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.get_state_relations">
+<span class="sig-name descname"><span class="pre">get_state_relations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.get_state_relations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.get_state_relations" title="Link to this definition"></a></dt>
+<dd><p>Generate state relations for the current braid and sign assignment.</p>
+<p>Combines four types of constraints:
+1. Boundary conditions — Zero/NegOne for the first strand
+2. Periodicity — Alias wrapping states around closure
+3. Sign bounds — Leq bounds based on sign assignment
+4. Crossing constraints — R-matrix inequalities + Conservation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.reduced_relations">
+<span class="sig-name descname"><span class="pre">reduced_relations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.reduced_relations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.reduced_relations" title="Link to this definition"></a></dt>
+<dd><p>Get the reduced relations for this braid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.free_variables">
+<span class="sig-name descname"><span class="pre">free_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.free_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.free_variables" title="Link to this definition"></a></dt>
+<dd><p>Get the free variables after reduction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.signed.SignedBraid.load_sign_data">
+<span class="sig-name descname"><span class="pre">load_sign_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sign_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/signed.html#SignedBraid.load_sign_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.signed.SignedBraid.load_sign_data" title="Link to this definition"></a></dt>
+<dd><p>Load sign data into the braid states.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="braid-states-high-level-wrapper">
+<h3>Braid States (High-Level Wrapper)<a class="headerlink" href="#braid-states-high-level-wrapper" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.states.BraidStates">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.braid.states.</span></span><span class="sig-name descname"><span class="pre">BraidStates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/states.html#BraidStates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.states.BraidStates" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#fkcompute.domain.braid.signed.SignedBraid" title="fkcompute.domain.braid.signed.SignedBraid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignedBraid</span></code></a></p>
+<p>Represents a braid and its associated state information.</p>
+<p>This is a backward-compatible wrapper that creates a BraidTopology
+and initializes a SignedBraid from it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>braid</strong> – Braid word as a list of signed generator indices.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">BraidStates</span></code> is the primary entry point for braid computations.  It
+combines <a class="reference internal" href="#fkcompute.domain.braid.topology.BraidTopology" title="fkcompute.domain.braid.topology.BraidTopology"><code class="xref py py-class docutils literal notranslate"><span class="pre">BraidTopology</span></code></a> and
+<a class="reference internal" href="#fkcompute.domain.braid.signed.SignedBraid" title="fkcompute.domain.braid.signed.SignedBraid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignedBraid</span></code></a> and provides the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">get_state_relations()</span></code> method used by the pipeline.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute.domain.braid.states</span><span class="w"> </span><span class="kn">import</span> <span class="n">BraidStates</span>
+
+<span class="n">bs</span> <span class="o">=</span> <span class="n">BraidStates</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bs</span><span class="o">.</span><span class="n">n_components</span><span class="p">)</span>  <span class="c1"># 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">bs</span><span class="o">.</span><span class="n">writhe</span><span class="p">)</span>        <span class="c1"># 3</span>
+
+<span class="n">relations</span> <span class="o">=</span> <span class="n">bs</span><span class="o">.</span><span class="n">get_state_relations</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">relations</span><span class="p">)</span><span class="si">}</span><span class="s2"> constraints generated&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-fkcompute.domain.braid.word">
+<span id="braid-word-utilities"></span><h3>Braid Word Utilities<a class="headerlink" href="#module-fkcompute.domain.braid.word" title="Link to this heading"></a></h3>
+<p>Braid word operations.</p>
+<p>This module contains functions for working with braids (braid closures).
+A braid is a list of integers, where each integer represents a crossing.</p>
+<p>CONVENTION: strand 0 is the top strand, strand 1 is the second strand, etc.
+CONVENTION: generators are indexed starting from 1, to number of strands - 1
+Positive integers n represents strand n-1 crossing over strand n.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.word.is_positive_braid">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.braid.word.</span></span><span class="sig-name descname"><span class="pre">is_positive_braid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/word.html#is_positive_braid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.word.is_positive_braid" title="Link to this definition"></a></dt>
+<dd><p>Check if a braid is positive (all crossings have positive sign).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>braid</strong> – Braid word as a list of signed generator indices.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if all generators are positive, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.word.is_homogeneous_braid">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.braid.word.</span></span><span class="sig-name descname"><span class="pre">is_homogeneous_braid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/word.html#is_homogeneous_braid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.word.is_homogeneous_braid" title="Link to this definition"></a></dt>
+<dd><p>Check if a braid is homogeneous.</p>
+<p>A braid is homogeneous if for each generator index, either only
+positive or only negative crossings appear (but not both).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>braid</strong> – Braid word as a list of signed generator indices.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the braid is homogeneous, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.word.strand_path">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.braid.word.</span></span><span class="sig-name descname"><span class="pre">strand_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strand</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/word.html#strand_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.word.strand_path" title="Link to this definition"></a></dt>
+<dd><p>Compute the path of a strand through a braid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strand</strong> – The starting strand index (0-indexed).</p></li>
+<li><p><strong>braid</strong> – Braid word as a list of signed generator indices.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of path segments, where each segment is a list of (x, y) coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.word.braid_svg">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.braid.word.</span></span><span class="sig-name descname"><span class="pre">braid_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crossing_annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/word.html#braid_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.word.braid_svg" title="Link to this definition"></a></dt>
+<dd><p>Generate an SVG representation of a braid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>braid</strong> – Braid word as a list of signed generator indices.</p></li>
+<li><p><strong>state_annotations</strong> – Optional list of (i, j, text) tuples for state annotations.</p></li>
+<li><p><strong>crossing_annotations</strong> – Optional list of (i, j, text) tuples for crossing annotations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>SVG string representation of the braid.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.word.draw_braid">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.braid.word.</span></span><span class="sig-name descname"><span class="pre">draw_braid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crossing_annotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/word.html#draw_braid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.word.draw_braid" title="Link to this definition"></a></dt>
+<dd><p>Display a braid visualization in a Jupyter notebook.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>braid</strong> – Braid word as a list of signed generator indices.</p></li>
+<li><p><strong>state_annotations</strong> – Optional list of (i, j, text) tuples for state annotations.</p></li>
+<li><p><strong>crossing_annotations</strong> – Optional list of (i, j, text) tuples for crossing annotations.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-fkcompute.domain.braid.types">
+<span id="state-types"></span><h3>State Types<a class="headerlink" href="#module-fkcompute.domain.braid.types" title="Link to this heading"></a></h3>
+<p>State type definitions for braid computations.</p>
+<p>This module defines the StateLiteral class and special state constants
+used throughout the FK computation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.braid.types.StateLiteral">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.braid.types.</span></span><span class="sig-name descname"><span class="pre">StateLiteral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/types.html#StateLiteral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.braid.types.StateLiteral" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A literal state value in the braid state system.</p>
+<p>Represents fixed states like zero (0) and negative unity (-1)
+that are used as boundary conditions in the constraint system.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="fkcompute-domain-constraints">
+<h2><code class="docutils literal notranslate"><span class="pre">fkcompute.domain.constraints</span></code><a class="headerlink" href="#fkcompute-domain-constraints" title="Link to this heading"></a></h2>
+<section id="module-fkcompute.domain.constraints.relations">
+<span id="constraint-relation-classes"></span><h3>Constraint Relation Classes<a class="headerlink" href="#module-fkcompute.domain.constraints.relations" title="Link to this heading"></a></h3>
+<p>Constraint relation classes for FK computation.</p>
+<p>This module defines the constraint types used in the FK constraint system:
+- Leq: Less than or equal inequality
+- Less: Strict less than inequality
+- Zero: Equality to zero state
+- NegOne: Equality to negative one state
+- Alias: Equality between two states
+- Conservation: Sum conservation constraint</p>
+<p>The constraint classes form a hierarchy:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Constraint (ABC)
+├── Leq          — first ≤ second
+├── Less         — first &lt; second
+├── Zero         — state = [0]
+├── NegOne       — state = [-1]
+├── Alias        — state ≡ alias
+└── Conservation — Σ inputs = Σ outputs
+</pre></div>
+</div>
+<p><strong>Leq</strong> and <strong>Less</strong> encode ordering between states.</p>
+<p><strong>Zero</strong> and <strong>NegOne</strong> pin a state to the special values
+<a class="reference internal" href="fkcompute.html#fkcompute.ZERO_STATE" title="fkcompute.ZERO_STATE"><code class="xref py py-data docutils literal notranslate"><span class="pre">ZERO_STATE</span></code></a> and <a class="reference internal" href="fkcompute.html#fkcompute.NEG_ONE_STATE" title="fkcompute.NEG_ONE_STATE"><code class="xref py py-data docutils literal notranslate"><span class="pre">NEG_ONE_STATE</span></code></a>.</p>
+<p><strong>Alias</strong> identifies two state variables as equal; the constraint reducer
+uses this to eliminate variables.</p>
+<p><strong>Conservation</strong> encodes the R-matrix conservation law: the sum of
+incoming state values equals the sum of outgoing values at each crossing.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Constraint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.relations.</span></span><span class="sig-name descname"><span class="pre">Constraint</span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Constraint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Constraint" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a></p>
+<p>Base class for all constraint relations in the FK system.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Constraint.variables">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Constraint.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Constraint.variables" title="Link to this definition"></a></dt>
+<dd><p>Return the list of variables involved in this constraint.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Leq">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.relations.</span></span><span class="sig-name descname"><span class="pre">Leq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">second</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Leq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Leq" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
+<p>Less than or equal constraint: first &lt;= second.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Leq.variables">
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Leq.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Leq.variables" title="Link to this definition"></a></dt>
+<dd><p>Return the list of variables involved in this constraint.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Less">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.relations.</span></span><span class="sig-name descname"><span class="pre">Less</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">second</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Less"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Less" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
+<p>Strict less than constraint: first &lt; second.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Less.variables">
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Less.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Less.variables" title="Link to this definition"></a></dt>
+<dd><p>Return the list of variables involved in this constraint.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Zero">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.relations.</span></span><span class="sig-name descname"><span class="pre">Zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Zero" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
+<p>Zero state constraint: state = [0].</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Zero.variables">
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Zero.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Zero.variables" title="Link to this definition"></a></dt>
+<dd><p>Return the list of variables involved in this constraint.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.NegOne">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.relations.</span></span><span class="sig-name descname"><span class="pre">NegOne</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#NegOne"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.NegOne" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
+<p>Negative one state constraint: state = [-1].</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.NegOne.variables">
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#NegOne.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.NegOne.variables" title="Link to this definition"></a></dt>
+<dd><p>Return the list of variables involved in this constraint.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Alias">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.relations.</span></span><span class="sig-name descname"><span class="pre">Alias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Alias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Alias" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
+<p>Alias constraint: state and alias are equal.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Alias.variables">
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Alias.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Alias.variables" title="Link to this definition"></a></dt>
+<dd><p>Return the list of variables involved in this constraint.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Conservation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.relations.</span></span><span class="sig-name descname"><span class="pre">Conservation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Conservation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Conservation" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
+<p>Conservation constraint: sum of inputs = sum of outputs.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Conservation.variables">
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Conservation.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Conservation.variables" title="Link to this definition"></a></dt>
+<dd><p>Return the list of variables involved in this constraint.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.relations.Conservation.try_sum_alias">
+<span class="sig-name descname"><span class="pre">try_sum_alias</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Conservation.try_sum_alias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.relations.Conservation.try_sum_alias" title="Link to this definition"></a></dt>
+<dd><p>Try to extract a sum alias from this conservation constraint.</p>
+<p>Returns None if both inputs and outputs have more than one element.
+Otherwise returns (alias, sum_vars) where alias = sum(sum_vars).</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-fkcompute.domain.constraints.reduction">
+<span id="constraint-reduction"></span><h3>Constraint Reduction<a class="headerlink" href="#module-fkcompute.domain.constraints.reduction" title="Link to this heading"></a></h3>
+<p>Constraint reduction and propagation for FK computation.</p>
+<p>This module provides functions for reducing and simplifying constraint systems
+through various propagation rules.</p>
+<p><code class="docutils literal notranslate"><span class="pre">full_reduce</span></code> runs a fixed-point loop applying:</p>
+<ol class="arabic simple">
+<li><p>Alias propagation — substitutes alias pairs throughout all other
+constraints.</p></li>
+<li><p>Constant propagation — resolves Zero/NegOne constraints by substituting
+their values everywhere.</p></li>
+<li><p>Variable elimination — removes constraints that become trivially
+satisfied after substitution.</p></li>
+</ol>
+<p>The loop terminates when no more reductions can be applied.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.get_zeros">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">get_zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#get_zeros"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.get_zeros" title="Link to this definition"></a></dt>
+<dd><p>Get all states constrained to be zero.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.get_neg_ones">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">get_neg_ones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#get_neg_ones"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.get_neg_ones" title="Link to this definition"></a></dt>
+<dd><p>Get all states constrained to be negative unity.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.get_aliases">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">get_aliases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#get_aliases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.get_aliases" title="Link to this definition"></a></dt>
+<dd><p>Get all alias relations as a dictionary.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.get_sum_aliases">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">get_sum_aliases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#get_sum_aliases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.get_sum_aliases" title="Link to this definition"></a></dt>
+<dd><p>Get all sum aliases from conservation relations.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.propagate_zero_aliases">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">propagate_zero_aliases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#propagate_zero_aliases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.propagate_zero_aliases" title="Link to this definition"></a></dt>
+<dd><p>Propagate zero constraints through aliases.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.propagate_neg_one_aliases">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">propagate_neg_one_aliases</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#propagate_neg_one_aliases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.propagate_neg_one_aliases" title="Link to this definition"></a></dt>
+<dd><p>Propagate negative one constraints through aliases.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.de_alias_inequalities">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">de_alias_inequalities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#de_alias_inequalities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.de_alias_inequalities" title="Link to this definition"></a></dt>
+<dd><p>Replace aliased variables in inequalities with their canonical forms.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.symmetric_inequality">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">symmetric_inequality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#symmetric_inequality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.symmetric_inequality" title="Link to this definition"></a></dt>
+<dd><p>Detect symmetric inequalities that imply equality.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.conservation_zeros">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">conservation_zeros</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#conservation_zeros"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.conservation_zeros" title="Link to this definition"></a></dt>
+<dd><p>Remove zeros from conservation constraints.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.conservation_alias">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">conservation_alias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#conservation_alias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.conservation_alias" title="Link to this definition"></a></dt>
+<dd><p>Replace aliased variables in conservation constraints.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.unary_conservation_is_alias">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">unary_conservation_is_alias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#unary_conservation_is_alias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.unary_conservation_is_alias" title="Link to this definition"></a></dt>
+<dd><p>Convert unary conservation constraints to aliases.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.is_vacuous">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">is_vacuous</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#is_vacuous"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.is_vacuous" title="Link to this definition"></a></dt>
+<dd><p>Check if a relation is vacuously true.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.remove_vacuous">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">remove_vacuous</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#remove_vacuous"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.remove_vacuous" title="Link to this definition"></a></dt>
+<dd><p>Remove vacuously true relations.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.reduce_relations">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">reduce_relations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#reduce_relations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.reduce_relations" title="Link to this definition"></a></dt>
+<dd><p>Apply all reduction rules once.</p>
+<p>Rule order matters: de-aliasing inequalities first allows symmetric_inequality
+to detect equalities. Propagation rules then simplify through the new equalities.
+Conservation rules run after propagation to benefit from resolved aliases/zeros.
+Vacuous removal runs last to clean up any trivially true results.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.full_reduce">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">full_reduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#full_reduce"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.full_reduce" title="Link to this definition"></a></dt>
+<dd><p>Fully reduce relations by repeatedly applying reduction rules until fixed point.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.all_variables">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">all_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#all_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.all_variables" title="Link to this definition"></a></dt>
+<dd><p>Get all variables appearing in relations.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.reduction.free_variables">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.reduction.</span></span><span class="sig-name descname"><span class="pre">free_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/reduction.html#free_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.reduction.free_variables" title="Link to this definition"></a></dt>
+<dd><p>Get all free (unbound) variables in relations.</p>
+</dd></dl>
+
+</section>
+<section id="module-fkcompute.domain.constraints.symbols">
+<span id="symbolic-constraint-system"></span><h3>Symbolic Constraint System<a class="headerlink" href="#module-fkcompute.domain.constraints.symbols" title="Link to this heading"></a></h3>
+<p>Symbol class for linear algebra in FK computation.</p>
+<p>This module provides a Symbol class that represents linear expressions
+with integer coefficients, used for symbolic manipulation of constraints.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.symbols.symbols">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.symbols.</span></span><span class="sig-name descname"><span class="pre">symbols</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/symbols.html#symbols"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.symbols.symbols" title="Link to this definition"></a></dt>
+<dd><p>Create n symbols indexed from 1 to n.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.symbols.Symbol">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.symbols.</span></span><span class="sig-name descname"><span class="pre">Symbol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/symbols.html#Symbol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.symbols.Symbol" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A symbolic linear expression with integer coefficients.</p>
+<p>Represents expressions like: a + 2*b - 3*c + 5
+where a, b, c are variables indexed by position in the internal array.</p>
+<p>The internal representation is a numpy array where:
+- var[0] is the constant term
+- var[i] for i &gt; 0 is the coefficient of variable i</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.symbols.Symbol.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/symbols.html#Symbol.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.symbols.Symbol.__init__" title="Link to this definition"></a></dt>
+<dd><p>Create a symbol. index=0 creates a constant 1, index&gt;0 creates variable x_index.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.symbols.Symbol.subs">
+<span class="sig-name descname"><span class="pre">subs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/symbols.html#Symbol.subs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.symbols.Symbol.subs" title="Link to this definition"></a></dt>
+<dd><p>Substitute values for symbols.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.symbols.Symbol.as_coefficients_dict">
+<span class="sig-name descname"><span class="pre">as_coefficients_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/symbols.html#Symbol.as_coefficients_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.symbols.Symbol.as_coefficients_dict" title="Link to this definition"></a></dt>
+<dd><p>Return dictionary mapping symbols to their coefficients.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.symbols.Symbol.constant">
+<span class="sig-name descname"><span class="pre">constant</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/symbols.html#Symbol.constant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.symbols.Symbol.constant" title="Link to this definition"></a></dt>
+<dd><p>Return the constant term.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.symbols.Symbol.is_constant">
+<span class="sig-name descname"><span class="pre">is_constant</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/symbols.html#Symbol.is_constant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.symbols.Symbol.is_constant" title="Link to this definition"></a></dt>
+<dd><p>Check if this symbol is a constant (no variables).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.symbols.Symbol.free_symbols">
+<span class="sig-name descname"><span class="pre">free_symbols</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/symbols.html#Symbol.free_symbols"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.symbols.Symbol.free_symbols" title="Link to this definition"></a></dt>
+<dd><p>Return list of symbols with non-zero coefficients.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.symbols.Symbol.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/symbols.html#Symbol.index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.symbols.Symbol.index" title="Link to this definition"></a></dt>
+<dd><p>Get the index of this symbol (if elementary) or of symbol a.</p>
+<p>An elementary symbol has exactly one non-zero coefficient (which is 1).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.symbols.solve">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.symbols.</span></span><span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/symbols.html#solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.symbols.solve" title="Link to this definition"></a></dt>
+<dd><p>Solve for a variable in a symbolic expression.</p>
+<p>Given symbol = 0, solve for the variable at index.
+Returns a list containing the solution.</p>
+</dd></dl>
+
+<p>ConstraintSystem dataclass for FK computation.</p>
+<p>Represents the fully processed constraint system ready for ILP generation.</p>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.system.</span></span><span class="sig-name descname"><span class="pre">ConstraintSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">assignment:</span> <span class="pre">~typing.Dict,</span> <span class="pre">degree_criteria:</span> <span class="pre">~typing.Dict,</span> <span class="pre">multi_var_inequalities:</span> <span class="pre">~typing.List[~fkcompute.domain.constraints.symbols.Symbol],</span> <span class="pre">single_var_signs:</span> <span class="pre">~typing.Dict,</span> <span class="pre">raw_relations:</span> <span class="pre">~typing.List</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;,</span> <span class="pre">reduced_relations:</span> <span class="pre">~typing.List</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/system.html#ConstraintSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The fully processed constraint system, ready for ILP generation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">assignment</span></span></dt>
+<dd><p>Mapping from state locations to their symbolic expressions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">degree_criteria</span></span></dt>
+<dd><p>Mapping from component index to its degree constraint expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">multi_var_inequalities</span></span></dt>
+<dd><p>List of symbolic expressions where 0 &lt;= expr must hold.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol">fkcompute.domain.constraints.symbols.Symbol</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">single_var_signs</span></span></dt>
+<dd><p>Mapping from elementary symbols to their signs (+1.0 or -1.0).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">raw_relations</span></span></dt>
+<dd><p>Original relations before reduction (for debugging).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">reduced_relations</span></span></dt>
+<dd><p>Relations after fixed-point reduction (for debugging).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">assignment</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">degree_criteria</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">multi_var_inequalities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#fkcompute.domain.constraints.symbols.Symbol" title="fkcompute.domain.constraints.symbols.Symbol"><span class="pre">Symbol</span></a><span class="p"><span class="pre">]</span></span></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">single_var_signs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">raw_relations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></em></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">reduced_relations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></em></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p id="module-fkcompute.domain.constraints.pipeline">Phase 2 pipeline entry point for FK computation.</p>
+<p>Provides a single clear function that performs the full Phase 2 flow:
+raw constraints -&gt; reduction -&gt; symbolic assignment -&gt; criteria extraction.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.constraints.pipeline.build_constraint_system">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.constraints.pipeline.</span></span><span class="sig-name descname"><span class="pre">build_constraint_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ConstraintSystem</span></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/pipeline.html#build_constraint_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.constraints.pipeline.build_constraint_system" title="Link to this definition"></a></dt>
+<dd><p>Phase 2: Build and reduce the constraint system for a signed braid.</p>
+<p>Steps:
+1. Generate raw constraints (boundary, periodicity, sign bounds, crossing relations)
+2. Reduce constraints to minimal form (fixed-point simplification)
+3. Assign symbolic variables to free states
+4. Extract degree criteria and inequalities</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>braid_states</strong> – A BraidStates (or SignedBraid) object with sign data loaded.</p></li>
+<li><p><strong>raw_relations</strong> – Pre-computed raw relations. If None, generated from braid_states.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The fully processed constraint system ready for ILP generation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ConstraintSystem</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="module-fkcompute.domain.solver.assignment">
+<span id="fkcompute-domain-solver"></span><h2><code class="docutils literal notranslate"><span class="pre">fkcompute.domain.solver</span></code><a class="headerlink" href="#module-fkcompute.domain.solver.assignment" title="Link to this heading"></a></h2>
+<p>Variable assignment functions for FK computation.</p>
+<p>This module provides functions for computing symbolic variable assignments
+from constraint systems.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.solver.assignment.equivalence_assignment">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.solver.assignment.</span></span><span class="sig-name descname"><span class="pre">equivalence_assignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assignment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/solver/assignment.html#equivalence_assignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.solver.assignment.equivalence_assignment" title="Link to this definition"></a></dt>
+<dd><p>Extend assignment to all equivalent state locations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>assignment</strong> – Current variable assignment dictionary.</p></li>
+<li><p><strong>braid_states</strong> – BraidStates object containing state equivalence classes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Extended assignment including all equivalent states.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.solver.assignment.find_expressions">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.solver.assignment.</span></span><span class="sig-name descname"><span class="pre">find_expressions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">assignment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/solver/assignment.html#find_expressions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.solver.assignment.find_expressions" title="Link to this definition"></a></dt>
+<dd><p>Find conservation expressions that can be used to solve for variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>relations</strong> – List of constraint relations.</p></li>
+<li><p><strong>assignment</strong> – Current variable assignment.</p></li>
+<li><p><strong>braid_states</strong> – BraidStates object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of symbolic expressions from conservation constraints.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.solver.assignment.minimal_free">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.solver.assignment.</span></span><span class="sig-name descname"><span class="pre">minimal_free</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expressions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">new</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/solver/assignment.html#minimal_free"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.solver.assignment.minimal_free" title="Link to this definition"></a></dt>
+<dd><p>Find minimal set of free variables by eliminating through expressions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>expressions</strong> – List of symbolic expressions to use for elimination.</p></li>
+<li><p><strong>new</strong> – Dictionary of substitutions found so far.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping symbols to their expressions in terms of remaining free variables.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.solver.assignment.extend_variable_assignment">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.solver.assignment.</span></span><span class="sig-name descname"><span class="pre">extend_variable_assignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduced_relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">partial_assignment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/solver/assignment.html#extend_variable_assignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.solver.assignment.extend_variable_assignment" title="Link to this definition"></a></dt>
+<dd><p>Extend a partial variable assignment to all variables.</p>
+<p>Uses reduced relations to propagate assignments from assigned variables
+to unassigned ones through zeros, nunities, aliases, and sum aliases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>reduced_relations</strong> – List of reduced constraint relations.</p></li>
+<li><p><strong>partial_assignment</strong> – Initial partial assignment of variables to symbols.</p></li>
+<li><p><strong>braid_states</strong> – BraidStates object.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complete assignment of all variables.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.solver.assignment.symbolic_variable_assignment">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.solver.assignment.</span></span><span class="sig-name descname"><span class="pre">symbolic_variable_assignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/solver/assignment.html#symbolic_variable_assignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.solver.assignment.symbolic_variable_assignment" title="Link to this definition"></a></dt>
+<dd><p>Create a symbolic variable assignment for a constraint system.</p>
+<p>Assigns fresh symbols to free variables, then extends the assignment
+to all variables using the constraint relations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>relations</strong> – List of reduced constraint relations.</p></li>
+<li><p><strong>braid_states</strong> – BraidStates object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complete symbolic assignment of all state variables.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-fkcompute.domain.solver.symbolic_constraints">Shared symbolic constraint processing for FK computation.</p>
+<p>This module contains functions used by both Phase 1 (inversion/validation)
+and Phase 2 (solver/ilp) for processing symbolic constraints:
+- _minimum_degree_symbolic: compute degree constraints from crossing data
+- _inequality_manager: extract single/multiple variable inequalities
+- _process_assignment: combine the above into criteria, multiples, singlesigns</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.solver.symbolic_constraints.minimum_degree_symbolic">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.solver.symbolic_constraints.</span></span><span class="sig-name descname"><span class="pre">minimum_degree_symbolic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assignment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/solver/symbolic_constraints.html#minimum_degree_symbolic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.solver.symbolic_constraints.minimum_degree_symbolic" title="Link to this definition"></a></dt>
+<dd><p>Compute minimum degree constraints symbolically.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>assignment</strong> – Symbolic variable assignment.</p></li>
+<li><p><strong>braid_states</strong> – BraidStates object.</p></li>
+<li><p><strong>verbose</strong> – Whether to print progress.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary mapping components to their degree constraints.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.solver.symbolic_constraints.inequality_manager">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.solver.symbolic_constraints.</span></span><span class="sig-name descname"><span class="pre">inequality_manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">assignment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/solver/symbolic_constraints.html#inequality_manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.solver.symbolic_constraints.inequality_manager" title="Link to this definition"></a></dt>
+<dd><p>Process inequalities from relations into single and multiple variable forms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>relations</strong> – List of constraint relations.</p></li>
+<li><p><strong>assignment</strong> – Variable assignment dictionary.</p></li>
+<li><p><strong>braid_states</strong> – BraidStates object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(singles, multiples) lists of inequality expressions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="fkcompute.domain.solver.symbolic_constraints.process_assignment">
+<span class="sig-prename descclassname"><span class="pre">fkcompute.domain.solver.symbolic_constraints.</span></span><span class="sig-name descname"><span class="pre">process_assignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assignment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/solver/symbolic_constraints.html#process_assignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.domain.solver.symbolic_constraints.process_assignment" title="Link to this definition"></a></dt>
+<dd><p>Process an assignment to extract criteria, multi-variable inequalities,
+and single-variable signs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>assignment</strong> – Variable assignment dictionary.</p></li>
+<li><p><strong>braid_states</strong> – BraidStates object.</p></li>
+<li><p><strong>relations</strong> – List of constraint relations.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(criteria, multi_var_inequalities, single_var_signs)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="fkcompute.html" class="btn btn-neutral float-left" title="fkcompute — Top-Level API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="inversion.html" class="btn btn-neutral float-right" title="fkcompute.inversion — Sign Assignment Search" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

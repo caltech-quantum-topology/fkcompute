@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fkcompute.api.compute &mdash; fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=20e0ead2"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            fkcompute
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Mathematical Overview</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-Line Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../output.html">Output Format</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Computation Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpp_backend.html">C++ Backend</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">fkcompute</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">fkcompute.api.compute</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fkcompute.api.compute</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Core FK computation function.</span>
+
+<span class="sd">This module provides the main fk() function for computing FK invariants.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.presets</span><span class="w"> </span><span class="kn">import</span> <span class="n">PRESETS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.batch</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk_from_config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..domain.braid.states</span><span class="w"> </span><span class="kn">import</span> <span class="n">BraidStates</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..inversion.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_sign_assignment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..solver.ilp</span><span class="w"> </span><span class="kn">import</span> <span class="n">ilp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..infra.binary</span><span class="w"> </span><span class="kn">import</span> <span class="n">binary_path</span><span class="p">,</span> <span class="n">safe_unlink</span><span class="p">,</span> <span class="n">run_fk_binary</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..infra.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_inversion_file</span><span class="p">,</span> <span class="n">load_ilp_file</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..output.symbolic</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_symbolic_output</span><span class="p">,</span> <span class="n">SYMPY_AVAILABLE</span>
+
+<span class="c1"># Logger setup</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;fk_logger&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="configure_logging">
+<a class="viewcode-back" href="../../../api/fkcompute.html#fkcompute.configure_logging">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">configure_logging</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set logging level based on verbose flag.&quot;&quot;&quot;</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%(levelname)s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_assess_inversion</span><span class="p">(</span><span class="n">inversion</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate the structure of inversion data.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;inversion_data&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inversion</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Inversion data missing in inversion dictionary&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">inversion</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;inversion_data&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;failure&quot;</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Inversion data invalid (failure)&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="fk">
+<a class="viewcode-back" href="../../../api/fkcompute.html#fkcompute.fk">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fk</span><span class="p">(</span>
+    <span class="n">braid_or_config</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">degree</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">symbolic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Unified FK invariant computation with intelligent interface detection.</span>
+
+<span class="sd">    This function automatically detects the type of call and handles:</span>
+<span class="sd">    1. Config file mode: fk(&quot;config.yaml&quot;) or fk(config=&quot;config.yaml&quot;)</span>
+<span class="sd">    2. Simple mode: fk([1,-2,3], 2)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    braid_or_config</span>
+<span class="sd">        Either a braid list [1,-2,3] OR config file path &quot;config.yaml&quot;</span>
+<span class="sd">    degree</span>
+<span class="sd">        Computation degree (required unless using config file)</span>
+<span class="sd">    config</span>
+<span class="sd">        Config file path (alternative to passing as first argument)</span>
+<span class="sd">    symbolic</span>
+<span class="sd">        Generate symbolic polynomial representation using SymPy</span>
+<span class="sd">    threads</span>
+<span class="sd">        Number of threads for C++ FK computation</span>
+<span class="sd">    name</span>
+<span class="sd">        Name for saved files when save_data is enabled</span>
+<span class="sd">    **kwargs</span>
+<span class="sd">        Additional parameters (verbose, max_workers, etc.)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        Dictionary containing comprehensive computation results.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; fk([1,-2,3], 2)                      # Simple mode</span>
+<span class="sd">    &gt;&gt;&gt; fk([1,-2,3], 2, symbolic=True)       # With symbolic output</span>
+<span class="sd">    &gt;&gt;&gt; fk(&quot;config.yaml&quot;)                    # From configuration file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Config file mode detection</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">braid_or_config</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">config_path</span> <span class="o">=</span> <span class="n">config</span> <span class="ow">or</span> <span class="n">braid_or_config</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Config path must be a string&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fk_from_config</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>
+
+    <span class="c1"># Simple mode - just braid and degree with defaults</span>
+    <span class="n">braid</span> <span class="o">=</span> <span class="n">braid_or_config</span>
+    <span class="k">if</span> <span class="n">degree</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;degree is required when providing a braid list&quot;</span><span class="p">)</span>
+
+    <span class="n">configure_logging</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+    <span class="c1"># Build parameters with defaults and overrides</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;max_workers&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;chunk_size&#39;</span><span class="p">:</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">14</span><span class="p">,</span>
+        <span class="s1">&#39;include_flip&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;max_shifts&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;save_data&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;save_dir&#39;</span><span class="p">:</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;link_name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s1">&#39;symbolic&#39;</span><span class="p">:</span> <span class="n">symbolic</span><span class="p">,</span>
+        <span class="s1">&#39;threads&#39;</span><span class="p">:</span> <span class="n">threads</span> <span class="k">if</span> <span class="n">threads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;ilp&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;ilp_file&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;inversion&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;inversion_file&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;partial_signs&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Override with any provided kwargs</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_fk_compute</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fk_compute</span><span class="p">(</span>
+    <span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">degree</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">14</span><span class="p">,</span>
+    <span class="n">include_flip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">max_shifts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">save_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">save_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span>
+    <span class="n">link_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">symbolic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">ilp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ilp_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">inversion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">inversion_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">partial_signs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">_progress_callback</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Internal FK computation function.</span>
+
+<span class="sd">    This function executes the complete FK computation pipeline:</span>
+<span class="sd">    1. Sign assignment calculation (inversion step)</span>
+<span class="sd">    2. ILP formulation</span>
+<span class="sd">    3. FK invariant computation using compiled helper binary</span>
+<span class="sd">    4. Optional symbolic polynomial conversion</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Handle naming and save directories</span>
+    <span class="k">if</span> <span class="n">save_data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">save_dir</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">save_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">link_name</span><span class="p">:</span>
+            <span class="n">tstr</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H%M%S&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()))</span>
+            <span class="n">link_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unknown_</span><span class="si">{</span><span class="n">tstr</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No name provided for link/knot, saving as: </span><span class="si">{</span><span class="n">link_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving as: </span><span class="si">{</span><span class="n">link_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">link_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">link_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">link_name</span> <span class="o">=</span> <span class="s2">&quot;temp&quot;</span>
+
+    <span class="c1"># Step 1: Inversion data</span>
+    <span class="k">if</span> <span class="n">ilp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ilp_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;No ilp data provided, I need to calculate it&quot;</span><span class="p">)</span>
+
+        <span class="n">inversion_task</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">_progress_callback</span><span class="p">:</span>
+            <span class="n">inversion_task</span> <span class="o">=</span> <span class="n">_progress_callback</span><span class="o">.</span><span class="n">start_inversion</span><span class="p">(</span><span class="n">braid</span><span class="p">,</span> <span class="n">degree</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inversion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">inversion_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Both inversion data and inversion file are passed through. Pass one or the other&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inversion_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">inversion</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading inversion from file&quot;</span><span class="p">)</span>
+            <span class="n">inversion</span> <span class="o">=</span> <span class="n">load_inversion_file</span><span class="p">(</span><span class="n">inversion_file</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inversion</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">inversion_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Calculating inversion data&quot;</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">find_sign_assignment</span><span class="p">(</span>
+                <span class="n">braid</span><span class="p">,</span>
+                <span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">,</span>
+                <span class="n">partial_signs</span><span class="o">=</span><span class="n">partial_signs</span><span class="p">,</span>
+                <span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">,</span>
+                <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span>
+                <span class="n">include_flip</span><span class="o">=</span><span class="n">include_flip</span><span class="p">,</span>
+                <span class="n">max_shifts</span><span class="o">=</span><span class="n">max_shifts</span><span class="p">,</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">inversion</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_result_dict</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Inversion data calculated&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inversion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_assess_inversion</span><span class="p">(</span><span class="n">inversion</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">_progress_callback</span> <span class="ow">and</span> <span class="n">inversion_task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;metadata&#39;</span> <span class="ow">in</span> <span class="n">inversion</span> <span class="ow">and</span> <span class="s1">&#39;components&#39;</span> <span class="ow">in</span> <span class="n">inversion</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">]:</span>
+                    <span class="n">_progress_callback</span><span class="o">.</span><span class="n">complete_inversion</span><span class="p">(</span><span class="n">inversion</span><span class="p">[</span><span class="s1">&#39;metadata&#39;</span><span class="p">][</span><span class="s1">&#39;components&#39;</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">_progress_callback</span><span class="o">.</span><span class="n">complete_inversion</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">save_data</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">link_name</span> <span class="o">+</span> <span class="s2">&quot;_inversion.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">inversion</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+    <span class="c1"># Step 2: ILP data</span>
+    <span class="k">if</span> <span class="n">ilp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ilp_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Both ilp data and ilp file are passed through. Pass one or the other&quot;</span><span class="p">)</span>
+
+    <span class="n">ilp_task</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">_progress_callback</span><span class="p">:</span>
+        <span class="n">ilp_task</span> <span class="o">=</span> <span class="n">_progress_callback</span><span class="o">.</span><span class="n">start_ilp_generation</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">ilp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ilp_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loading ILP from file&quot;</span><span class="p">)</span>
+        <span class="n">ilp</span> <span class="o">=</span> <span class="n">load_ilp_file</span><span class="p">(</span><span class="n">ilp_file</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ilp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ilp_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Calculating ILP data&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">inversion</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Inversion data is required for ILP calculation&quot;</span><span class="p">)</span>
+        <span class="n">ilp</span> <span class="o">=</span> <span class="n">_generate_ilp</span><span class="p">(</span>
+            <span class="n">braid</span><span class="p">,</span>
+            <span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">,</span>
+            <span class="n">inversion_data</span><span class="o">=</span><span class="n">inversion</span><span class="p">[</span><span class="s2">&quot;inversion_data&quot;</span><span class="p">],</span>
+            <span class="n">outfile</span><span class="o">=</span><span class="n">link_name</span> <span class="o">+</span> <span class="s2">&quot;_ilp.csv&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;ILP data calculated&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">_progress_callback</span> <span class="ow">and</span> <span class="n">ilp_task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">estimated_constraints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span> <span class="o">*</span> <span class="n">degree</span> <span class="o">*</span> <span class="mi">10</span>
+            <span class="n">_progress_callback</span><span class="o">.</span><span class="n">complete_ilp_generation</span><span class="p">(</span><span class="n">estimated_constraints</span><span class="p">)</span>
+
+    <span class="c1"># Step 3: FK invariant computation</span>
+    <span class="k">if</span> <span class="n">ilp_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ilp_file_base</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">link_name</span><span class="si">}</span><span class="s2">_ilp&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ilp_file_base</span> <span class="o">=</span> <span class="n">ilp_file</span><span class="p">[:</span><span class="n">ilp_file</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)]</span>
+
+    <span class="n">estimated_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span> <span class="o">*</span> <span class="n">degree</span> <span class="o">*</span> <span class="mi">50</span>
+
+    <span class="n">fk_task</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">_progress_callback</span><span class="p">:</span>
+        <span class="n">fk_task</span> <span class="o">=</span> <span class="n">_progress_callback</span><span class="o">.</span><span class="n">start_fk_computation</span><span class="p">(</span><span class="n">threads</span><span class="p">,</span> <span class="n">estimated_points</span><span class="p">)</span>
+
+    <span class="n">run_fk_binary</span><span class="p">(</span><span class="n">ilp_file_base</span><span class="p">,</span> <span class="n">link_name</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">_progress_callback</span> <span class="ow">and</span> <span class="n">fk_task</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_progress_callback</span><span class="o">.</span><span class="n">update_fk_progress</span><span class="p">(</span><span class="n">estimated_points</span><span class="p">,</span> <span class="n">estimated_points</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">link_name</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">result_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="n">terms_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">result_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;terms&quot;</span><span class="p">,</span> <span class="p">[]))</span>
+                <span class="n">_progress_callback</span><span class="o">.</span><span class="n">complete_fk_computation</span><span class="p">(</span><span class="n">terms_count</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">_progress_callback</span><span class="o">.</span><span class="n">complete_fk_computation</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">link_name</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">fk_result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="c1"># Clean up intermediate files unless explicitly saving</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">save_data</span><span class="p">:</span>
+        <span class="n">safe_unlink</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">link_name</span><span class="si">}</span><span class="s2">_inversion.csv&quot;</span><span class="p">)</span>
+        <span class="n">safe_unlink</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">link_name</span><span class="si">}</span><span class="s2">_ilp.csv&quot;</span><span class="p">)</span>
+        <span class="n">safe_unlink</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">link_name</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Get the braid that was actually used</span>
+    <span class="n">computed_braid</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="s2">&quot;braid&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">inversion</span> <span class="ow">and</span> <span class="s2">&quot;braid&quot;</span> <span class="ow">in</span> <span class="n">inversion</span> <span class="k">else</span> <span class="n">braid</span>
+
+    <span class="c1"># Extract number of components from the braid</span>
+    <span class="n">braid_states</span> <span class="o">=</span> <span class="n">BraidStates</span><span class="p">(</span><span class="n">computed_braid</span><span class="p">)</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="n">braid_states</span><span class="o">.</span><span class="n">n_components</span>
+
+    <span class="c1"># Prepare result dictionary</span>
+    <span class="k">if</span> <span class="s2">&quot;metadata&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fk_result</span><span class="p">:</span>
+        <span class="n">fk_result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">fk_result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;braid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">computed_braid</span>
+    <span class="n">fk_result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;inversion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">[</span><span class="s2">&quot;inversion_data&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">inversion</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">fk_result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;components&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">components</span>
+
+    <span class="c1"># Add symbolic representation if requested</span>
+    <span class="k">if</span> <span class="n">symbolic</span> <span class="ow">and</span> <span class="n">SYMPY_AVAILABLE</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">symbolic_repr</span> <span class="o">=</span> <span class="n">format_symbolic_output</span><span class="p">(</span><span class="n">fk_result</span><span class="p">,</span> <span class="s2">&quot;pretty&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;metadata&quot;</span> <span class="ow">in</span> <span class="n">fk_result</span><span class="p">:</span>
+                <span class="n">fk_result</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;symbolic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbolic_repr</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fk_result</span><span class="p">[</span><span class="s2">&quot;symbolic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbolic_repr</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Could not generate symbolic representation: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">symbolic</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">SYMPY_AVAILABLE</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: SymPy not available for symbolic output. Install with: pip install sympy&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Save updated metadata to file if save_data is enabled</span>
+    <span class="k">if</span> <span class="n">save_data</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">link_name</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">fk_result</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fk_result</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_generate_ilp</span><span class="p">(</span><span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">degree</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">inversion_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">outfile</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate ILP formulation for FK computation.&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..domain.braid.states</span><span class="w"> </span><span class="kn">import</span> <span class="n">BraidStates</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..domain.braid.word</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_homogeneous_braid</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..domain.constraints.reduction</span><span class="w"> </span><span class="kn">import</span> <span class="n">full_reduce</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">..solver.ilp</span><span class="w"> </span><span class="kn">import</span> <span class="n">ilp</span> <span class="k">as</span> <span class="n">generate_ilp</span>
+
+    <span class="n">braid_states</span> <span class="o">=</span> <span class="n">BraidStates</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_homogeneous_braid</span><span class="p">(</span><span class="n">braid</span><span class="p">):</span>
+        <span class="c1"># Fibered braid - load provided inversion data</span>
+        <span class="n">braid_states</span><span class="o">.</span><span class="n">strand_signs</span> <span class="o">=</span> <span class="n">inversion_data</span>
+        <span class="n">braid_states</span><span class="o">.</span><span class="n">compute_matrices</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">braid_states</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;The inversion data doesn&#39;t seem to be valid.&quot;</span><span class="p">)</span>
+        <span class="n">braid_states</span><span class="o">.</span><span class="n">generate_position_assignments</span><span class="p">()</span>
+
+    <span class="n">all_relations</span> <span class="o">=</span> <span class="n">braid_states</span><span class="o">.</span><span class="n">get_state_relations</span><span class="p">()</span>
+    <span class="n">relations</span> <span class="o">=</span> <span class="n">full_reduce</span><span class="p">(</span><span class="n">all_relations</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">generate_ilp</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">relations</span><span class="p">,</span> <span class="n">braid_states</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
