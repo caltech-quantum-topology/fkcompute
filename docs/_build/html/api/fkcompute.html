@@ -1,53 +1,280 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="fkcompute.domain — Braid and Constraint Domain" href="domain.html"><link rel="prev" title="API Reference" href="index.html">
+
+    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 -->
+        <title>fkcompute — Top-Level API - fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/quantum_topology.css?v=c7af9278" />
+    
+    
 
 
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../">
-<head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>fkcompute — Top-Level API &mdash; fkcompute 0.2.20 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  --font-stack: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  --font-stack--monospace: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --color-brand-primary: #d55a2b;
+  --color-brand-content: #d55a2b;
+  --color-background-primary: #f8f9fc;
+  --color-background-secondary: #ffffff;
+  --color-foreground-primary: #1a1a2e;
+  --color-foreground-secondary: #5a5a7a;
+  --color-foreground-muted: #5a5a7a;
+  --color-link: #0066cc;
+  --color-link--hover: #d55a2b;
+  --color-link-underline: transparent;
+  --color-link-underline--hover: #d55a2b;
+  --color-sidebar-background: #ffffff;
+  --color-sidebar-link-text: #5a5a7a;
+  --color-sidebar-link-text--top-level: #1a1a2e;
+  --color-sidebar-item-background--current: rgba(213,90,43,0.08);
+  --color-sidebar-item-background--hover: rgba(213,90,43,0.04);
+  --color-sidebar-brand-text: #1a1a2e;
+  --color-sidebar-caption-text: #5a5a7a;
+  --color-code-background: #f0f1f5;
+  --color-code-foreground: #1a1a2e;
+  --color-highlighted-background: rgba(213,90,43,0.12);
+  --color-admonition-background: rgba(213,90,43,0.04);
+  --color-header-background: rgba(248,249,252,0.95);
+  --color-header-border: rgba(0,0,0,0.08);
+  --color-header-text: #1a1a2e;
   
-      <script src="../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=20e0ead2"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../_static/copybutton.js?v=f281be69"></script>
-      <script src="../_static/design-tabs.js?v=f930bc37"></script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="fkcompute.domain — Braid and Constraint Domain" href="domain.html" />
-    <link rel="prev" title="API Reference" href="index.html" /> 
-</head>
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --font-stack: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  --font-stack--monospace: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --color-brand-primary: #ff6c39;
+  --color-brand-content: #ff6c39;
+  --color-background-primary: #050611;
+  --color-background-secondary: #07081a;
+  --color-foreground-primary: #f5f7ff;
+  --color-foreground-secondary: #9aa0c4;
+  --color-foreground-muted: #9aa0c4;
+  --color-link: #ffe182;
+  --color-link--hover: #ff6c39;
+  --color-link-underline: transparent;
+  --color-link-underline--hover: #ff6c39;
+  --color-sidebar-background: #07081a;
+  --color-sidebar-link-text: #9aa0c4;
+  --color-sidebar-link-text--top-level: #f5f7ff;
+  --color-sidebar-item-background--current: rgba(255,108,57,0.1);
+  --color-sidebar-item-background--hover: rgba(255,108,57,0.06);
+  --color-sidebar-brand-text: #f5f7ff;
+  --color-sidebar-caption-text: #9aa0c4;
+  --color-code-background: #0a0a20;
+  --color-code-foreground: #f5f7ff;
+  --color-highlighted-background: rgba(255,108,57,0.18);
+  --color-admonition-background: rgba(255,108,57,0.06);
+  --color-header-background: rgba(5,6,17,0.92);
+  --color-header-border: rgba(255,255,255,0.04);
+  --color-header-text: #f5f7ff;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --font-stack: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  --font-stack--monospace: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --color-brand-primary: #ff6c39;
+  --color-brand-content: #ff6c39;
+  --color-background-primary: #050611;
+  --color-background-secondary: #07081a;
+  --color-foreground-primary: #f5f7ff;
+  --color-foreground-secondary: #9aa0c4;
+  --color-foreground-muted: #9aa0c4;
+  --color-link: #ffe182;
+  --color-link--hover: #ff6c39;
+  --color-link-underline: transparent;
+  --color-link-underline--hover: #ff6c39;
+  --color-sidebar-background: #07081a;
+  --color-sidebar-link-text: #9aa0c4;
+  --color-sidebar-link-text--top-level: #f5f7ff;
+  --color-sidebar-item-background--current: rgba(255,108,57,0.1);
+  --color-sidebar-item-background--hover: rgba(255,108,57,0.06);
+  --color-sidebar-brand-text: #f5f7ff;
+  --color-sidebar-caption-text: #9aa0c4;
+  --color-code-background: #0a0a20;
+  --color-code-foreground: #f5f7ff;
+  --color-highlighted-background: rgba(255,108,57,0.18);
+  --color-admonition-background: rgba(255,108,57,0.06);
+  --color-header-background: rgba(5,6,17,0.92);
+  --color-header-border: rgba(255,255,255,0.04);
+  --color-header-text: #f5f7ff;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
 
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            fkcompute
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">fkcompute 0.2.20 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">fkcompute 0.2.20 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
@@ -55,7 +282,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/knots.html">Computing FK for Knots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/links.html">Computing FK for Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/batch.html">Batch Computations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/advanced.html">Advanced Usage</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../configuration.html">Configuration Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../output.html">Output Format</a></li>
@@ -67,59 +300,14 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> — Top-Level API</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#main-computation-function">Main Computation Function</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.fk"><code class="docutils literal notranslate"><span class="pre">fk()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#batch-and-config-file-functions">Batch and Config-File Functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.fk_from_config"><code class="docutils literal notranslate"><span class="pre">fk_from_config()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.fk_batch_from_config"><code class="docutils literal notranslate"><span class="pre">fk_batch_from_config()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#presets">Presets</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.PRESETS"><code class="docutils literal notranslate"><span class="pre">fkcompute.PRESETS</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#domain-types">Domain Types</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.BraidStates"><code class="docutils literal notranslate"><span class="pre">BraidStates</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.ZERO_STATE"><code class="docutils literal notranslate"><span class="pre">ZERO_STATE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.NEG_ONE_STATE"><code class="docutils literal notranslate"><span class="pre">NEG_ONE_STATE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#braid-word-utilities">Braid Word Utilities</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#constraint-classes">Constraint Classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.Leq"><code class="docutils literal notranslate"><span class="pre">Leq</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.Less"><code class="docutils literal notranslate"><span class="pre">Less</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.Zero"><code class="docutils literal notranslate"><span class="pre">Zero</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.NegOne"><code class="docutils literal notranslate"><span class="pre">NegOne</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.Alias"><code class="docutils literal notranslate"><span class="pre">Alias</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.Conservation"><code class="docutils literal notranslate"><span class="pre">Conservation</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#symbolic-output">Symbolic Output</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.format_symbolic_output"><code class="docutils literal notranslate"><span class="pre">format_symbolic_output()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.SYMPY_AVAILABLE"><code class="docutils literal notranslate"><span class="pre">SYMPY_AVAILABLE</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#module-fkcompute.api.compute"><code class="docutils literal notranslate"><span class="pre">fkcompute.api</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.api.compute.configure_logging"><code class="docutils literal notranslate"><span class="pre">configure_logging()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.api.compute.fk"><code class="docutils literal notranslate"><span class="pre">fk()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.api.batch.configure_logging"><code class="docutils literal notranslate"><span class="pre">configure_logging()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.api.batch.fk_from_config"><code class="docutils literal notranslate"><span class="pre">fk_from_config()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#fkcompute.api.batch.fk_batch_from_config"><code class="docutils literal notranslate"><span class="pre">fk_batch_from_config()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> — Top-Level API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="domain.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.domain</span></code> — Braid and Constraint Domain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inversion.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.inversion</span></code> — Sign Assignment Search</a></li>
 <li class="toctree-l2"><a class="reference internal" href="solver.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.solver</span></code> — ILP Generation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="output.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.output</span></code> — Symbolic Formatting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="infra.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.infra</span></code> — Infrastructure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interactive.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.interactive</span></code> — Interactive Wizard</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#module-summary">Module Summary</a></li>
 </ul>
 </li>
 </ul>
@@ -130,43 +318,58 @@
 <li class="toctree-l1"><a class="reference internal" href="../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
 </ul>
 
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">fkcompute</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
-      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> — Top-Level API</li>
-      <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/api/fkcompute.rst" class="fa fa-github"> Edit on GitHub</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="fkcompute-top-level-api">
-<h1><code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> — Top-Level API<a class="headerlink" href="#fkcompute-top-level-api" title="Link to this heading"></a></h1>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/caltech-quantum-topology/fkcompute/blob/main/docs/api/fkcompute.rst?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/caltech-quantum-topology/fkcompute/edit/main/docs/api/fkcompute.rst" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="fkcompute-top-level-api">
+<h1><code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> — Top-Level API<a class="headerlink" href="#fkcompute-top-level-api" title="Link to this heading">¶</a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> package exposes a minimal, stable public API at the top
 level.  Import everything you need from here.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">fk</span><span class="p">,</span> <span class="n">PRESETS</span><span class="p">,</span> <span class="n">BraidStates</span>
 </pre></div>
 </div>
 <section id="main-computation-function">
-<h2>Main Computation Function<a class="headerlink" href="#main-computation-function" title="Link to this heading"></a></h2>
+<h2>Main Computation Function<a class="headerlink" href="#main-computation-function" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.fk">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">fk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid_or_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/compute.html#fk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.fk" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">fk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid_or_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/compute.html#fk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.fk" title="Link to this definition">¶</a></dt>
 <dd><p>Unified FK invariant computation with intelligent interface detection.</p>
 <p>This function automatically detects the type of call and handles:
 1. Config file mode: fk(“config.yaml”) or fk(config=”config.yaml”)
@@ -200,10 +403,10 @@ level.  Import everything you need from here.</p>
 
 </section>
 <section id="batch-and-config-file-functions">
-<h2>Batch and Config-File Functions<a class="headerlink" href="#batch-and-config-file-functions" title="Link to this heading"></a></h2>
+<h2>Batch and Config-File Functions<a class="headerlink" href="#batch-and-config-file-functions" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.fk_from_config">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">fk_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/batch.html#fk_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.fk_from_config" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">fk_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/batch.html#fk_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.fk_from_config" title="Link to this definition">¶</a></dt>
 <dd><p>Handle FK computation from JSON/YAML configuration files.</p>
 <p>Supports both single computation and batch processing modes.</p>
 <dl class="field-list simple">
@@ -222,7 +425,7 @@ Batch processing: Dict[str, Dict[str, Any]] keyed by computation names</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.fk_batch_from_config">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">fk_batch_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/batch.html#fk_batch_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.fk_batch_from_config" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">fk_batch_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/batch.html#fk_batch_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.fk_batch_from_config" title="Link to this definition">¶</a></dt>
 <dd><p>Execute batch FK computations from configuration data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -242,10 +445,10 @@ Batch processing: Dict[str, Dict[str, Any]] keyed by computation names</p>
 
 </section>
 <section id="presets">
-<h2>Presets<a class="headerlink" href="#presets" title="Link to this heading"></a></h2>
+<h2>Presets<a class="headerlink" href="#presets" title="Link to this heading">¶</a></h2>
 <dl class="py data">
 <dt class="sig sig-object py" id="fkcompute.PRESETS">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">PRESETS</span></span><a class="headerlink" href="#fkcompute.PRESETS" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">PRESETS</span></span><a class="headerlink" href="#fkcompute.PRESETS" title="Link to this definition">¶</a></dt>
 <dd><p>Dictionary of named preset configurations.  Keys are <code class="docutils literal notranslate"><span class="pre">&quot;single</span> <span class="pre">thread&quot;</span></code>
 and <code class="docutils literal notranslate"><span class="pre">&quot;parallel&quot;</span></code>; values are parameter dicts.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fkcompute</span><span class="w"> </span><span class="kn">import</span> <span class="n">PRESETS</span>
@@ -260,11 +463,11 @@ and <code class="docutils literal notranslate"><span class="pre">&quot;parallel&
 
 </section>
 <section id="domain-types">
-<h2>Domain Types<a class="headerlink" href="#domain-types" title="Link to this heading"></a></h2>
+<h2>Domain Types<a class="headerlink" href="#domain-types" title="Link to this heading">¶</a></h2>
 <p>These are re-exported from the domain submodules for convenience.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="fkcompute.BraidStates">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">BraidStates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/states.html#BraidStates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.BraidStates" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">BraidStates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/braid/states.html#BraidStates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.BraidStates" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="domain.html#fkcompute.domain.braid.signed.SignedBraid" title="fkcompute.domain.braid.signed.SignedBraid"><code class="xref py py-class docutils literal notranslate"><span class="pre">SignedBraid</span></code></a></p>
 <p>Represents a braid and its associated state information.</p>
 <p>This is a backward-compatible wrapper that creates a BraidTopology
@@ -278,7 +481,7 @@ and initializes a SignedBraid from it.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="fkcompute.ZERO_STATE">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">ZERO_STATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0]</span></em><a class="headerlink" href="#fkcompute.ZERO_STATE" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">ZERO_STATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0]</span></em><a class="headerlink" href="#fkcompute.ZERO_STATE" title="Link to this definition">¶</a></dt>
 <dd><p>A literal state value in the braid state system.</p>
 <p>Represents fixed states like zero (0) and negative unity (-1)
 that are used as boundary conditions in the constraint system.</p>
@@ -286,17 +489,17 @@ that are used as boundary conditions in the constraint system.</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="fkcompute.NEG_ONE_STATE">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">NEG_ONE_STATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[-1]</span></em><a class="headerlink" href="#fkcompute.NEG_ONE_STATE" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">NEG_ONE_STATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[-1]</span></em><a class="headerlink" href="#fkcompute.NEG_ONE_STATE" title="Link to this definition">¶</a></dt>
 <dd><p>A literal state value in the braid state system.</p>
 <p>Represents fixed states like zero (0) and negative unity (-1)
 that are used as boundary conditions in the constraint system.</p>
 </dd></dl>
 
 <section id="braid-word-utilities">
-<h3>Braid Word Utilities<a class="headerlink" href="#braid-word-utilities" title="Link to this heading"></a></h3>
+<h3>Braid Word Utilities<a class="headerlink" href="#braid-word-utilities" title="Link to this heading">¶</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.is_positive_braid">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">is_positive_braid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/word.html#is_positive_braid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.is_positive_braid" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">is_positive_braid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/word.html#is_positive_braid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.is_positive_braid" title="Link to this definition">¶</a></dt>
 <dd><p>Check if a braid is positive (all crossings have positive sign).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -313,7 +516,7 @@ that are used as boundary conditions in the constraint system.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.is_homogeneous_braid">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">is_homogeneous_braid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/word.html#is_homogeneous_braid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.is_homogeneous_braid" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">is_homogeneous_braid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/braid/word.html#is_homogeneous_braid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.is_homogeneous_braid" title="Link to this definition">¶</a></dt>
 <dd><p>Check if a braid is homogeneous.</p>
 <p>A braid is homogeneous if for each generator index, either only
 positive or only negative crossings appear (but not both).</p>
@@ -333,15 +536,15 @@ positive or only negative crossings appear (but not both).</p>
 </section>
 </section>
 <section id="constraint-classes">
-<h2>Constraint Classes<a class="headerlink" href="#constraint-classes" title="Link to this heading"></a></h2>
+<h2>Constraint Classes<a class="headerlink" href="#constraint-classes" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="fkcompute.Leq">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">Leq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">second</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Leq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Leq" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">Leq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">second</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Leq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Leq" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="domain.html#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
 <p>Less than or equal constraint: first &lt;= second.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="fkcompute.Leq.variables">
-<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Leq.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Leq.variables" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Leq.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Leq.variables" title="Link to this definition">¶</a></dt>
 <dd><p>Return the list of variables involved in this constraint.</p>
 </dd></dl>
 
@@ -349,12 +552,12 @@ positive or only negative crossings appear (but not both).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="fkcompute.Less">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">Less</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">second</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Less"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Less" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">Less</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">second</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Less"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Less" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="domain.html#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
 <p>Strict less than constraint: first &lt; second.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="fkcompute.Less.variables">
-<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Less.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Less.variables" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Less.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Less.variables" title="Link to this definition">¶</a></dt>
 <dd><p>Return the list of variables involved in this constraint.</p>
 </dd></dl>
 
@@ -362,12 +565,12 @@ positive or only negative crossings appear (but not both).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="fkcompute.Zero">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">Zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Zero" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">Zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Zero" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="domain.html#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
 <p>Zero state constraint: state = [0].</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="fkcompute.Zero.variables">
-<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Zero.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Zero.variables" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Zero.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Zero.variables" title="Link to this definition">¶</a></dt>
 <dd><p>Return the list of variables involved in this constraint.</p>
 </dd></dl>
 
@@ -375,12 +578,12 @@ positive or only negative crossings appear (but not both).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="fkcompute.NegOne">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">NegOne</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#NegOne"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.NegOne" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">NegOne</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#NegOne"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.NegOne" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="domain.html#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
 <p>Negative one state constraint: state = [-1].</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="fkcompute.NegOne.variables">
-<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#NegOne.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.NegOne.variables" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#NegOne.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.NegOne.variables" title="Link to this definition">¶</a></dt>
 <dd><p>Return the list of variables involved in this constraint.</p>
 </dd></dl>
 
@@ -388,12 +591,12 @@ positive or only negative crossings appear (but not both).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="fkcompute.Alias">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">Alias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Alias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Alias" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">Alias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Alias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Alias" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="domain.html#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
 <p>Alias constraint: state and alias are equal.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="fkcompute.Alias.variables">
-<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Alias.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Alias.variables" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Alias.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Alias.variables" title="Link to this definition">¶</a></dt>
 <dd><p>Return the list of variables involved in this constraint.</p>
 </dd></dl>
 
@@ -401,18 +604,18 @@ positive or only negative crossings appear (but not both).</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="fkcompute.Conservation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">Conservation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Conservation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Conservation" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">Conservation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Conservation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Conservation" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="domain.html#fkcompute.domain.constraints.relations.Constraint" title="fkcompute.domain.constraints.relations.Constraint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Constraint</span></code></a></p>
 <p>Conservation constraint: sum of inputs = sum of outputs.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="fkcompute.Conservation.variables">
-<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Conservation.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Conservation.variables" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Conservation.variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Conservation.variables" title="Link to this definition">¶</a></dt>
 <dd><p>Return the list of variables involved in this constraint.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="fkcompute.Conservation.try_sum_alias">
-<span class="sig-name descname"><span class="pre">try_sum_alias</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Conservation.try_sum_alias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Conservation.try_sum_alias" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">try_sum_alias</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/domain/constraints/relations.html#Conservation.try_sum_alias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.Conservation.try_sum_alias" title="Link to this definition">¶</a></dt>
 <dd><p>Try to extract a sum alias from this conservation constraint.</p>
 <p>Returns None if both inputs and outputs have more than one element.
 Otherwise returns (alias, sum_vars) where alias = sum(sum_vars).</p>
@@ -422,10 +625,10 @@ Otherwise returns (alias, sum_vars) where alias = sum(sum_vars).</p>
 
 </section>
 <section id="symbolic-output">
-<h2>Symbolic Output<a class="headerlink" href="#symbolic-output" title="Link to this heading"></a></h2>
+<h2>Symbolic Output<a class="headerlink" href="#symbolic-output" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.format_symbolic_output">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">format_symbolic_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fk_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pretty'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/output/symbolic.html#format_symbolic_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.format_symbolic_output" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">format_symbolic_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fk_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pretty'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/output/symbolic.html#format_symbolic_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.format_symbolic_output" title="Link to this definition">¶</a></dt>
 <dd><p>Format FK computation result as human-readable symbolic expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -446,7 +649,7 @@ Otherwise returns (alias, sum_vars) where alias = sum(sum_vars).</p>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="fkcompute.SYMPY_AVAILABLE">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">SYMPY_AVAILABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#fkcompute.SYMPY_AVAILABLE" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.</span></span><span class="sig-name descname"><span class="pre">SYMPY_AVAILABLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#fkcompute.SYMPY_AVAILABLE" title="Link to this definition">¶</a></dt>
 <dd><p>bool(x) -&gt; bool</p>
 <p>Returns True when the argument x is true, False otherwise.
 The builtins True and False are the only two instances of the class bool.
@@ -464,18 +667,18 @@ available.</p>
 
 </section>
 <section id="module-fkcompute.api.compute">
-<span id="fkcompute-api"></span><h2><code class="docutils literal notranslate"><span class="pre">fkcompute.api</span></code><a class="headerlink" href="#module-fkcompute.api.compute" title="Link to this heading"></a></h2>
+<span id="fkcompute-api"></span><h2><code class="docutils literal notranslate"><span class="pre">fkcompute.api</span></code><a class="headerlink" href="#module-fkcompute.api.compute" title="Link to this heading">¶</a></h2>
 <p>Core FK computation function.</p>
 <p>This module provides the main fk() function for computing FK invariants.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.api.compute.configure_logging">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.api.compute.</span></span><span class="sig-name descname"><span class="pre">configure_logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/api/compute.html#configure_logging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.api.compute.configure_logging" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.api.compute.</span></span><span class="sig-name descname"><span class="pre">configure_logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/api/compute.html#configure_logging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.api.compute.configure_logging" title="Link to this definition">¶</a></dt>
 <dd><p>Set logging level based on verbose flag.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.api.compute.fk">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.api.compute.</span></span><span class="sig-name descname"><span class="pre">fk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid_or_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/compute.html#fk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.api.compute.fk" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.api.compute.</span></span><span class="sig-name descname"><span class="pre">fk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braid_or_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbolic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/compute.html#fk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.api.compute.fk" title="Link to this definition">¶</a></dt>
 <dd><p>Unified FK invariant computation with intelligent interface detection.</p>
 <p>This function automatically detects the type of call and handles:
 1. Config file mode: fk(“config.yaml”) or fk(config=”config.yaml”)
@@ -512,13 +715,13 @@ available.</p>
 from configuration files.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.api.batch.configure_logging">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.api.batch.</span></span><span class="sig-name descname"><span class="pre">configure_logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/api/batch.html#configure_logging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.api.batch.configure_logging" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.api.batch.</span></span><span class="sig-name descname"><span class="pre">configure_logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/api/batch.html#configure_logging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.api.batch.configure_logging" title="Link to this definition">¶</a></dt>
 <dd><p>Set logging level based on verbose flag.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.api.batch.fk_from_config">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.api.batch.</span></span><span class="sig-name descname"><span class="pre">fk_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/batch.html#fk_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.api.batch.fk_from_config" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.api.batch.</span></span><span class="sig-name descname"><span class="pre">fk_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/batch.html#fk_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.api.batch.fk_from_config" title="Link to this definition">¶</a></dt>
 <dd><p>Handle FK computation from JSON/YAML configuration files.</p>
 <p>Supports both single computation and batch processing modes.</p>
 <dl class="field-list simple">
@@ -537,7 +740,7 @@ Batch processing: Dict[str, Dict[str, Any]] keyed by computation names</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.api.batch.fk_batch_from_config">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.api.batch.</span></span><span class="sig-name descname"><span class="pre">fk_batch_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/batch.html#fk_batch_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.api.batch.fk_batch_from_config" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.api.batch.</span></span><span class="sig-name descname"><span class="pre">fk_batch_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/fkcompute/api/batch.html#fk_batch_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.api.batch.fk_batch_from_config" title="Link to this definition">¶</a></dt>
 <dd><p>Execute batch FK computations from configuration data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -561,35 +764,144 @@ use cases in FK computation.</p>
 </section>
 </section>
 
-
-           </div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="domain.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="docutils literal notranslate"><span class="pre">fkcompute.domain</span></code> — Braid and Constraint Domain</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">API Reference</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="domain.html" class="btn btn-neutral float-right" title="fkcompute.domain — Braid and Constraint Domain" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
     </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> — Top-Level API</a><ul>
+<li><a class="reference internal" href="#main-computation-function">Main Computation Function</a><ul>
+<li><a class="reference internal" href="#fkcompute.fk"><code class="docutils literal notranslate"><span class="pre">fk()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#batch-and-config-file-functions">Batch and Config-File Functions</a><ul>
+<li><a class="reference internal" href="#fkcompute.fk_from_config"><code class="docutils literal notranslate"><span class="pre">fk_from_config()</span></code></a></li>
+<li><a class="reference internal" href="#fkcompute.fk_batch_from_config"><code class="docutils literal notranslate"><span class="pre">fk_batch_from_config()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#presets">Presets</a><ul>
+<li><a class="reference internal" href="#fkcompute.PRESETS"><code class="docutils literal notranslate"><span class="pre">fkcompute.PRESETS</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#domain-types">Domain Types</a><ul>
+<li><a class="reference internal" href="#fkcompute.BraidStates"><code class="docutils literal notranslate"><span class="pre">BraidStates</span></code></a></li>
+<li><a class="reference internal" href="#fkcompute.ZERO_STATE"><code class="docutils literal notranslate"><span class="pre">ZERO_STATE</span></code></a></li>
+<li><a class="reference internal" href="#fkcompute.NEG_ONE_STATE"><code class="docutils literal notranslate"><span class="pre">NEG_ONE_STATE</span></code></a></li>
+<li><a class="reference internal" href="#braid-word-utilities">Braid Word Utilities</a><ul>
+<li><a class="reference internal" href="#fkcompute.is_positive_braid"><code class="docutils literal notranslate"><span class="pre">is_positive_braid()</span></code></a></li>
+<li><a class="reference internal" href="#fkcompute.is_homogeneous_braid"><code class="docutils literal notranslate"><span class="pre">is_homogeneous_braid()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constraint-classes">Constraint Classes</a><ul>
+<li><a class="reference internal" href="#fkcompute.Leq"><code class="docutils literal notranslate"><span class="pre">Leq</span></code></a><ul>
+<li><a class="reference internal" href="#fkcompute.Leq.variables"><code class="docutils literal notranslate"><span class="pre">Leq.variables()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fkcompute.Less"><code class="docutils literal notranslate"><span class="pre">Less</span></code></a><ul>
+<li><a class="reference internal" href="#fkcompute.Less.variables"><code class="docutils literal notranslate"><span class="pre">Less.variables()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fkcompute.Zero"><code class="docutils literal notranslate"><span class="pre">Zero</span></code></a><ul>
+<li><a class="reference internal" href="#fkcompute.Zero.variables"><code class="docutils literal notranslate"><span class="pre">Zero.variables()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fkcompute.NegOne"><code class="docutils literal notranslate"><span class="pre">NegOne</span></code></a><ul>
+<li><a class="reference internal" href="#fkcompute.NegOne.variables"><code class="docutils literal notranslate"><span class="pre">NegOne.variables()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fkcompute.Alias"><code class="docutils literal notranslate"><span class="pre">Alias</span></code></a><ul>
+<li><a class="reference internal" href="#fkcompute.Alias.variables"><code class="docutils literal notranslate"><span class="pre">Alias.variables()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fkcompute.Conservation"><code class="docutils literal notranslate"><span class="pre">Conservation</span></code></a><ul>
+<li><a class="reference internal" href="#fkcompute.Conservation.variables"><code class="docutils literal notranslate"><span class="pre">Conservation.variables()</span></code></a></li>
+<li><a class="reference internal" href="#fkcompute.Conservation.try_sum_alias"><code class="docutils literal notranslate"><span class="pre">Conservation.try_sum_alias()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#symbolic-output">Symbolic Output</a><ul>
+<li><a class="reference internal" href="#fkcompute.format_symbolic_output"><code class="docutils literal notranslate"><span class="pre">format_symbolic_output()</span></code></a></li>
+<li><a class="reference internal" href="#fkcompute.SYMPY_AVAILABLE"><code class="docutils literal notranslate"><span class="pre">SYMPY_AVAILABLE</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-fkcompute.api.compute"><code class="docutils literal notranslate"><span class="pre">fkcompute.api</span></code></a><ul>
+<li><a class="reference internal" href="#fkcompute.api.compute.configure_logging"><code class="docutils literal notranslate"><span class="pre">configure_logging()</span></code></a></li>
+<li><a class="reference internal" href="#fkcompute.api.compute.fk"><code class="docutils literal notranslate"><span class="pre">fk()</span></code></a></li>
+<li><a class="reference internal" href="#fkcompute.api.batch.configure_logging"><code class="docutils literal notranslate"><span class="pre">configure_logging()</span></code></a></li>
+<li><a class="reference internal" href="#fkcompute.api.batch.fk_from_config"><code class="docutils literal notranslate"><span class="pre">fk_from_config()</span></code></a></li>
+<li><a class="reference internal" href="#fkcompute.api.batch.fk_batch_from_config"><code class="docutils literal notranslate"><span class="pre">fk_batch_from_config()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+          </div>
         </div>
       </div>
-    </section>
+      
+      
+    </aside>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+</div><script src="../_static/documentation_options.js?v=9fea2d4c"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    </body>
 </html>

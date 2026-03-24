@@ -1,0 +1,522 @@
+/* ============================================================
+   Quantum Topology theme for fkcompute docs
+   Mirrors the visual identity of quantum-topology-home
+   ============================================================ */
+
+/* ---- Fonts ------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap");
+
+/* ---- Extra tokens not covered by furo conf.py ------------- */
+
+[data-theme="dark"] {
+  --qt-accent: #ff6c39;
+  --qt-accent2: #41e9ff;
+  --qt-outline: rgba(255, 255, 255, 0.06);
+  --qt-card-bg: rgba(10, 10, 32, 0.9);
+  --qt-glow-a: rgba(255, 108, 57, 0.18);
+  --qt-glow-b: rgba(65, 233, 255, 0.18);
+  --qt-radius: 14px;
+  --qt-shadow: 0 18px 60px rgba(0, 0, 0, 0.6);
+  --qt-sidebar-border: rgba(255, 255, 255, 0.05);
+  --qt-code-border: rgba(255, 255, 255, 0.07);
+  --qt-admon-note: rgba(65, 233, 255, 0.08);
+  --qt-admon-warning: rgba(255, 108, 57, 0.1);
+  --qt-admon-tip: rgba(65, 233, 255, 0.08);
+}
+
+[data-theme="light"] {
+  --qt-accent: #d55a2b;
+  --qt-accent2: #0077aa;
+  --qt-outline: rgba(0, 0, 0, 0.1);
+  --qt-card-bg: #ffffff;
+  --qt-glow-a: transparent;
+  --qt-glow-b: transparent;
+  --qt-radius: 14px;
+  --qt-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --qt-sidebar-border: rgba(0, 0, 0, 0.08);
+  --qt-code-border: rgba(0, 0, 0, 0.08);
+  --qt-admon-note: rgba(0, 119, 170, 0.06);
+  --qt-admon-warning: rgba(213, 90, 43, 0.08);
+  --qt-admon-tip: rgba(0, 119, 170, 0.06);
+}
+
+/* ---- Global ----------------------------------------------- */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Dark mode: radial glow background (orange top-left, cyan bottom-right) */
+[data-theme="dark"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 8% -8%, var(--qt-glow-a), transparent 52%),
+    radial-gradient(circle at 92% 108%, var(--qt-glow-b), transparent 52%);
+  mix-blend-mode: screen;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Dark mode: rich deep background */
+[data-theme="dark"] .page {
+  background: radial-gradient(circle at top, #10122b 0, #050611 50%, #000 100%);
+  min-height: 100vh;
+}
+
+/* ---- Sidebar ---------------------------------------------- */
+
+.sidebar-container {
+  border-right: 1px solid var(--qt-sidebar-border);
+}
+
+/* Brand area — recreate the QT conic-ring logo */
+.sidebar-brand {
+  padding: 1.2rem 1rem 1rem;
+  border-bottom: 1px solid var(--qt-sidebar-border);
+}
+
+.sidebar-brand-text {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-size: 0.95rem;
+  color: var(--color-sidebar-brand-text);
+}
+
+/* Logo ring — applied when html_logo is not set we style the brand container */
+.sidebar-brand::before {
+  content: "QT";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background:
+    conic-gradient(from 140deg, #ff6c39, #ffe182, #41e9ff, #ff6c39);
+  padding: 2px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+  color: #ffefe6;
+  margin-bottom: 0.5rem;
+  /* the inner dark fill is done via box-shadow inset trick */
+  box-shadow: inset 0 0 0 2px var(--color-sidebar-background);
+}
+
+[data-theme="light"] .sidebar-brand::before {
+  background:
+    conic-gradient(from 140deg, #d55a2b, #f5a623, #0077aa, #d55a2b);
+  color: #1a0a00;
+}
+
+/* Group label / caption */
+.sidebar-tree .caption {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-sidebar-caption-text);
+  padding: 1rem 0.75rem 0.3rem;
+  margin: 0;
+}
+
+/* Nav items */
+.sidebar-tree a {
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  border-radius: 8px;
+  transition: background 140ms ease-out, color 140ms ease-out;
+}
+
+.sidebar-tree a:hover {
+  text-decoration: none;
+}
+
+/* Active item accent line */
+.sidebar-tree .current > a,
+.sidebar-tree .current-page > a {
+  color: var(--qt-accent) !important;
+  font-weight: 500;
+  position: relative;
+}
+
+.sidebar-tree .current > a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, var(--qt-accent), var(--qt-accent2));
+}
+
+/* Search box */
+.sidebar-search-container input[type="text"] {
+  border-radius: 8px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.85rem;
+  border: 1px solid var(--qt-outline);
+  transition: border-color 140ms ease-out, box-shadow 140ms ease-out;
+}
+
+.sidebar-search-container input[type="text"]:focus {
+  border-color: var(--qt-accent);
+  box-shadow: 0 0 0 3px rgba(255, 108, 57, 0.12);
+  outline: none;
+}
+
+[data-theme="light"] .sidebar-search-container input[type="text"]:focus {
+  box-shadow: 0 0 0 3px rgba(213, 90, 43, 0.12);
+}
+
+/* ---- Header (mobile / sticky) ----------------------------- */
+
+.mobile-header,
+header.sticky {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+[data-theme="dark"] .mobile-header,
+[data-theme="dark"] header.sticky {
+  background: rgba(5, 6, 17, 0.92) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+[data-theme="light"] .mobile-header,
+[data-theme="light"] header.sticky {
+  background: rgba(248, 249, 252, 0.95) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ---- Main content ----------------------------------------- */
+
+article[role="main"] {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Headings with gradient accent on h1 */
+article h1 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-size: 2rem;
+  background: linear-gradient(120deg, var(--color-foreground-primary) 60%, var(--qt-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-bottom: 0.2em;
+}
+
+article h2 {
+  font-weight: 600;
+  font-size: 1.35rem;
+  border-bottom: 1px solid var(--qt-outline);
+  padding-bottom: 0.3em;
+  margin-top: 2em;
+}
+
+article h3 {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--qt-accent);
+}
+
+article h4,
+article h5,
+article h6 {
+  font-weight: 600;
+}
+
+/* Section heading anchors */
+article h1 a.headerlink,
+article h2 a.headerlink,
+article h3 a.headerlink,
+article h4 a.headerlink {
+  color: var(--qt-accent2);
+  opacity: 0;
+  transition: opacity 140ms ease-out;
+  font-size: 0.75em;
+  margin-left: 0.4em;
+}
+
+article h1:hover a.headerlink,
+article h2:hover a.headerlink,
+article h3:hover a.headerlink,
+article h4:hover a.headerlink {
+  opacity: 1;
+}
+
+/* ---- Code blocks ------------------------------------------ */
+
+.highlight {
+  border-radius: var(--qt-radius);
+  border: 1px solid var(--qt-code-border);
+  overflow: hidden;
+}
+
+.highlight pre {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.65;
+  padding: 1.1rem 1.25rem;
+}
+
+/* Inline code */
+code, kbd, samp {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+  font-size: 0.875em;
+  border-radius: 5px;
+}
+
+/* Copy button (sphinx-copybutton) */
+button.copybtn {
+  border-radius: 6px;
+  transition: opacity 140ms ease-out, background 140ms ease-out;
+}
+
+/* ---- Admonitions ------------------------------------------ */
+
+.admonition {
+  border-radius: var(--qt-radius);
+  border-left-width: 3px;
+  padding: 1rem 1.2rem;
+}
+
+.admonition.note,
+.admonition.seealso {
+  background: var(--qt-admon-note);
+  border-left-color: var(--qt-accent2);
+}
+
+.admonition.warning,
+.admonition.caution,
+.admonition.danger,
+.admonition.error {
+  background: var(--qt-admon-warning);
+  border-left-color: var(--qt-accent);
+}
+
+.admonition.tip,
+.admonition.hint,
+.admonition.important {
+  background: var(--qt-admon-tip);
+  border-left-color: var(--qt-accent2);
+}
+
+.admonition-title {
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ---- API documentation ------------------------------------ */
+
+[data-theme="dark"] dl.py dt,
+[data-theme="dark"] dl.c dt,
+[data-theme="dark"] dl.cpp dt {
+  background: rgba(10, 10, 32, 0.7);
+  border: 1px solid var(--qt-outline);
+  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+}
+
+[data-theme="light"] dl.py dt,
+[data-theme="light"] dl.c dt,
+[data-theme="light"] dl.cpp dt {
+  background: #f5f6fa;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 8px;
+  padding: 0.55rem 0.9rem;
+}
+
+.sig-name {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  color: var(--qt-accent);
+}
+
+.sig-param {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.9em;
+}
+
+.viewcode-link {
+  font-size: 0.75em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  transition: opacity 140ms ease-out;
+}
+
+.viewcode-link:hover {
+  opacity: 1;
+}
+
+/* ---- Tables ----------------------------------------------- */
+
+table.docutils {
+  border-collapse: collapse;
+  border-radius: var(--qt-radius);
+  overflow: hidden;
+  border: 1px solid var(--qt-outline);
+  font-size: 0.9rem;
+}
+
+table.docutils th {
+  background: var(--color-background-secondary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-foreground-secondary);
+  border-bottom: 1px solid var(--qt-outline);
+  padding: 0.6rem 0.9rem;
+}
+
+table.docutils td {
+  border-bottom: 1px solid var(--qt-outline);
+  padding: 0.55rem 0.9rem;
+}
+
+table.docutils tr:last-child td {
+  border-bottom: none;
+}
+
+/* ---- Footer ----------------------------------------------- */
+
+.bottom-of-page {
+  border-top: 1px solid var(--qt-outline);
+  font-size: 0.82rem;
+  color: var(--color-foreground-muted);
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+}
+
+/* ---- Sphinx-design components ----------------------------- */
+
+.sd-card {
+  border-radius: var(--qt-radius) !important;
+  border: 1px solid var(--qt-outline) !important;
+  box-shadow: var(--qt-shadow) !important;
+}
+
+[data-theme="dark"] .sd-card {
+  background: var(--qt-card-bg) !important;
+}
+
+.sd-tab-set > .sd-tab-content {
+  border-radius: 0 var(--qt-radius) var(--qt-radius) var(--qt-radius);
+  border: 1px solid var(--qt-outline);
+}
+
+/* ---- Breadcrumb ------------------------------------------- */
+
+nav.breadcrumbs ol {
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+nav.breadcrumbs .breadcrumb-sep {
+  color: var(--color-foreground-muted);
+  opacity: 0.5;
+}
+
+/* ---- Table of contents (right sidebar) ------------------- */
+
+.toc-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--color-foreground-muted);
+}
+
+.toc-tree a {
+  font-size: 0.82rem;
+  transition: color 140ms ease-out;
+}
+
+.toc-tree a:hover {
+  color: var(--qt-accent);
+  text-decoration: none;
+}
+
+/* ---- Version badge ---------------------------------------- */
+
+.version {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  padding: 0.15em 0.5em;
+  border-radius: 999px;
+  border: 1px solid var(--qt-outline);
+  color: var(--color-foreground-muted);
+  vertical-align: middle;
+}
+
+/* ---- Prev/Next navigation buttons ------------------------- */
+
+.prev-next-area a {
+  border-radius: var(--qt-radius);
+  border: 1px solid var(--qt-outline);
+  transition: border-color 140ms ease-out, box-shadow 140ms ease-out, background 140ms ease-out;
+}
+
+.prev-next-area a:hover {
+  border-color: var(--qt-accent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+}
+
+.prev-next-area a .prev-next-title {
+  color: var(--qt-accent);
+  font-weight: 500;
+}
+
+/* ---- Math ------------------------------------------------- */
+
+.math {
+  font-size: 1.05em;
+  overflow-x: auto;
+}
+
+/* ---- Selection highlight ---------------------------------- */
+
+::selection {
+  background: rgba(255, 108, 57, 0.25);
+}
+
+[data-theme="light"] ::selection {
+  background: rgba(213, 90, 43, 0.2);
+}
+
+/* ---- Scrollbar (webkit) ----------------------------------- */
+
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #07081a;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 108, 57, 0.4);
+}
