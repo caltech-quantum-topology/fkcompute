@@ -40,6 +40,7 @@ Common keyword arguments (see `_fk_compute` in `src/fkcompute/api/compute.py`):
 - `symbolic: bool` (default: False)
 - `threads: int | None` (default: 1)
 - `name: str | None` (used for saved files when `save_data=True`)
+- `weight: int | None` (optional bound for stratified calculations)
 - `verbose: bool` (default: False)
 
 Performance / search knobs:
@@ -58,6 +59,7 @@ Precomputed inputs:
 
 - `inversion: dict | None`
 - `inversion_file: str | None`
+- `ilp: str | None`
 - `ilp_file: str | None`
 
 Advanced:
@@ -76,19 +78,23 @@ Single mode returns a dict with `terms` and `metadata`.
 
 See `docs/output.md` for schema details.
 
+If no valid sign assignment exists at the requested degree, `fk(...)` raises
+`fkcompute.SignAssignmentError`.
+
 ## Calling Lower-Level Pieces
 
 The API is intentionally layered. You can call pieces directly when debugging:
 
 - Inversion search:
   - `fkcompute.inversion.api.find_sign_assignment`
+  - `fkcompute.inversion.api.find_sign_assignment_full`
 
 - Constraint system (Phase 2):
   - `fkcompute.domain.constraints.pipeline.build_constraint_system`
 
 - ILP writer:
   - `fkcompute.solver.ilp.ilp`
-  - `fkcompute.solver.ilp.print_symbolic_relations`
+  - `fkcompute.solver.ilp.integral_bounded`
 
 - Symbolic formatting:
   - `fkcompute.output.symbolic.format_symbolic_output`

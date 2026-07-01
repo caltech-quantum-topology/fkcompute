@@ -30,19 +30,16 @@ Usage Example
                   outfile="trefoil_ilp.csv")
    print("ILP written to:", ilp_path)
 
-Gurobi Integration
-------------------
+HiGHS Integration
+-----------------
 
-Gurobi (``gurobipy``) is used in two places:
+HiGHS (``highspy``) is used in two places:
 
 1. :func:`~fkcompute.solver.ilp.integral_bounded` — feasibility check.
 2. :func:`~fkcompute.solver.ilp._check_sign_assignment` — validates a
    candidate sign assignment during the inversion search.
 
-The ``gurobipy`` dependency is optional at install time. To enable ILP checks,
-install it with ``pip install \".[ilp]\"`` and ensure your Gurobi license is
-configured.
-
+The solver is installed as a normal Python dependency and requires no licence.
 See :doc:`../installation` for details.
 
 ILP File Format

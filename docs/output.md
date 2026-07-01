@@ -80,12 +80,15 @@ Supported `format_type` values:
 - `inline`: one-line Python-ish string
 - `latex`: LaTeX string
 - `mathematica`: Mathematica syntax via SymPy
+- `str`: alias for `inline` in the Python helper
 
 CLI integration:
 
 - `fk simple ... --symbolic`
 - `fk simple ... --format latex`
 - `fk print-as result.json --format mathematica`
+
+The CLI accepts `pretty`, `inline`, `latex`, and `mathematica`.
 
 ### Variable Naming
 
@@ -96,8 +99,6 @@ Variable names are chosen from `metadata.num_x_variables`:
 - 3+ variables: `a`, `b`, `c`, ... (skipping `q`)
 
 ## Converting Output To SymPy
-
-Internal tests include an example converter (not included in the public snapshot).
 
 If you have SymPy installed, the package also provides:
 

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Output Format" href="output.html"><link rel="prev" title="Command-Line Interface" href="cli.html">
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Configuration Files - fkcompute 0.2.20 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
@@ -499,6 +499,10 @@ means unlimited).</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
 <td><p>Partial sign constraints for the inversion search (see below).</p></td>
 </tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">weight</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Optional weight bound for stratified calculations.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -523,20 +527,15 @@ means unlimited).</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 <td><p>Compute and attach a symbolic polynomial representation using SymPy.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">format</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">pretty</span></code></p></td>
-<td><p>Symbolic output format.  Choices: <code class="docutils literal notranslate"><span class="pre">pretty</span></code>, <code class="docutils literal notranslate"><span class="pre">inline</span></code>, <code class="docutils literal notranslate"><span class="pre">latex</span></code>,
-<code class="docutils literal notranslate"><span class="pre">mathematica</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">save_data</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">save_data</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 <td><p>Write intermediate files and the final JSON result to disk.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">save_dir</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">save_dir</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&quot;data&quot;</span></code></p></td>
 <td><p>Directory for saved files.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 <td><p>auto</p></td>
 <td><p>Base filename for saved files.  Defaults to a timestamp string.</p></td>
 </tr>
@@ -737,11 +736,28 @@ candidates.</p>
 <span class="w">    </span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
 <span class="w">    </span><span class="nt">symbolic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">latex</span>
 </pre></div>
 </div>
 <p>Run this with:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>config<span class="w"> </span>batch.yaml
+</pre></div>
+</div>
+</section>
+<section id="symbolic-formats">
+<h2>Symbolic Formats<a class="headerlink" href="#symbolic-formats" title="Link to this heading">¶</a></h2>
+<p>When <code class="docutils literal notranslate"><span class="pre">symbolic:</span> <span class="pre">true</span></code> is set, the saved result includes the default pretty
+symbolic string in <code class="docutils literal notranslate"><span class="pre">metadata[&quot;symbolic&quot;]</span></code>.  Config files do not currently
+accept a <code class="docutils literal notranslate"><span class="pre">format</span></code> key.  To produce LaTeX, Mathematica, or inline text,
+save the JSON result and reformat it:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">braid</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">]</span>
+<span class="nt">degree</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="nt">symbolic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">save_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trefoil_d2</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>config<span class="w"> </span>my_run.yaml
+fk<span class="w"> </span>print-as<span class="w"> </span>data/trefoil_d2.json<span class="w"> </span>--format<span class="w"> </span>latex
 </pre></div>
 </div>
 </section>
@@ -830,6 +846,7 @@ candidates.</p>
 </li>
 <li><a class="reference internal" href="#partial-signs-advanced">Partial Signs (Advanced)</a></li>
 <li><a class="reference internal" href="#complete-example">Complete Example</a></li>
+<li><a class="reference internal" href="#symbolic-formats">Symbolic Formats</a></li>
 </ul>
 </li>
 </ul>
@@ -842,12 +859,12 @@ candidates.</p>
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=9fea2d4c"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>

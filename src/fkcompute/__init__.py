@@ -29,23 +29,26 @@ Examples
 >>>
 >>> # Simple - automatic quiet mode with defaults
 >>> result = fk([1, -2, -2, 3], 2)
->>> # Returns: {"braid": [1,-2,-2,3], "inversion_data": {...}, "degree": 2, "fk": {...}}
+>>> # Returns: {"terms": [...], "metadata": {...}}
 >>>
 >>> # Config file - load from file (supports presets and custom parameters)
 >>> result = fk("myconfig.yaml")
 >>>
->>> # Access FK coefficients
->>> fk_invariant = result["fk"]
->>> print(fk_invariant)  # {"q^0": 1, "q^2": -1}
+>>> # Access FK terms and metadata
+>>> terms = result["terms"]
+>>> print(result["metadata"]["components"])
 >>>
 >>> # Access inversion data
->>> inversion = result["inversion_data"]
+>>> inversion = result["metadata"]["inversion"]
 """
 
 # Public API imports
-from .api.compute import fk
+from .api.compute import fk, SignAssignmentError
 from .api.presets import PRESETS
 from .api.batch import fk_from_config, fk_batch_from_config
+
+# Sign assignment (inversion) search
+from .inversion.api import find_sign_assignment, InversionResult
 
 # Domain types (commonly used)
 from .domain.braid.states import BraidStates
@@ -64,9 +67,13 @@ from .cli.app import main
 __all__ = [
     # Main API
     "fk",
+    "SignAssignmentError",
     "PRESETS",
     "fk_from_config",
     "fk_batch_from_config",
+    # Inversion
+    "find_sign_assignment",
+    "InversionResult",
     # Domain types
     "BraidStates",
     "StateLiteral",
@@ -88,4 +95,8 @@ __all__ = [
     "main",
 ]
 
-__version__ = "0.2.20"
+try:
+    from importlib.metadata import version as _pkg_version
+    __version__ = _pkg_version("fkcompute")
+except Exception:
+    __version__ = "0.2.20"

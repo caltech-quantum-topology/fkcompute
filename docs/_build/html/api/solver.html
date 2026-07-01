@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="fkcompute.output — Symbolic Formatting" href="output.html"><link rel="prev" title="fkcompute.inversion — Sign Assignment Search" href="inversion.html">
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>fkcompute.solver — ILP Generation - fkcompute 0.2.20 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
@@ -365,14 +365,14 @@ translating the reduced constraint system into a linear programming problem
 and writing the ILP <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file consumed by the C++ backend.</p>
 <section id="module-fkcompute.solver.ilp">
 <span id="ilp-generation"></span><h2>ILP Generation<a class="headerlink" href="#module-fkcompute.solver.ilp" title="Link to this heading">¶</a></h2>
-<p>ILP formulation and Gurobi integration for FK computation.</p>
+<p>ILP formulation and HiGHS integration for FK computation.</p>
 <p>This module provides functions for formulating and solving integer linear
 programs used in the FK computation pipeline.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.solver.ilp.integral_bounded">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.solver.ilp.</span></span><span class="sig-name descname"><span class="pre">integral_bounded</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multiples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">single_var_signs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/solver/ilp.html#integral_bounded"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.solver.ilp.integral_bounded" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.solver.ilp.</span></span><span class="sig-name descname"><span class="pre">integral_bounded</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">multiples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">single_var_signs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/fkcompute/solver/ilp.html#integral_bounded"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.solver.ilp.integral_bounded" title="Link to this definition">¶</a></dt>
 <dd><p>Check if the constraint system has a bounded integer solution.</p>
-<p>Uses Gurobi to check if there exists a bounded integer solution
+<p>Uses HiGHS to check if there exists a bounded integer solution
 satisfying all the inequality constraints.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -385,14 +385,14 @@ satisfying all the inequality constraints.</p>
 <dd class="field-even"><p>True if the system has a bounded integer solution.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)">bool</a></p>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.solver.ilp.ilp">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.solver.ilp.</span></span><span class="sig-name descname"><span class="pre">ilp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/solver/ilp.html#ilp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.solver.ilp.ilp" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.solver.ilp.</span></span><span class="sig-name descname"><span class="pre">ilp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/fkcompute/solver/ilp.html#ilp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.solver.ilp.ilp" title="Link to this definition">¶</a></dt>
 <dd><p>Generate ILP formulation for FK computation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -402,20 +402,21 @@ satisfying all the inequality constraints.</p>
 <li><p><strong>braid_states</strong> – BraidStates object with sign assignment.</p></li>
 <li><p><strong>write_to</strong> – Optional file path to write the ILP data.</p></li>
 <li><p><strong>verbose</strong> – Whether to print progress information.</p></li>
+<li><p><strong>weight</strong> – Optional weight parameter for stratified calculation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>ILP data as a string, or None if no valid assignment exists.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a> or None</p>
+<dd class="field-odd"><p>str or None</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="fkcompute.solver.ilp.print_symbolic_relations">
-<span class="sig-prename descclassname"><span class="pre">fkcompute.solver.ilp.</span></span><span class="sig-name descname"><span class="pre">print_symbolic_relations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><span class="pre">List</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><span class="pre">Dict</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/fkcompute/solver/ilp.html#print_symbolic_relations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.solver.ilp.print_symbolic_relations" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">fkcompute.solver.ilp.</span></span><span class="sig-name descname"><span class="pre">print_symbolic_relations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">braid_states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/fkcompute/solver/ilp.html#print_symbolic_relations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fkcompute.solver.ilp.print_symbolic_relations" title="Link to this definition">¶</a></dt>
 <dd><p>Print the reduced relations in human-readable format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -431,7 +432,7 @@ satisfying all the inequality constraints.</p>
 <dd class="field-even"><p>Dictionary with criteria, multiples, single_signs, and assignment if valid.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a> or None</p>
+<dd class="field-odd"><p>dict or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -453,18 +454,16 @@ satisfying all the inequality constraints.</p>
 </div>
 </section>
 </section>
-<section id="gurobi-integration">
-<h2>Gurobi Integration<a class="headerlink" href="#gurobi-integration" title="Link to this heading">¶</a></h2>
-<p>Gurobi (<code class="docutils literal notranslate"><span class="pre">gurobipy</span></code>) is used in two places:</p>
+<section id="highs-integration">
+<h2>HiGHS Integration<a class="headerlink" href="#highs-integration" title="Link to this heading">¶</a></h2>
+<p>HiGHS (<code class="docutils literal notranslate"><span class="pre">highspy</span></code>) is used in two places:</p>
 <ol class="arabic simple">
 <li><p><a class="reference internal" href="#fkcompute.solver.ilp.integral_bounded" title="fkcompute.solver.ilp.integral_bounded"><code class="xref py py-func docutils literal notranslate"><span class="pre">integral_bounded()</span></code></a> — feasibility check.</p></li>
 <li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">_check_sign_assignment()</span></code> — validates a
 candidate sign assignment during the inversion search.</p></li>
 </ol>
-<p>The <code class="docutils literal notranslate"><span class="pre">gurobipy</span></code> dependency is optional at install time. To enable ILP checks,
-install it with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">\&quot;.[ilp]\&quot;</span></code> and ensure your Gurobi license is
-configured.</p>
-<p>See <a class="reference internal" href="../installation.html"><span class="doc">Installation</span></a> for details.</p>
+<p>The solver is installed as a normal Python dependency and requires no licence.
+See <a class="reference internal" href="../installation.html"><span class="doc">Installation</span></a> for details.</p>
 </section>
 <section id="ilp-file-format">
 <h2>ILP File Format<a class="headerlink" href="#ilp-file-format" title="Link to this heading">¶</a></h2>
@@ -544,7 +543,7 @@ stable across package versions.</p>
 <li><a class="reference internal" href="#usage-example">Usage Example</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#gurobi-integration">Gurobi Integration</a></li>
+<li><a class="reference internal" href="#highs-integration">HiGHS Integration</a></li>
 <li><a class="reference internal" href="#ilp-file-format">ILP File Format</a></li>
 </ul>
 </li>
@@ -558,8 +557,8 @@ stable across package versions.</p>
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=9fea2d4c"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>

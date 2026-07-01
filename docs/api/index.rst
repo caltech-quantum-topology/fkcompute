@@ -34,7 +34,7 @@ Module Summary
    * - :mod:`fkcompute.inversion`
      - Sign assignment search (Phase 1 of the pipeline).
    * - :mod:`fkcompute.solver`
-     - ILP formulation and Gurobi integration (Phase 2).
+     - ILP formulation and HiGHS integration (Phase 2).
    * - :mod:`fkcompute.output`
      - Symbolic polynomial formatting using SymPy.
    * - :mod:`fkcompute.infra`

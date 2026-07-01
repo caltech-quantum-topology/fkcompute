@@ -16,7 +16,8 @@ Global Help
    Usage: fk [OPTIONS] COMMAND [ARGS]...
 
    Options:
-     --help   Show this message and exit.
+     --version, -V  Show the fkcompute version and exit.
+     --help         Show this message and exit.
 
    Commands:
      simple       Quick FK computation for a single braid.
@@ -75,7 +76,10 @@ Compute the FK invariant for a single braid from the command line.
    * - ``--format FORMAT``
      - ``pretty``
      - Symbolic output format.  Choices: ``pretty``, ``inline``,
-       ``latex``, ``mathematica``, ``str``.
+       ``latex``, ``mathematica``.
+   * - ``--weight N``
+     - ``null``
+     - Weight parameter for stratified calculations.
    * - ``--threads N``
      - 1
      - Number of threads for the C++ backend.
@@ -258,8 +262,7 @@ Create or display a configuration file template.
 
 .. code-block:: bash
 
-   fk template create [OPTIONS] OUTPUT_FILE
-   fk template show
+   fk template create [OPTIONS] [OUTPUT_FILE]
 
 ``fk template create``
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -269,15 +272,6 @@ Write a fully annotated template config file to ``OUTPUT_FILE``.
 .. code-block:: bash
 
    fk template create my_run.yaml
-
-``fk template show``
-~~~~~~~~~~~~~~~~~~~~~
-
-Print the template to stdout.
-
-.. code-block:: bash
-
-   fk template show
 
 
 Braid Input Formats

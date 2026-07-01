@@ -126,6 +126,9 @@ Optional Keys — Computation
    * - ``partial_signs``
      - ``null``
      - Partial sign constraints for the inversion search (see below).
+   * - ``weight``
+     - ``null``
+     - Optional weight bound for stratified calculations.
 
 Optional Keys — Output
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -140,10 +143,6 @@ Optional Keys — Output
    * - ``symbolic``
      - ``false``
      - Compute and attach a symbolic polynomial representation using SymPy.
-   * - ``format``
-     - ``pretty``
-     - Symbolic output format.  Choices: ``pretty``, ``inline``, ``latex``,
-       ``mathematica``, ``str``.
    * - ``save_data``
      - ``false``
      - Write intermediate files and the final JSON result to disk.
@@ -353,10 +352,30 @@ The following config file demonstrates all major options in a batch job:
        braid: [1, 1]
        degree: 2
        symbolic: true
-       format: latex
 
 Run this with:
 
 .. code-block:: bash
 
    fk config batch.yaml
+
+Symbolic Formats
+----------------
+
+When ``symbolic: true`` is set, the saved result includes the default pretty
+symbolic string in ``metadata["symbolic"]``.  Config files do not currently
+accept a ``format`` key.  To produce LaTeX, Mathematica, or inline text,
+save the JSON result and reformat it:
+
+.. code-block:: yaml
+
+   braid: [1, 1, 1]
+   degree: 2
+   symbolic: true
+   save_data: true
+   name: trefoil_d2
+
+.. code-block:: bash
+
+   fk config my_run.yaml
+   fk print-as data/trefoil_d2.json --format latex

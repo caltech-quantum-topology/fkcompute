@@ -54,7 +54,9 @@ The reducer `full_reduce(...)` applies a fixed-point simplification pass over re
 
 Implementation: `src/fkcompute/domain/constraints/reduction.py`.
 
-Internal snapshot tests pin this behavior (not included in the public snapshot).
+The public test suite includes focused checks around reduced constraints and
+the ILP output produced from them. Larger private baseline snapshots are not
+part of the public snapshot.
 
 ## Symbolic Assignment
 

@@ -182,7 +182,7 @@ All these formats are equivalent:
 ### Required
 - Python ≥ 3.9
 - NumPy ≥ 1.20
-- Gurobi ≥ 9.5 (for ILP solving)
+- HiGHS Python bindings (`highspy`) ≥ 1.10 (for ILP solving)
 - C++ toolchain for compilation
 
 ### Optional

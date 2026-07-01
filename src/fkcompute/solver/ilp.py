@@ -1,65 +1,35 @@
 """
-ILP formulation and Gurobi integration for FK computation.
+ILP formulation and HiGHS integration for FK computation.
 
 This module provides functions for formulating and solving integer linear
 programs used in the FK computation pipeline.
 """
 
-from typing import Any, Dict, List, Optional, cast
+from typing import Dict, List, Optional
 
+import highspy
 import numpy as np
 
-try:
-    import gurobipy as gp
-    from gurobipy import GRB
-
-    _GUROBI_AVAILABLE = True
-except Exception:  # pragma: no cover
-    gp = cast(Any, None)
-    GRB = cast(Any, None)
-    _GUROBI_AVAILABLE = False
-
 from ..domain.constraints.relations import _sort_any
-from ..domain.constraints.symbols import Symbol, one, zero, neg_one
-from ..domain.constraints.reduction import full_reduce
+from ..domain.constraints.symbols import Symbol, one
 from ..domain.solver.assignment import symbolic_variable_assignment
-from ..domain.solver.symbolic_constraints import (
-    minimum_degree_symbolic,
-    inequality_manager,
-    process_assignment,
-)
+from ..domain.solver.symbolic_constraints import process_assignment
 
 
-_GUROBI_ENV = None
-
-
-def _require_gurobi() -> None:
-    if _GUROBI_AVAILABLE:
-        return
-    raise RuntimeError(
-        "Gurobi (gurobipy) is required for ILP feasibility/boundedness checks. "
-        "Install the optional dependency with: pip install '.[ilp]' "
-        "(from the repo), or pip install 'fkcompute[ilp]' (if published to PyPI), "
-        "and ensure your Gurobi license is configured (e.g. GRB_LICENSE_FILE)."
-    )
-
-
-def _get_gurobi_env():
-    global _GUROBI_ENV
-    _require_gurobi()
-    if _GUROBI_ENV is None:
-        env = gp.Env(empty=True)
-        env.setParam("OutputFlag", 0)
-        env.start()
-        _GUROBI_ENV = env
-    return _GUROBI_ENV
+_HIGHS_ERROR_STATUSES = {
+    highspy.HighsModelStatus.kLoadError,
+    highspy.HighsModelStatus.kModelError,
+    highspy.HighsModelStatus.kPresolveError,
+    highspy.HighsModelStatus.kSolveError,
+    highspy.HighsModelStatus.kPostsolveError,
+}
 
 
 def integral_bounded(multiples: List, single_var_signs: Dict) -> bool:
     """
     Check if the constraint system has a bounded integer solution.
 
-    Uses Gurobi to check if there exists a bounded integer solution
+    Uses HiGHS to check if there exists a bounded integer solution
     satisfying all the inequality constraints.
 
     Parameters
@@ -74,15 +44,15 @@ def integral_bounded(multiples: List, single_var_signs: Dict) -> bool:
     bool
         True if the system has a bounded integer solution.
     """
-    _require_gurobi()
-
     n_multiples = len(multiples)
     sizes = [multiple.var.size for multiple in multiples]
     for_fill = max(sizes) if sizes else 1
     tableau = []
     for index in range(n_multiples):
-        if multiples[index].is_constant() and multiples[index].constant() == -1:
-            return False
+        if multiples[index].is_constant():
+            if multiples[index].constant() < 0:
+                return False
+            continue
         tableau.append(np.concatenate((multiples[index].var, np.zeros(for_fill - sizes[index]))))
     tableau = np.array(tableau) if tableau else np.array([]).reshape(0, for_fill)
     for index in range(1, for_fill):
@@ -90,35 +60,56 @@ def integral_bounded(multiples: List, single_var_signs: Dict) -> bool:
             if single_var_signs[Symbol(index)] == -1:
                 tableau[:, index] *= -1
                 tableau[:, 0] += tableau[:, index]
-    model = gp.Model(env=_get_gurobi_env())
-    model.setParam(gp.GRB.Param.PoolSearchMode, 1)
-    x = model.addVars(single_var_signs.keys(), vtype=GRB.INTEGER)
-    for index in range(n_multiples):
-        value = tableau[index][0]
+
+    model = highspy.Highs()
+    model.silent()
+    variables = {
+        key: model.addVariable(
+            lb=0,
+            ub=highspy.kHighsInf,
+            type=highspy.HighsVarType.kInteger,
+            name=str(key),
+        )
+        for key in sorted(single_var_signs, key=lambda symbol: symbol.index())
+    }
+
+    for row in tableau:
+        value = float(row[0])
         for index_ in range(1, for_fill):
-            if tableau[index][index_] != 0:
-                value += tableau[index][index_] * x[Symbol(index_)]
-        try:
-            model.addConstr(0 <= value)
-        except:
-            pass
-    for key in single_var_signs.keys():
-        model.setObjective(x[key], sense=GRB.MAXIMIZE)
-        model.optimize()
-        if model.Status != 2:
+            coefficient = row[index_]
+            if coefficient != 0:
+                symbol = Symbol(index_)
+                if symbol not in variables:
+                    raise ValueError(
+                        f"Constraint references {symbol}, but it has no sign assignment."
+                    )
+                value += float(coefficient) * variables[symbol]
+        model.addConstr(value >= 0)
+
+    if not variables:
+        return True
+
+    for variable in variables.values():
+        solve_status = model.maximize(variable)
+        model_status = model.getModelStatus()
+        if solve_status == highspy.HighsStatus.kError or model_status in _HIGHS_ERROR_STATUSES:
+            status_text = model.modelStatusToString(model_status)
+            raise RuntimeError(f"HiGHS failed while checking boundedness: {status_text}")
+        if model_status != highspy.HighsModelStatus.kOptimal:
             return False
-    if model.SolCount == 0:
-        return False
     return True
 
 
-def _check_sign_assignment(degree: int, relations: List, braid_states, verbose: bool = False) -> Optional[Dict]:
+def _check_sign_assignment(degree: int, relations: List, braid_states, weight: Optional[int] = None, verbose: bool = False) -> Optional[Dict]:
     """Check sign assignment validity for ILP generation."""
     assignment = symbolic_variable_assignment(relations, braid_states)
-    criteria, multi_var_inequalities, single_var_signs = process_assignment(assignment, braid_states, relations)
+    criteria, multi_var_inequalities, single_var_signs = process_assignment(assignment, braid_states, relations, weight=weight)
 
     for (key, value) in criteria.items():
-        criteria[key] = degree - value
+        if key >= 0:
+            criteria[key] = degree - value
+        else:
+            criteria[key] = weight - value if weight is not None else value
 
     if not integral_bounded(multi_var_inequalities + list(criteria.values()), single_var_signs):
         return None
@@ -131,7 +122,7 @@ def _check_sign_assignment(degree: int, relations: List, braid_states, verbose: 
     }
 
 
-def ilp(degree: int, relations: List, braid_states, write_to: Optional[str] = None, verbose: bool = False) -> Optional[str]:
+def ilp(degree: int, relations: List, braid_states, write_to: Optional[str] = None, verbose: bool = False, weight: Optional[int] = None) -> Optional[str]:
     """
     Generate ILP formulation for FK computation.
 
@@ -147,13 +138,15 @@ def ilp(degree: int, relations: List, braid_states, write_to: Optional[str] = No
         Optional file path to write the ILP data.
     verbose
         Whether to print progress information.
+    weight
+        Optional weight parameter for stratified calculation.
 
     Returns
     -------
     str or None
         ILP data as a string, or None if no valid assignment exists.
     """
-    check = _check_sign_assignment(degree, relations, braid_states)
+    check = _check_sign_assignment(degree, relations, braid_states, weight)
     if check is None:
         return None
 
@@ -174,11 +167,18 @@ def ilp(degree: int, relations: List, braid_states, write_to: Optional[str] = No
 
     criteria_tableau = []
     for index in range(n_criteria):
-        if criteria[index].is_constant():
+        if hasattr(criteria[index], 'is_constant') and criteria[index].is_constant():
             if criteria[index].constant() < 0:
                 raise Exception(f"Impossible Inequality 0 <= {criteria[index].constant()}")
         else:
-            criteria_tableau.append(np.concatenate((criteria[index].var, np.zeros(for_fill - criteria_sizes[index]))))
+            # Handle both Symbol objects and integers
+            if hasattr(criteria[index], 'var'):
+                criteria_tableau.append(np.concatenate((criteria[index].var, np.zeros(for_fill - criteria_sizes[index]))))
+            else:
+                # Handle integer (weight constraint)
+                weight_val = criteria[index]
+                weight_symbol = one * weight_val
+                criteria_tableau.append(np.concatenate((weight_symbol.var, np.zeros(for_fill - len(weight_symbol.var)))))
 
     inequality_tableau = []
     for index in range(n_multiples):
@@ -274,7 +274,7 @@ def ilp(degree: int, relations: List, braid_states, write_to: Optional[str] = No
     return output
 
 
-def print_symbolic_relations(degree: int, relations: List, braid_states, write_to: Optional[str] = None, verbose: bool = False) -> Optional[Dict]:
+def print_symbolic_relations(degree: int, relations: List, braid_states, write_to: Optional[str] = None, verbose: bool = False, weight: Optional[int] = None) -> Optional[Dict]:
     """
     Print the reduced relations in human-readable format.
 
@@ -296,7 +296,7 @@ def print_symbolic_relations(degree: int, relations: List, braid_states, write_t
     dict or None
         Dictionary with criteria, multiples, single_signs, and assignment if valid.
     """
-    check = _check_sign_assignment(degree, relations, braid_states)
+    check = _check_sign_assignment(degree, relations, braid_states, weight)
     if check is None:
         print("No valid sign assignment exists for this degree!")
         return None

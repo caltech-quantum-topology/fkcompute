@@ -22,7 +22,7 @@ sign-assignment candidates is performed.
 
 **Phase 2 — ILP generation.**
 The braid topology and sign assignment are translated into a reduced
-constraint system, validated for feasibility by Gurobi, and written to a
+constraint system, validated for feasibility by HiGHS, and written to a
 ``.csv`` file for the C++ backend.
 
 **Phase 3 — C++ computation.**
@@ -91,7 +91,7 @@ as follows:
 
 3. **Parallel evaluation** — candidates are distributed across Python
    worker processes (``max_workers``) in chunks of ``chunk_size``.  Each
-   worker tests its batch by calling the constraint reducer and the Gurobi
+   worker tests its batch by calling the constraint reducer and the HiGHS
    ILP checker.
 
 4. **Early exit** — as soon as one worker finds a valid assignment, the
@@ -143,7 +143,7 @@ Steps:
    expressing each state in terms of a small number of independent
    integer variables (the "free variables").
 
-4. **ILP feasibility check** — Gurobi verifies that the system has at least
+4. **ILP feasibility check** — HiGHS verifies that the system has at least
    one bounded integer solution.  This step catches degenerate cases before
    invoking the expensive C++ computation.
 

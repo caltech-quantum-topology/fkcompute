@@ -1,4 +1,4 @@
-# ILP Generation (Optional Gurobi + Custom CSV Format)
+# ILP Generation (HiGHS + Custom CSV Format)
 
 The ILP stage serves two purposes:
 
@@ -7,9 +7,10 @@ The ILP stage serves two purposes:
 
 Implementation: `src/fkcompute/solver/ilp.py`.
 
-Note: the Gurobi Python dependency is optional at install time. To enable ILP checks, install `gurobipy` via `pip install ".[ilp]"` and ensure your Gurobi license is configured.
+The HiGHS Python bindings (`highspy`) are installed with the package and are
+used for feasibility/boundedness checks.
 
-## Gurobi Feasibility / Boundedness Check
+## HiGHS Feasibility / Boundedness Check
 
 Function:
 
@@ -23,7 +24,7 @@ Inputs:
 Notes:
 
 - The solver flips variables with negative sign into a positive form by transforming the constraint tableau columns.
- - It uses a quiet Gurobi environment (`OutputFlag = 0`) created lazily on first use.
+- It uses a quiet HiGHS model for each boundedness check.
 
 ## ILP File Writer
 

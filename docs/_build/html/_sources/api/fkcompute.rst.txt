@@ -13,6 +13,10 @@ Main Computation Function
 
 .. autofunction:: fkcompute.fk
 
+.. autoclass:: fkcompute.SignAssignmentError
+   :members:
+   :show-inheritance:
+
 Batch and Config-File Functions
 ---------------------------------
 
@@ -57,6 +61,16 @@ Braid Word Utilities
 .. autofunction:: fkcompute.is_positive_braid
 
 .. autofunction:: fkcompute.is_homogeneous_braid
+
+Inversion Search
+----------------
+
+.. autofunction:: fkcompute.find_sign_assignment
+
+.. autoclass:: fkcompute.InversionResult
+   :members:
+   :undoc-members:
+   :no-index:
 
 Constraint Classes
 ------------------

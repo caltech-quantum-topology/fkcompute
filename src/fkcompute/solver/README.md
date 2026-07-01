@@ -1,11 +1,11 @@
 # Solver Package
 
-This package contains the ILP solver and parallel inversion search for FK computation. It depends on the domain layer and uses Gurobi for integer linear programming.
+This package contains the ILP solver and parallel inversion search for FK computation. It depends on the domain layer and uses HiGHS for integer linear programming.
 
 ## Modules
 
 ### `ilp.py`
-ILP (Integer Linear Programming) formulation and Gurobi integration.
+ILP (Integer Linear Programming) formulation and HiGHS integration.
 
 **Key Functions:**
 

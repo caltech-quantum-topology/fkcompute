@@ -28,22 +28,21 @@ Fixes:
 - If working from source, run `cmake -B build -S . && cmake --build build`.
 - If you have a custom `fk_main`, ensure it is discoverable via `PATH`.
 
-## Gurobi License / Import Errors
+## HiGHS Import Errors
 
 Symptom:
 
-- Importing `gurobipy` fails
-- Solves fail with licensing errors
+- Importing `highspy` fails
+- ILP feasibility checks fail before solving
 
 Fixes:
 
-- Install the optional dependency: `pip install ".[ilp]"`
-- Verify your Gurobi installation and license.
-- Set `GRB_LICENSE_FILE` if needed.
+- Reinstall package dependencies: `pip install .`
+- Or install HiGHS directly: `pip install "highspy>=1.10.0"`
 - Quick sanity check:
 
 ```bash
-python -c "import gurobipy as gp; m=gp.Model(); print('ok')"
+python -c "import highspy; print(highspy.Highs().version())"
 ```
 
 ## YAML Config Fails To Load
@@ -76,12 +75,12 @@ Note: `pretty` output may include unicode. If you need ASCII-only output, use:
 fk simple "[1,1,1]" 2 --format inline
 ```
 
-## Enhanced Interactive / History Not Available
+## Enhanced Interactive Mode Not Available
 
 Symptom:
 
 - CLI falls back to basic mode
-- `fk history ...` reports missing dependencies
+- `fk interactive --quick` reports missing optional dependencies
 
 Fix:
 

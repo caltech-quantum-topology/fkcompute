@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Troubleshooting" href="troubleshooting.html"><link rel="prev" title="fkcompute.interactive — Interactive Wizard" href="api/interactive.html">
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Development Guide - fkcompute 0.2.20 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
@@ -396,7 +396,7 @@ the binary again.</p>
 │       ├── cli/            # Typer CLI commands
 │       ├── domain/         # Pure domain logic (braid, constraints)
 │       ├── inversion/      # Phase 1: sign assignment search
-│       ├── solver/         # Phase 2: ILP generation (Gurobi)
+│       ├── solver/         # Phase 2: ILP generation (HiGHS)
 │       ├── output/         # Symbolic formatting (SymPy)
 │       ├── infra/          # Binary execution, config I/O
 │       ├── interactive/    # Rich-based interactive UI
@@ -407,10 +407,10 @@ the binary again.</p>
 │   ├── include/
 │   ├── tests/
 │   └── Makefile            # Legacy build (prefer CMake)
-├── tests/                  # Python test suite
-│   ├── test_fk_baseline.py
-│   ├── all_knots.yaml
-│   └── all_links.yaml
+├── tests/                  # Focused public Python tests
+│   ├── test_solver_ilp.py
+│   ├── test_find_sign_assignment_full.py
+│   └── test_inversion_search_order.py
 ├── mathematica/            # Wolfram Language paclet wrapper
 └── docs/                   # This documentation
 </pre></div>
@@ -419,20 +419,27 @@ the binary again.</p>
 <section id="running-the-test-suite">
 <h2>Running the Test Suite<a class="headerlink" href="#running-the-test-suite" title="Link to this heading">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all tests</span>
-pytest
+<span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>-q
 
 <span class="c1"># Run with verbose output</span>
-pytest<span class="w"> </span>-v
+<span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>-v
 
 <span class="c1"># Run a specific test file</span>
-pytest<span class="w"> </span>tests/test_fk_baseline.py
+<span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>tests/test_solver_ilp.py
 
 <span class="c1"># Run tests matching a name pattern</span>
-pytest<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;trefoil&quot;</span>
+<span class="nv">PYTHONPATH</span><span class="o">=</span>src<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;inversion&quot;</span>
 </pre></div>
 </div>
-<p>The baseline tests compare FK invariants against a set of pre-computed
-reference values for knots up to 11 crossings.</p>
+<p>The public tests cover HiGHS-backed ILP feasibility checks, stable ILP CSV
+generation for small braids, inversion search ordering, and full
+sign-assignment deduplication. Larger baseline datasets are kept outside the
+public snapshot.</p>
+<p>C++ build validation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>-C<span class="w"> </span>cpp<span class="w"> </span>fk_main
+make<span class="w"> </span>-C<span class="w"> </span>cpp<span class="w"> </span>clean
+</pre></div>
+</div>
 </section>
 <section id="coding-conventions">
 <h2>Coding Conventions<a class="headerlink" href="#coding-conventions" title="Link to this heading">¶</a></h2>
@@ -452,8 +459,8 @@ except in CLI/output modules.</p></li>
 <p>The following rules maintain the layered architecture:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">domain/</span></code> — pure functions and data classes only; no subprocess calls,
-no file I/O, no Gurobi imports.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">solver/</span></code> — may import Gurobi; no CLI or output code.</p></li>
+no file I/O, no HiGHS imports.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">solver/</span></code> — may import HiGHS; no CLI or output code.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">infra/</span></code> — all file and process I/O; no domain logic.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">api/</span></code> — orchestrates domain and infra; no direct CLI code.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">cli/</span></code> — translates CLI arguments to API calls; minimal business logic.</p></li>
@@ -472,12 +479,16 @@ state loop.</p></li>
 <section id="building-the-documentation">
 <h2>Building the Documentation<a class="headerlink" href="#building-the-documentation" title="Link to this heading">¶</a></h2>
 <p>Install the documentation dependencies:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>sphinx<span class="w"> </span>sphinx-rtd-theme<span class="w"> </span>sphinx-copybutton<span class="w"> </span>sphinx-design
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>docs/requirements.txt
 </pre></div>
 </div>
 <p>Build the HTML documentation:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>docs
 sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>.<span class="w"> </span>_build/html
+</pre></div>
+</div>
+<p>From the repository root, the equivalent command is:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sphinx<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>docs<span class="w"> </span>docs/_build/html
 </pre></div>
 </div>
 <p>Open <code class="docutils literal notranslate"><span class="pre">docs/_build/html/index.html</span></code> in a browser.</p>
@@ -567,8 +578,8 @@ sphinx-autobuild<span class="w"> </span>docs<span class="w"> </span>docs/_build/
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=9fea2d4c"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>

@@ -31,6 +31,7 @@ The simplest invocation uses the ``simple`` sub-command:
 .. code-block:: bash
 
    fk simple "[1,1,1]" 2
+   fk --version
 
 This computes :math:`F_K(x, q)` for the **trefoil knot** (braid closure of
 :math:`\sigma_1^3`) truncated at degree 2.
@@ -61,6 +62,12 @@ Symbolic output (requires ``fkcompute[symbolic]``):
    fk simple "[1,1,1]" 2 --format latex      # LaTeX string
    fk simple "[1,1,1]" 2 --format mathematica
 
+For larger non-homogeneous braids, tune the search and backend separately:
+
+.. code-block:: bash
+
+   fk simple "[1,-2,1,-2]" 3 --workers 4 --threads 4 --weight 5
+
 Interactive wizard (requires ``fkcompute[interactive]``):
 
 .. code-block:: bash
@@ -77,6 +84,9 @@ Python API
 
    # Simplest call: braid + degree
    result = fk([1, 1, 1], 2)
+
+   # Parallel inversion search, C++ threading, and a stratified weight bound
+   result = fk([1, -2, 1, -2], 3, max_workers=4, threads=4, weight=5)
 
 The returned dictionary has two top-level keys:
 

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Mathematical Overview" href="overview.html"><link rel="prev" title="Installation" href="installation.html">
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Quickstart - fkcompute 0.2.20 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
@@ -384,6 +384,7 @@ computation.  For a deeper explanation of what the results mean, see
 <h2>Command-Line Interface<a class="headerlink" href="#command-line-interface" title="Link to this heading">¶</a></h2>
 <p>The simplest invocation uses the <code class="docutils literal notranslate"><span class="pre">simple</span></code> sub-command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span>
+fk<span class="w"> </span>--version
 </pre></div>
 </div>
 <p>This computes <span class="math notranslate nohighlight">\(F_K(x, q)\)</span> for the <strong>trefoil knot</strong> (braid closure of
@@ -409,6 +410,10 @@ fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[
 fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,1,1]&quot;</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>--format<span class="w"> </span>mathematica
 </pre></div>
 </div>
+<p>For larger non-homogeneous braids, tune the search and backend separately:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>simple<span class="w"> </span><span class="s2">&quot;[1,-2,1,-2]&quot;</span><span class="w"> </span><span class="m">3</span><span class="w"> </span>--workers<span class="w"> </span><span class="m">4</span><span class="w"> </span>--threads<span class="w"> </span><span class="m">4</span><span class="w"> </span>--weight<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
 <p>Interactive wizard (requires <code class="docutils literal notranslate"><span class="pre">fkcompute[interactive]</span></code>):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w">                 </span><span class="c1"># full wizard</span>
 fk<span class="w"> </span>interactive<span class="w">     </span><span class="c1"># same</span>
@@ -421,6 +426,9 @@ fk<span class="w"> </span>interactive<span class="w">     </span><span class="c1
 
 <span class="c1"># Simplest call: braid + degree</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Parallel inversion search, C++ threading, and a stratified weight bound</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">fk</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The returned dictionary has two top-level keys:</p>
@@ -551,12 +559,12 @@ fk<span class="w"> </span>interactive<span class="w">     </span><span class="c1
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=9fea2d4c"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>

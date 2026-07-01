@@ -44,7 +44,8 @@ int main() {
         std::vector<int> test_angles = {1, 0}; // Simple test angles
 
         try {
-            MultivariablePolynomial result = engine.computeForAngles(test_angles);
+            engine.computeForAngles(test_angles);
+            const auto& result = engine.getResult();
             std::cout << "✓ Successfully computed for test angles [1, 0]" << std::endl;
 
             // Display basic result info

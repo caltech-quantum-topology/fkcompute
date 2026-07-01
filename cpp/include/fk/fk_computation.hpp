@@ -2,12 +2,8 @@
 
 #include "fk/polynomial_config.hpp"
 #include <array>
-#include <functional>
 #include <list>
 #include <memory>
-#include <queue>
-#include <set>
-#include <stack>
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -74,17 +70,23 @@ public:
   explicit FKComputationEngine(const FKConfiguration &config);
 
   /**
-   * Compute FK polynomial for given angles
+   * Compute the FK contribution for given angles and accumulate it
+   * into this engine's running result.
    * @param angles Input angle vector
-   * @return Computed polynomial result
    */
-  PolynomialType computeForAngles(const std::vector<int> &angles);
+  void computeForAngles(const std::vector<int> &angles);
 
   /**
    * Get the current accumulated result
    */
   const PolynomialType &getResult() const { return result_; }
   PolynomialType &getResult() { return result_; }
+
+  const std::vector<double> &getXFractionalPowers() const {
+    return x_fractional_powers_;
+  }
+
+  double getQFractionalPower() const { return q_fractional_power_; }
 
   /**
    * Reset computation state
@@ -94,7 +96,9 @@ public:
 private:
   const FKConfiguration &config_;
   PolynomialType result_;
-  std::vector<int> accumulator_block_sizes_;
+  std::vector<double> x_fractional_powers_;
+  double q_fractional_power_ = 0.0;
+  bool q_fractional_power_set_ = false;
   std::vector<std::vector<int>> numerical_assignments_;
 
   // Cache for crossingFactor results
@@ -128,22 +132,19 @@ private:
     }
   };
 
-  mutable std::unordered_map<CrossingFactorKey, PolynomialType, CrossingFactorKeyHash> crossing_factor_cache_;
+  // Cached factors are shared (not copied) on cache hits; shared_ptr keeps
+  // them alive across the simple clear-on-full eviction.
+  mutable std::unordered_map<CrossingFactorKey,
+                             std::shared_ptr<const PolynomialType>,
+                             CrossingFactorKeyHash>
+      crossing_factor_cache_;
   mutable std::shared_mutex crossing_factor_mutex_;
 
-  void initializeAccumulatorBlockSizes();
-  void
-  computeNumericalAssignments(const std::vector<int> &angles);
+  void computeNumericalAssignments(const std::vector<int> &angles);
 
-  PolynomialType
-  crossingFactor(const std::vector<int> &max_x_degrees); 
+  std::shared_ptr<const PolynomialType>
+  crossingFactor(const std::vector<int> &max_x_degrees);
 
-  void accumulateResultPoly(const PolynomialType &poly,
-                            const std::vector<int> &x_power_accumulator,
-                            int q_power_accumulator);
-  void performOffsetAdditionPoly(const PolynomialType &source_poly,
-                                 const std::vector<int> &x_offset, int q_offset,
-                                 int sign_multiplier);
 };
 
 /**
@@ -160,7 +161,9 @@ public:
    * @param filename Output filename
    */
   void writeToJson(const PolynomialType &result,
-                   const std::string &filename);
+                   const std::string &filename,
+                   const std::vector<double> &overall_x_powers = {},
+                   double overall_q_power = 0.0);
 
   /**
    * Write polynomial result to human-readable format
@@ -240,26 +243,11 @@ private:
   FKResultWriter writer_;
 
   void initializeEngine(int num_threads);
-  void setupWorkStealingComputation(const std::vector<std::vector<int>> &all_points);
-  void combineEngineResults();
-  void performFinalOffsetComputation();
-
-  // Pooling functionality - moved from solution_pool_1a_double_links.cpp
-  struct EnumerationState {
-    std::vector<std::vector<double>> criteria;
-    std::list<std::array<int, 2>> bounds;
-    std::vector<std::vector<double>> supporting_inequalities;
-    std::vector<int> point;
-    int current_bound_index;
-    int current_value;
-    int upper_bound;
-  };
 
   struct VariableAssignmentState {
     std::shared_ptr<const std::vector<std::vector<double>>> new_criteria;
     std::shared_ptr<const std::vector<double>> degrees;
     std::shared_ptr<const std::vector<std::vector<double>>> criteria;
-    std::list<std::array<int, 2>> first;
     std::list<std::array<int, 2>> bounds;
     std::shared_ptr<const std::vector<std::vector<double>>> supporting_inequalities;
     std::vector<int> point;
@@ -267,17 +255,6 @@ private:
     int current_value;
     int max_value;
 
-    bool operator<(const VariableAssignmentState& other) const {
-      if (point != other.point) return point < other.point;
-      if (current_var_index != other.current_var_index) return current_var_index < other.current_var_index;
-      return current_value < other.current_value;
-    }
-
-    bool operator==(const VariableAssignmentState& other) const {
-      return point == other.point &&
-             current_var_index == other.current_var_index &&
-             current_value == other.current_value;
-    }
   };
 
   // Private pooling methods
@@ -315,9 +292,6 @@ private:
 
   ValidatedCriteria findValidCriteria();
 
-  void pooling(std::vector<std::vector<double>> main_inequalities,
-               std::vector<std::vector<double>> supporting_inequalities,
-               const std::function<void(const std::vector<int> &)> &function);
 
   // Helper functions for assignVariables refactoring
   AssignmentResult createSingleAssignment(const ValidatedCriteria &valid_criteria);
@@ -327,8 +301,6 @@ private:
   VariableAssignmentState createInitialAssignmentState(const ValidatedCriteria &valid_criteria,
                                                        const std::vector<std::array<int, 2>> &bounds_vector);
 
-  std::stack<VariableAssignmentState> initializeAssignmentStack(const ValidatedCriteria &valid_criteria,
-                                                               const std::vector<std::array<int, 2>> &bounds_vector);
 
   int calculateMaxValue(const std::vector<std::vector<double>> &criteria,
                        const std::vector<double> &degrees,

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#"><link rel="search" title="Search" href="search.html">
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 --><title>Index - fkcompute 0.2.20 documentation</title>
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 --><title>Index - fkcompute 0.2.20 documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -459,12 +459,8 @@
 </li>
         <li><a href="api/domain.html#fkcompute.domain.braid.signed.SignedBraid.compute_r_matrices">compute_r_matrices() (fkcompute.domain.braid.signed.SignedBraid method)</a>
 </li>
-        <li><a href="api/fkcompute.html#fkcompute.api.batch.configure_logging">configure_logging() (in module fkcompute.api.batch)</a>
-
-        <ul>
-          <li><a href="api/fkcompute.html#fkcompute.api.compute.configure_logging">(in module fkcompute.api.compute)</a>
+        <li><a href="api/fkcompute.html#fkcompute.api.compute.configure_logging">configure_logging() (in module fkcompute.api.compute)</a>
 </li>
-        </ul></li>
         <li><a href="api/fkcompute.html#fkcompute.Conservation">Conservation (class in fkcompute)</a>
 
         <ul>
@@ -541,7 +537,13 @@
 </li>
         <li><a href="api/infra.html#fkcompute.infra.io.find_index">find_index() (in module fkcompute.infra.io)</a>
 </li>
-        <li><a href="api/inversion.html#fkcompute.inversion.api.find_sign_assignment">find_sign_assignment() (in module fkcompute.inversion.api)</a>
+        <li><a href="api/fkcompute.html#fkcompute.find_sign_assignment">find_sign_assignment() (in module fkcompute)</a>
+
+        <ul>
+          <li><a href="api/inversion.html#fkcompute.inversion.api.find_sign_assignment">(in module fkcompute.inversion.api)</a>
+</li>
+        </ul></li>
+        <li><a href="api/inversion.html#fkcompute.inversion.api.find_sign_assignment_full">find_sign_assignment_full() (in module fkcompute.inversion.api)</a>
 </li>
         <li><a href="api/infra.html#fkcompute.infra.io.find_where">find_where() (in module fkcompute.infra.io)</a>
 </li>
@@ -782,8 +784,6 @@
 </li>
         <li><a href="api/domain.html#fkcompute.domain.braid.signed.SignedBraid.generate_position_assignments">generate_position_assignments() (fkcompute.domain.braid.signed.SignedBraid method)</a>
 </li>
-        <li><a href="api/domain.html#fkcompute.domain.braid.signed.SignedBraid.generate_strand_signs">generate_strand_signs() (fkcompute.domain.braid.signed.SignedBraid method)</a>
-</li>
         <li><a href="api/domain.html#fkcompute.domain.constraints.reduction.get_aliases">get_aliases() (in module fkcompute.domain.constraints.reduction)</a>
 </li>
         <li><a href="api/interactive.html#fkcompute.interactive.ui.ValidatedInput.get_braid">get_braid() (fkcompute.interactive.ui.ValidatedInput static method)</a>
@@ -930,6 +930,8 @@
   <h2>M</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/inversion.html#fkcompute.inversion.variants.matches_partial_signs">matches_partial_signs() (in module fkcompute.inversion.variants)</a>
+</li>
         <li><a href="api/output.html#fkcompute.output.symbolic.matrix_to_polynomial">matrix_to_polynomial() (in module fkcompute.output.symbolic)</a>
 </li>
         <li><a href="api/domain.html#fkcompute.domain.solver.assignment.minimal_free">minimal_free() (in module fkcompute.domain.solver.assignment)</a>
@@ -1011,8 +1013,6 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/inversion.html#fkcompute.inversion.permutations.new_rot">new_rot() (in module fkcompute.inversion.permutations)</a>
 </li>
-        <li><a href="api/domain.html#fkcompute.domain.braid.signed.SignedBraid.none_count">none_count() (fkcompute.domain.braid.signed.SignedBraid method)</a>
-</li>
     </ul></td>
   </tr></table>
 </section>
@@ -1031,17 +1031,15 @@
 </li>
         <li><a href="api/inversion.html#fkcompute.inversion.permutations.perms_rot">perms_rot() (in module fkcompute.inversion.permutations)</a>
 </li>
-        <li><a href="api/inversion.html#fkcompute.inversion.permutations.perms_rot_closed">perms_rot_closed() (in module fkcompute.inversion.permutations)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/inversion.html#fkcompute.inversion.permutations.perms_rot_closed">perms_rot_closed() (in module fkcompute.inversion.permutations)</a>
+</li>
         <li><a href="api/solver.html#fkcompute.solver.ilp.print_symbolic_relations">print_symbolic_relations() (in module fkcompute.solver.ilp)</a>
 </li>
         <li><a href="api/output.html#fkcompute.output.symbolic.print_symbolic_result">print_symbolic_result() (in module fkcompute.output.symbolic)</a>
 </li>
         <li><a href="api/domain.html#fkcompute.domain.solver.symbolic_constraints.process_assignment">process_assignment() (in module fkcompute.domain.solver.symbolic_constraints)</a>
-</li>
-        <li><a href="api/domain.html#fkcompute.domain.braid.signed.SignedBraid.propagate">propagate() (fkcompute.domain.braid.signed.SignedBraid method)</a>
 </li>
         <li><a href="api/domain.html#fkcompute.domain.constraints.reduction.propagate_neg_one_aliases">propagate_neg_one_aliases() (in module fkcompute.domain.constraints.reduction)</a>
 </li>
@@ -1125,13 +1123,17 @@
 </li>
         <li><a href="api/domain.html#fkcompute.domain.braid.signed.SignedBraid.sign_at_position">sign_at_position() (fkcompute.domain.braid.signed.SignedBraid method)</a>
 </li>
+        <li><a href="api/fkcompute.html#fkcompute.api.compute.SignAssignmentError">SignAssignmentError</a>
+
+        <ul>
+          <li><a href="api/fkcompute.html#fkcompute.SignAssignmentError">(class in fkcompute)</a>
+</li>
+        </ul></li>
         <li><a href="api/domain.html#fkcompute.domain.braid.signed.SignedBraid">SignedBraid (class in fkcompute.domain.braid.signed)</a>
 </li>
         <li><a href="api/domain.html#fkcompute.domain.constraints.symbols.solve">solve() (in module fkcompute.domain.constraints.symbols)</a>
 </li>
         <li><a href="api/infra.html#fkcompute.infra.io.sort_any">sort_any() (in module fkcompute.infra.io)</a>
-</li>
-        <li><a href="api/inversion.html#fkcompute.inversion.search.split_ranges">split_ranges() (in module fkcompute.inversion.search)</a>
 </li>
         <li><a href="api/interactive.html#fkcompute.interactive.progress.FKProgressTracker.start_file_operations">start_file_operations() (fkcompute.interactive.progress.FKProgressTracker method)</a>
 </li>
@@ -1187,8 +1189,6 @@
   <h2>T</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/inversion.html#fkcompute.inversion.search.total_assignments_for_braid">total_assignments_for_braid() (in module fkcompute.inversion.search)</a>
-</li>
         <li><a href="api/fkcompute.html#fkcompute.Conservation.try_sum_alias">try_sum_alias() (fkcompute.Conservation method)</a>
 
         <ul>
@@ -1208,8 +1208,6 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/domain.html#fkcompute.domain.constraints.reduction.unary_conservation_is_alias">unary_conservation_is_alias() (in module fkcompute.domain.constraints.reduction)</a>
-</li>
-        <li><a href="api/domain.html#fkcompute.domain.braid.signed.SignedBraid.update">update() (fkcompute.domain.braid.signed.SignedBraid method)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
@@ -1279,8 +1277,6 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/inversion.html#fkcompute.inversion.search.worker_on_perm_batch">worker_on_perm_batch() (in module fkcompute.inversion.search)</a>
 </li>
-        <li><a href="api/inversion.html#fkcompute.inversion.search.worker_on_range">worker_on_range() (in module fkcompute.inversion.search)</a>
-</li>
     </ul></td>
   </tr></table>
 </section>
@@ -1336,8 +1332,8 @@
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=9fea2d4c"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>

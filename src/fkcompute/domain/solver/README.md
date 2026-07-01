@@ -108,7 +108,7 @@ result = check_sign_assignment(3, relations, bs)
 The domain solver provides the symbolic representation that the ILP solver (`fkcompute.solver.ilp`) uses to:
 
 1. Generate the ILP tableau from symbolic constraints
-2. Check feasibility using Gurobi
+2. Check feasibility using HiGHS
 3. Find bounded integer solutions
 
 The validation functions are also used by the parallel inversion search (`fkcompute.solver.inversion`) to quickly filter out invalid sign configurations.

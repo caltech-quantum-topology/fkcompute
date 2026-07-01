@@ -11,7 +11,7 @@ from typing import Dict, List, Any, Union
 
 try:
     import sympy as sp
-    from sympy import symbols, expand, latex
+    from sympy import symbols, latex
     SYMPY_AVAILABLE = True
 except ImportError:
     SYMPY_AVAILABLE = False
@@ -106,6 +106,18 @@ def matrix_to_polynomial(fk_result: Dict) -> 'sp.Expr':
                 new_term *= variables[i]**pow_val
 
         fk_polynomial += new_term
+
+    # Re-introduce the fractional x-power offset that was stripped before flooring
+    overall_x_powers = fk_result.get('metadata', {}).get('overall_x_powers', [])
+    for i, frac_pow in enumerate(overall_x_powers):
+        if frac_pow != 0 and i < len(variables):
+            fk_polynomial *= variables[i] ** sp.nsimplify(frac_pow)
+
+    # Re-introduce the fractional q-power offset (in 1/4 Z) that was stripped before flooring
+    overall_q_power = fk_result.get('metadata', {}).get('overall_q_power', 0.0)
+    if overall_q_power != 0:
+        q = symbols('q')
+        fk_polynomial *= q ** sp.nsimplify(overall_q_power)
 
     return fk_polynomial
 

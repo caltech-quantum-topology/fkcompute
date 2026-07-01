@@ -1,6 +1,7 @@
 # Quickstart
 
-Note: full FK computation requires Gurobi. Install the optional dependency with `pip install ".[ilp]"` and ensure your license is configured.
+Note: full FK computation uses the open-source HiGHS solver through `highspy`,
+which is installed with the package.
 
 ## CLI
 
@@ -8,6 +9,7 @@ Compute an FK invariant quickly:
 
 ```bash
 fk simple "[1,1,1]" 2
+fk --version
 ```
 
 Symbolic output (requires `sympy` / `fkcompute[symbolic]`):
@@ -32,6 +34,12 @@ Run from a config file:
 fk config my_run.yaml
 ```
 
+Use more search workers, C++ threads, or a stratified weight bound:
+
+```bash
+fk simple "[1,-2,1,-2]" 3 --workers 4 --threads 4 --weight 5
+```
+
 ## Python
 
 The public API is `fkcompute.fk`:
@@ -42,6 +50,10 @@ from fkcompute import fk
 result = fk([1, 1, 1], 2)
 print(result["metadata"]["components"])
 print(len(result["terms"]))
+```
+
+```python
+result = fk([1, -2, 1, -2], 3, max_workers=4, threads=4, weight=5)
 ```
 
 With symbolic formatting:
@@ -83,6 +95,7 @@ degree: 2
 symbolic: true
 preset: parallel
 threads: 4
+weight: 5
 save_data: true
 save_dir: data
 name: trefoil_d2

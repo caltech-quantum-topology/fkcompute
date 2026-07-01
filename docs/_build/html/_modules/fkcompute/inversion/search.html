@@ -1,50 +1,279 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
+
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>fkcompute.inversion.search - fkcompute 0.2.20 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/quantum_topology.css?v=c7af9278" />
+    
+    
 
 
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../../">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>fkcompute.inversion.search &mdash; fkcompute 0.2.20 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  --font-stack: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  --font-stack--monospace: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --color-brand-primary: #d55a2b;
+  --color-brand-content: #d55a2b;
+  --color-background-primary: #f8f9fc;
+  --color-background-secondary: #ffffff;
+  --color-foreground-primary: #1a1a2e;
+  --color-foreground-secondary: #5a5a7a;
+  --color-foreground-muted: #5a5a7a;
+  --color-link: #0066cc;
+  --color-link--hover: #d55a2b;
+  --color-link-underline: transparent;
+  --color-link-underline--hover: #d55a2b;
+  --color-sidebar-background: #ffffff;
+  --color-sidebar-link-text: #5a5a7a;
+  --color-sidebar-link-text--top-level: #1a1a2e;
+  --color-sidebar-item-background--current: rgba(213,90,43,0.08);
+  --color-sidebar-item-background--hover: rgba(213,90,43,0.04);
+  --color-sidebar-brand-text: #1a1a2e;
+  --color-sidebar-caption-text: #5a5a7a;
+  --color-code-background: #f0f1f5;
+  --color-code-foreground: #1a1a2e;
+  --color-highlighted-background: rgba(213,90,43,0.12);
+  --color-admonition-background: rgba(213,90,43,0.04);
+  --color-header-background: rgba(248,249,252,0.95);
+  --color-header-border: rgba(0,0,0,0.08);
+  --color-header-text: #1a1a2e;
   
-      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=20e0ead2"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="../../../_static/copybutton.js?v=f281be69"></script>
-      <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
-    <script src="../../../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" /> 
-</head>
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --font-stack: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  --font-stack--monospace: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --color-brand-primary: #ff6c39;
+  --color-brand-content: #ff6c39;
+  --color-background-primary: #050611;
+  --color-background-secondary: #07081a;
+  --color-foreground-primary: #f5f7ff;
+  --color-foreground-secondary: #9aa0c4;
+  --color-foreground-muted: #9aa0c4;
+  --color-link: #ffe182;
+  --color-link--hover: #ff6c39;
+  --color-link-underline: transparent;
+  --color-link-underline--hover: #ff6c39;
+  --color-sidebar-background: #07081a;
+  --color-sidebar-link-text: #9aa0c4;
+  --color-sidebar-link-text--top-level: #f5f7ff;
+  --color-sidebar-item-background--current: rgba(255,108,57,0.1);
+  --color-sidebar-item-background--hover: rgba(255,108,57,0.06);
+  --color-sidebar-brand-text: #f5f7ff;
+  --color-sidebar-caption-text: #9aa0c4;
+  --color-code-background: #0a0a20;
+  --color-code-foreground: #f5f7ff;
+  --color-highlighted-background: rgba(255,108,57,0.18);
+  --color-admonition-background: rgba(255,108,57,0.06);
+  --color-header-background: rgba(5,6,17,0.92);
+  --color-header-border: rgba(255,255,255,0.04);
+  --color-header-text: #f5f7ff;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  --font-stack: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  --font-stack--monospace: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --color-brand-primary: #ff6c39;
+  --color-brand-content: #ff6c39;
+  --color-background-primary: #050611;
+  --color-background-secondary: #07081a;
+  --color-foreground-primary: #f5f7ff;
+  --color-foreground-secondary: #9aa0c4;
+  --color-foreground-muted: #9aa0c4;
+  --color-link: #ffe182;
+  --color-link--hover: #ff6c39;
+  --color-link-underline: transparent;
+  --color-link-underline--hover: #ff6c39;
+  --color-sidebar-background: #07081a;
+  --color-sidebar-link-text: #9aa0c4;
+  --color-sidebar-link-text--top-level: #f5f7ff;
+  --color-sidebar-item-background--current: rgba(255,108,57,0.1);
+  --color-sidebar-item-background--hover: rgba(255,108,57,0.06);
+  --color-sidebar-brand-text: #f5f7ff;
+  --color-sidebar-caption-text: #9aa0c4;
+  --color-code-background: #0a0a20;
+  --color-code-foreground: #f5f7ff;
+  --color-highlighted-background: rgba(255,108,57,0.18);
+  --color-admonition-background: rgba(255,108,57,0.06);
+  --color-header-background: rgba(5,6,17,0.92);
+  --color-header-border: rgba(255,255,255,0.04);
+  --color-header-text: #f5f7ff;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
 
-          
-          
-          <a href="../../../index.html" class="icon icon-home">
-            fkcompute
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">fkcompute 0.2.20 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">fkcompute 0.2.20 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
@@ -52,7 +281,13 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a><input aria-label="Toggle navigation of Tutorials" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/knots.html">Computing FK for Knots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/links.html">Computing FK for Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/batch.html">Batch Computations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorials/advanced.html">Advanced Usage</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configuration.html">Configuration Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../output.html">Output Format</a></li>
@@ -64,7 +299,16 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/fkcompute.html"><code class="docutils literal notranslate"><span class="pre">fkcompute</span></code> — Top-Level API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/domain.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.domain</span></code> — Braid and Constraint Domain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/inversion.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.inversion</span></code> — Sign Assignment Search</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/solver.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.solver</span></code> — ILP Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/output.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.output</span></code> — Symbolic Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/infra.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.infra</span></code> — Infrastructure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/interactive.html"><code class="docutils literal notranslate"><span class="pre">fkcompute.interactive</span></code> — Interactive Wizard</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Development</span></p>
 <ul>
@@ -73,36 +317,44 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../mathematica.html">Mathematica / Wolfram Language Integration</a></li>
 </ul>
 
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../index.html">fkcompute</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
-      <li class="breadcrumb-item active">fkcompute.inversion.search</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <h1>Source code for fkcompute.inversion.search</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Parallel sign assignment search for FK computation.</span>
+</div>
 
-<span class="sd">This module provides functions for searching through sign assignment</span>
-<span class="sd">configurations in parallel to find valid assignments.</span>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for fkcompute.inversion.search</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Sign assignment search for FK computation.</span>
+
+<span class="sd">This module searches through sign-assignment candidates (induced by</span>
+<span class="sd">arc-label permutations) to find a valid assignment for a braid at a</span>
+<span class="sd">given degree. The search runs in-process for a single worker and uses</span>
+<span class="sd">a multiprocessing pool when more workers are requested.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
@@ -131,6 +383,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.variants</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">PartialSignsType</span><span class="p">,</span>
     <span class="n">generate_braid_variants</span><span class="p">,</span>
+    <span class="n">matches_partial_signs</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -145,82 +398,83 @@
         <span class="k">yield</span> <span class="n">batch</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_matches_partial_signs</span><span class="p">(</span>
-    <span class="n">signs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="n">partial_signs</span><span class="p">:</span> <span class="n">PartialSignsType</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">comp</span><span class="p">,</span> <span class="n">templ</span> <span class="ow">in</span> <span class="n">partial_signs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">cand</span> <span class="o">=</span> <span class="n">signs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">cand</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">cand</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">templ</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">for</span> <span class="n">s_cand</span><span class="p">,</span> <span class="n">s_req</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cand</span><span class="p">,</span> <span class="n">templ</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">s_req</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">s_cand</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">(</span><span class="n">s_req</span><span class="p">):</span>
-                <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">return</span> <span class="kc">True</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_PermChecker</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check permutation candidates against one braid variant.</span>
 
+<span class="sd">    Holds the per-variant state (BraidStates, arc-label metadata) so that</span>
+<span class="sd">    candidate checks reuse the expensive topology computation. Instances are</span>
+<span class="sd">    used directly for serial search and as process-global state for workers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="n">_WORKER_STATE</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BraidStates</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">_WORKER_DEGREE</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">_WORKER_PARTIAL</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PartialSignsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">_WORKER_ARC_LABELS</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">_WORKER_ARC_COMP</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">_WORKER_N_COMPONENTS</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">_WORKER_MAX_ARC_LABEL</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">degree</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">partial_signs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PartialSignsType</span><span class="p">],</span>
+        <span class="n">arc_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">arc_comp</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+        <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">BraidStates</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">degree</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">partial_signs</span> <span class="o">=</span> <span class="n">partial_signs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arc_labels</span> <span class="o">=</span> <span class="n">arc_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arc_comp</span> <span class="o">=</span> <span class="n">arc_comp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_components</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_arc_label</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">arc_labels</span><span class="p">)</span> <span class="k">if</span> <span class="n">arc_labels</span> <span class="k">else</span> <span class="mi">0</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_signs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">signs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">partial_signs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">matches_partial_signs</span><span class="p">(</span>
+            <span class="n">signs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">partial_signs</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_init_perm_worker</span><span class="p">(</span>
-    <span class="n">braid</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-    <span class="n">degree</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-    <span class="n">partial_signs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PartialSignsType</span><span class="p">],</span>
-    <span class="n">arc_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
-    <span class="n">arc_comp</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
-    <span class="n">n_components</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">global</span> <span class="n">_WORKER_STATE</span><span class="p">,</span> <span class="n">_WORKER_DEGREE</span><span class="p">,</span> <span class="n">_WORKER_PARTIAL</span>
-    <span class="k">global</span> <span class="n">_WORKER_ARC_LABELS</span><span class="p">,</span> <span class="n">_WORKER_ARC_COMP</span><span class="p">,</span> <span class="n">_WORKER_N_COMPONENTS</span><span class="p">,</span> <span class="n">_WORKER_MAX_ARC_LABEL</span>
-    <span class="n">_WORKER_STATE</span> <span class="o">=</span> <span class="n">BraidStates</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
-    <span class="n">_WORKER_DEGREE</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
-    <span class="n">_WORKER_PARTIAL</span> <span class="o">=</span> <span class="n">partial_signs</span>
-    <span class="n">_WORKER_ARC_LABELS</span> <span class="o">=</span> <span class="n">arc_labels</span>
-    <span class="n">_WORKER_ARC_COMP</span> <span class="o">=</span> <span class="n">arc_comp</span>
-    <span class="n">_WORKER_N_COMPONENTS</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_components</span><span class="p">)</span>
-    <span class="n">_WORKER_MAX_ARC_LABEL</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">arc_labels</span><span class="p">)</span> <span class="k">if</span> <span class="n">arc_labels</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">strand_signs</span> <span class="o">=</span> <span class="n">signs</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">compute_matrices</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
+        <span class="n">state</span><span class="o">.</span><span class="n">generate_position_assignments</span><span class="p">()</span>
+        <span class="n">relations</span> <span class="o">=</span> <span class="n">full_reduce</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">get_state_relations</span><span class="p">())</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">check_sign_assignment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span> <span class="n">relations</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">state</span><span class="o">.</span><span class="n">braid</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">strand_signs</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_check_signs_for_worker</span><span class="p">(</span><span class="n">signs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
-    <span class="k">if</span> <span class="n">_WORKER_STATE</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">_WORKER_DEGREE</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Worker state not initialized&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">_WORKER_PARTIAL</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">_matches_partial_signs</span><span class="p">(</span><span class="n">signs</span><span class="p">,</span> <span class="n">_WORKER_PARTIAL</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_perm_batch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">perms</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
+        <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">perms</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_arc_label</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">signs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">)}</span>
+            <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arc_labels</span><span class="p">:</span>
+                <span class="n">signs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">arc_comp</span><span class="p">[</span><span class="n">label</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">perm</span><span class="p">[</span><span class="n">label</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">hit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_signs</span><span class="p">(</span><span class="n">signs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">hit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">hit</span>
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="n">_WORKER_STATE</span><span class="o">.</span><span class="n">strand_signs</span> <span class="o">=</span> <span class="n">signs</span>
-    <span class="n">_WORKER_STATE</span><span class="o">.</span><span class="n">compute_matrices</span><span class="p">()</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">_WORKER_STATE</span><span class="o">.</span><span class="n">validate</span><span class="p">():</span>
-        <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="n">_WORKER_STATE</span><span class="o">.</span><span class="n">generate_position_assignments</span><span class="p">()</span>
-    <span class="n">relations</span> <span class="o">=</span> <span class="n">full_reduce</span><span class="p">(</span><span class="n">_WORKER_STATE</span><span class="o">.</span><span class="n">get_state_relations</span><span class="p">())</span>
-    <span class="n">out</span> <span class="o">=</span> <span class="n">check_sign_assignment</span><span class="p">(</span><span class="n">_WORKER_DEGREE</span><span class="p">,</span> <span class="n">relations</span><span class="p">,</span> <span class="n">_WORKER_STATE</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">return</span> <span class="n">_WORKER_STATE</span><span class="o">.</span><span class="n">braid</span><span class="p">,</span> <span class="n">_WORKER_STATE</span><span class="o">.</span><span class="n">strand_signs</span>
+<span class="n">_WORKER_CHECKER</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_PermChecker</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_init_perm_worker</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">global</span> <span class="n">_WORKER_CHECKER</span>
+    <span class="n">_WORKER_CHECKER</span> <span class="o">=</span> <span class="n">_PermChecker</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="worker_on_perm_batch">
 <a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.search.worker_on_perm_batch">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">worker_on_perm_batch</span><span class="p">(</span><span class="n">perms</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
-    <span class="k">if</span> <span class="n">_WORKER_ARC_LABELS</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">_WORKER_ARC_COMP</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">_WORKER_N_COMPONENTS</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Worker permutation metadata not initialized&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">perm</span> <span class="ow">in</span> <span class="n">perms</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">_WORKER_MAX_ARC_LABEL</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">perm</span><span class="p">):</span>
-            <span class="k">continue</span>
-        <span class="n">signs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_WORKER_N_COMPONENTS</span><span class="p">)}</span>
-        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">_WORKER_ARC_LABELS</span><span class="p">:</span>
-            <span class="n">signs</span><span class="p">[</span><span class="n">_WORKER_ARC_COMP</span><span class="p">[</span><span class="n">label</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">perm</span><span class="p">[</span><span class="n">label</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">hit</span> <span class="o">=</span> <span class="n">_check_signs_for_worker</span><span class="p">(</span><span class="n">signs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">hit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">hit</span>
-    <span class="k">return</span> <span class="kc">None</span></div>
+    <span class="k">if</span> <span class="n">_WORKER_CHECKER</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Worker state not initialized&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_WORKER_CHECKER</span><span class="o">.</span><span class="n">check_perm_batch</span><span class="p">(</span><span class="n">perms</span><span class="p">)</span></div>
 
 
 
@@ -254,33 +508,6 @@
         <span class="k">if</span> <span class="n">is_homogeneous_braid</span><span class="p">(</span><span class="n">braid</span><span class="p">)</span>
         <span class="k">else</span> <span class="n">BraidType</span><span class="o">.</span><span class="n">FIBERED</span><span class="o">.</span><span class="n">value</span>
     <span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="total_assignments_for_braid">
-<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.search.total_assignments_for_braid">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">total_assignments_for_braid</span><span class="p">(</span><span class="n">braid_states</span><span class="p">:</span> <span class="n">BraidStates</span><span class="p">,</span> <span class="n">partial_signs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PartialSignsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the total number of sign assignments for this braid.&quot;&quot;&quot;</span>
-    <span class="n">fixed_n_s_total</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="nb">sum</span><span class="p">(</span>
-            <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">partial_signs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">partial_signs</span>
-        <span class="k">else</span> <span class="mi">0</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">braid_states</span><span class="o">.</span><span class="n">n_s_total</span>  <span class="o">-</span> <span class="n">fixed_n_s_total</span><span class="p">)</span></div>
-
-
-
-<div class="viewcode-block" id="split_ranges">
-<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.search.split_ranges">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">split_ranges</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Yield half-open integer ranges [start, end) covering 0..n-1.&quot;&quot;&quot;</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
-        <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">chunk_size</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span>
-        <span class="n">start</span> <span class="o">=</span> <span class="n">end</span></div>
 
 
 
@@ -395,6 +622,7 @@
     <span class="n">degree</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">braid_state</span><span class="p">:</span> <span class="n">BraidStates</span><span class="p">,</span>
     <span class="n">partial_signs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PartialSignsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test a single sign assignment (by index) for a given braid.</span>
@@ -415,31 +643,10 @@
     <span class="n">braid_state</span><span class="o">.</span><span class="n">generate_position_assignments</span><span class="p">()</span>
     <span class="n">all_relations</span> <span class="o">=</span> <span class="n">braid_state</span><span class="o">.</span><span class="n">get_state_relations</span><span class="p">()</span>
     <span class="n">relations</span> <span class="o">=</span> <span class="n">full_reduce</span><span class="p">(</span><span class="n">all_relations</span><span class="p">)</span>
-    <span class="n">out</span> <span class="o">=</span> <span class="n">check_sign_assignment</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">relations</span><span class="p">,</span> <span class="n">braid_state</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">check_sign_assignment</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">relations</span><span class="p">,</span> <span class="n">braid_state</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">braid_state</span><span class="o">.</span><span class="n">braid</span><span class="p">,</span> <span class="n">braid_state</span><span class="o">.</span><span class="n">strand_signs</span>
-    <span class="k">return</span> <span class="kc">None</span></div>
-
-
-
-<div class="viewcode-block" id="worker_on_range">
-<a class="viewcode-back" href="../../../api/inversion.html#fkcompute.inversion.search.worker_on_range">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">worker_on_range</span><span class="p">(</span>
-    <span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">BraidStates</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PartialSignsType</span><span class="p">]],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Worker for a range of indices; returns the first success in [start, end).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">degree</span><span class="p">,</span> <span class="n">braid_state</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">progress</span><span class="p">,</span> <span class="n">partial_signs</span> <span class="o">=</span> <span class="n">args</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="n">progress</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-            <span class="n">pct</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="mf">100.0</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[worker </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">pct</span><span class="si">}</span><span class="s2">% of batch&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\r</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">hit</span> <span class="o">=</span> <span class="n">check_assignment_for_braid</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">braid_state</span><span class="p">,</span> <span class="n">partial_signs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">hit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">hit</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
@@ -455,14 +662,18 @@
     <span class="n">include_flip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">max_shifts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
- <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]],</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">False</span><span class="p">]]:</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]],</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">False</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Parallel search for a consistent sign assignment across braid variants.</span>
+<span class="sd">    Search for a consistent sign assignment across braid variants.</span>
 
 <span class="sd">    This search enumerates only sign assignments induced by permutation</span>
 <span class="sd">    candidates from :func:`fkcompute.inversion.permutations.iter_perms_rot_closed`.</span>
 <span class="sd">    The *chunk_size* parameter controls how many candidate permutations are</span>
 <span class="sd">    bundled into each worker task.</span>
+
+<span class="sd">    With max_workers == 1 the search runs in-process (no multiprocessing</span>
+<span class="sd">    overhead); otherwise candidates are distributed over a process pool.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -472,13 +683,7 @@
     <span class="k">if</span> <span class="n">max_workers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">max_workers</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">))</span>
 
-    <span class="c1"># This search considers only sign assignments coming from permutation candidates.</span>
-    <span class="c1"># These candidates are enumerated lazily; we do not precompute or store them.</span>
-    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Search space: permutation candidates (lazy)&quot;</span><span class="p">)</span>
-
-    <span class="c1"># chunk_size historically referred to index ranges for brute-force search.</span>
-    <span class="c1"># For permutation candidates, cap it to a safe batch size to avoid large IPC payloads.</span>
+    <span class="c1"># Candidates are enumerated lazily; cap batches to keep IPC payloads small.</span>
     <span class="n">batch_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">),</span> <span class="mi">1024</span><span class="p">))</span>
 
     <span class="k">for</span> <span class="n">variant_braid_state</span><span class="p">,</span> <span class="n">variant_partial_signs</span><span class="p">,</span> <span class="n">meta</span> <span class="ow">in</span> <span class="n">generate_braid_variants</span><span class="p">(</span>
@@ -489,26 +694,36 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">variant_braid_state</span><span class="o">.</span><span class="n">braid</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">variant_partial_signs</span><span class="p">)</span>
 
-        <span class="c1"># Ensure this braid admits permutation candidates before spawning workers.</span>
+        <span class="c1"># Ensure this braid admits permutation candidates before searching.</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">arc_labels</span><span class="p">,</span> <span class="n">arc_comp</span><span class="p">,</span> <span class="n">n_components</span> <span class="o">=</span> <span class="n">perm_to_signs_metadata</span><span class="p">(</span><span class="n">variant_braid_state</span><span class="o">.</span><span class="n">braid</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
             <span class="k">continue</span>
 
+        <span class="n">checker_args</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">variant_braid_state</span><span class="o">.</span><span class="n">braid</span><span class="p">,</span>
+            <span class="n">degree</span><span class="p">,</span>
+            <span class="n">variant_partial_signs</span><span class="p">,</span>
+            <span class="n">arc_labels</span><span class="p">,</span>
+            <span class="n">arc_comp</span><span class="p">,</span>
+            <span class="n">n_components</span><span class="p">,</span>
+            <span class="n">weight</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">perm_iter</span> <span class="o">=</span> <span class="n">iter_perms_rot_closed</span><span class="p">(</span><span class="n">variant_braid_state</span><span class="o">.</span><span class="n">braid</span><span class="p">)</span>
         <span class="n">perm_batches</span> <span class="o">=</span> <span class="n">_batched</span><span class="p">(</span><span class="n">perm_iter</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">max_workers</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">checker</span> <span class="o">=</span> <span class="n">_PermChecker</span><span class="p">(</span><span class="o">*</span><span class="n">checker_args</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">perm_batches</span><span class="p">:</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">checker</span><span class="o">.</span><span class="n">check_perm_batch</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">out</span>
+            <span class="k">continue</span>
 
         <span class="k">with</span> <span class="n">mp</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span>
             <span class="n">processes</span><span class="o">=</span><span class="n">max_workers</span><span class="p">,</span>
             <span class="n">initializer</span><span class="o">=</span><span class="n">_init_perm_worker</span><span class="p">,</span>
-            <span class="n">initargs</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">variant_braid_state</span><span class="o">.</span><span class="n">braid</span><span class="p">,</span>
-                <span class="n">degree</span><span class="p">,</span>
-                <span class="n">variant_partial_signs</span><span class="p">,</span>
-                <span class="n">arc_labels</span><span class="p">,</span>
-                <span class="n">arc_comp</span><span class="p">,</span>
-                <span class="n">n_components</span><span class="p">,</span>
-            <span class="p">),</span>
+            <span class="n">initargs</span><span class="o">=</span><span class="n">checker_args</span><span class="p">,</span>
         <span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">pool</span><span class="o">.</span><span class="n">imap_unordered</span><span class="p">(</span><span class="n">worker_on_perm_batch</span><span class="p">,</span> <span class="n">perm_batches</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -519,32 +734,43 @@
     <span class="k">return</span> <span class="kc">False</span></div>
 
 </pre></div>
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
-        </div>
+        </article>
       </div>
-    </section>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Paul Orland, Davide Passaro, Lara San Martin Suarez, Toby Saunders-A&#39;Court, Josef Svoboda
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+</div><script src="../../../_static/documentation_options.js?v=9fea2d4c"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    </body>
 </html>

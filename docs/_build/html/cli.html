@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Configuration Files" href="configuration.html"><link rel="prev" title="Advanced Usage" href="tutorials/advanced.html">
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Command-Line Interface - fkcompute 0.2.20 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
@@ -370,7 +370,8 @@
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Usage: fk [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --help   Show this message and exit.
+  --version, -V  Show the fkcompute version and exit.
+  --help         Show this message and exit.
 
 Commands:
   simple       Quick FK computation for a single braid.
@@ -443,33 +444,37 @@ still accepted and is equivalent to <code class="docutils literal notranslate"><
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--format</span> <span class="pre">FORMAT</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">pretty</span></code></p></td>
 <td><p>Symbolic output format.  Choices: <code class="docutils literal notranslate"><span class="pre">pretty</span></code>, <code class="docutils literal notranslate"><span class="pre">inline</span></code>,
-<code class="docutils literal notranslate"><span class="pre">latex</span></code>, <code class="docutils literal notranslate"><span class="pre">mathematica</span></code>, <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p></td>
+<code class="docutils literal notranslate"><span class="pre">latex</span></code>, <code class="docutils literal notranslate"><span class="pre">mathematica</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--threads</span> <span class="pre">N</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--weight</span> <span class="pre">N</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Weight parameter for stratified calculations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--threads</span> <span class="pre">N</span></code></p></td>
 <td><p>1</p></td>
 <td><p>Number of threads for the C++ backend.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--workers</span> <span class="pre">N</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--workers</span> <span class="pre">N</span></code></p></td>
 <td><p>1</p></td>
 <td><p>Number of Python multiprocessing workers for the inversion search.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--save</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--save</span></code></p></td>
 <td><p>off</p></td>
 <td><p>Save intermediate and result files to <code class="docutils literal notranslate"><span class="pre">data/</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--save-dir</span> <span class="pre">DIR</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--save-dir</span> <span class="pre">DIR</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">data</span></code></p></td>
 <td><p>Directory for saved files (used with <code class="docutils literal notranslate"><span class="pre">--save</span></code>).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--name</span> <span class="pre">NAME</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--name</span> <span class="pre">NAME</span></code></p></td>
 <td><p>auto</p></td>
 <td><p>Base filename when saving (used with <code class="docutils literal notranslate"><span class="pre">--save</span></code>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code></p></td>
 <td><p>off</p></td>
 <td><p>Enable verbose logging.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--help</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--help</span></code></p></td>
 <td><p>—</p></td>
 <td><p>Show help and exit.</p></td>
 </tr>
@@ -659,21 +664,13 @@ fk<span class="w"> </span>print-as<span class="w"> </span>data/trefoil.json<span
 <h2><code class="docutils literal notranslate"><span class="pre">fk</span> <span class="pre">template</span></code><a class="headerlink" href="#fk-template" title="Link to this heading">¶</a></h2>
 <p>Create or display a configuration file template.</p>
 <p><strong>Sub-commands</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>template<span class="w"> </span>create<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>OUTPUT_FILE
-fk<span class="w"> </span>template<span class="w"> </span>show
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>template<span class="w"> </span>create<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>OUTPUT_FILE<span class="o">]</span>
 </pre></div>
 </div>
 <section id="fk-template-create">
 <h3><code class="docutils literal notranslate"><span class="pre">fk</span> <span class="pre">template</span> <span class="pre">create</span></code><a class="headerlink" href="#fk-template-create" title="Link to this heading">¶</a></h3>
 <p>Write a fully annotated template config file to <code class="docutils literal notranslate"><span class="pre">OUTPUT_FILE</span></code>.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>template<span class="w"> </span>create<span class="w"> </span>my_run.yaml
-</pre></div>
-</div>
-</section>
-<section id="fk-template-show">
-<h3><code class="docutils literal notranslate"><span class="pre">fk</span> <span class="pre">template</span> <span class="pre">show</span></code><a class="headerlink" href="#fk-template-show" title="Link to this heading">¶</a></h3>
-<p>Print the template to stdout.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>fk<span class="w"> </span>template<span class="w"> </span>show
 </pre></div>
 </div>
 </section>
@@ -783,7 +780,6 @@ man<span class="w"> </span>fk
 <li><a class="reference internal" href="#fk-print-as"><code class="docutils literal notranslate"><span class="pre">fk</span> <span class="pre">print-as</span></code></a></li>
 <li><a class="reference internal" href="#fk-template"><code class="docutils literal notranslate"><span class="pre">fk</span> <span class="pre">template</span></code></a><ul>
 <li><a class="reference internal" href="#fk-template-create"><code class="docutils literal notranslate"><span class="pre">fk</span> <span class="pre">template</span> <span class="pre">create</span></code></a></li>
-<li><a class="reference internal" href="#fk-template-show"><code class="docutils literal notranslate"><span class="pre">fk</span> <span class="pre">template</span> <span class="pre">show</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#braid-input-formats">Braid Input Formats</a></li>
@@ -800,8 +796,8 @@ man<span class="w"> </span>fk
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=9fea2d4c"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>

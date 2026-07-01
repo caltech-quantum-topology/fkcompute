@@ -168,6 +168,36 @@ Run the inversion phase standalone:
    else:
        print("No valid sign assignment found at this degree")
 
+To inspect every unique valid sign assignment induced by the multicycle
+permutation candidates, use ``find_sign_assignment_full``:
+
+.. code-block:: python
+
+   from fkcompute.inversion.api import find_sign_assignment_full
+
+   results = find_sign_assignment_full([1, -1, -2], degree=7)
+   for result in results:
+       print(result.sign_assignment)
+
+Stratified Weight Bounds
+------------------------
+
+The high-level API, CLI, and inversion checks accept an optional ``weight``
+bound.  This is passed through to the symbolic constraint processing and
+HiGHS feasibility checks:
+
+.. code-block:: python
+
+   from fkcompute import fk
+
+   result = fk([1, -2, 1, -2], degree=3, weight=5)
+
+The CLI equivalent is:
+
+.. code-block:: bash
+
+   fk simple "[1,-2,1,-2]" 3 --weight 5
+
 Low-Level API — Constraint System
 ------------------------------------
 
@@ -235,6 +265,9 @@ Performance Tuning
    * - ``chunk_size``
      - Default (``16384``) works well.  Reduce to ``4096`` for fast
        interactive feedback; increase to ``65536`` for deep searches.
+   * - ``weight``
+     - Use only for stratified calculations that require a separate weight
+       bound.
    * - ``include_flip``
      - Disable (default) unless the standard search fails.
    * - ``max_shifts``

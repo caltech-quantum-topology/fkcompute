@@ -27,7 +27,7 @@ high-performance polynomial computation.
       :link: installation
       :link-type: doc
 
-      System dependencies, pip install, optional extras, and Gurobi setup.
+      System dependencies, pip install, optional extras, and HiGHS setup.
 
    .. grid-item-card:: Quickstart
       :link: quickstart

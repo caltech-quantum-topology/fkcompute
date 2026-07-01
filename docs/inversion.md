@@ -4,6 +4,9 @@ Phase 1 of the pipeline finds a valid sign assignment for the braid (or declares
 
 Entry point: `src/fkcompute/inversion/api.py:find_sign_assignment`.
 
+To enumerate all unique valid sign assignments induced by closed permutation
+candidates, use `find_sign_assignment_full`.
+
 ## Homogeneous vs Non-Homogeneous
 
 Homogeneous check:
@@ -78,9 +81,9 @@ For each candidate assignment:
 1. Load signs into `BraidStates` and compute crossing matrices
 2. Validate that matrices and R-matrix type classification are consistent
 3. Generate raw relations, reduce them, build a symbolic assignment
-4. Check degree-bounded feasibility via Gurobi
+4. Check degree-bounded feasibility via HiGHS
 
-Gurobi is an optional dependency at install time, but inversion search requires it. Install with `pip install ".[ilp]"`.
+HiGHS is provided by the required `highspy` dependency installed with the package.
 
 Core worker logic:
 
@@ -98,11 +101,12 @@ Controls:
 
 - `max_workers`: number of worker processes
 - `chunk_size`: indices per task (half-open ranges)
+- `weight`: optional bound used by stratified calculations during feasibility checks
 
 Tradeoffs:
 
 - Larger `chunk_size` reduces overhead but increases "time to first hit" because workers check longer ranges before returning.
-- Larger `max_workers` increases throughput but can increase memory and (depending on your setup) the number of concurrent Gurobi environments.
+- Larger `max_workers` increases throughput but can increase memory because each worker performs its own feasibility checks.
 
 ## Debugging Tips
 
@@ -121,6 +125,16 @@ res = find_sign_assignment(braid, degree=3, max_workers=4, verbose=True)
 print(res.success)
 print(res.braid)
 print(res.sign_assignment)
+```
+
+Enumerate all unique valid multicycle sign assignments:
+
+```python
+from fkcompute.inversion.api import find_sign_assignment_full
+
+all_results = find_sign_assignment_full([1, -1, -2], degree=7)
+for res in all_results:
+    print(res.sign_assignment)
 ```
 
 ### Skip Search

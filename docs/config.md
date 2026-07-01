@@ -32,6 +32,7 @@ preset: parallel
 
 symbolic: true
 threads: 8
+weight: 5
 
 verbose: true
 save_data: true
@@ -159,7 +160,25 @@ This reduces the search space from `2^n` to `2^(n - fixed)`.
 - `max_workers`: Python multiprocessing workers for the inversion search (Phase 1)
 - `chunk_size`: number of sign-assignment indices per worker task (trade latency vs overhead)
 - `threads`: number of C++ compute threads passed to `fk_main --threads`
+- `weight`: optional weight bound for stratified calculations
 - `include_flip`: include horizontally flipped braid variants in the inversion search
 - `max_shifts`: limit cyclic shifts tried during inversion search
 
 For more detail on inversion behavior, see `docs/inversion.md`.
+
+## Symbolic Formatting
+
+`symbolic: true` stores the default pretty symbolic string in `metadata.symbolic`.
+Config files do not currently accept a `format` key. To get LaTeX,
+Mathematica, or inline text without recomputing, save the result and reformat it:
+
+```yaml
+symbolic: true
+save_data: true
+name: trefoil_d2
+```
+
+```bash
+fk config my_run.yaml
+fk print-as data/trefoil_d2.json --format latex
+```

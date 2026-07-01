@@ -9,6 +9,8 @@ Entry Point
 
 .. autofunction:: fkcompute.inversion.api.find_sign_assignment
 
+.. autofunction:: fkcompute.inversion.api.find_sign_assignment_full
+
 Result Type
 -----------
 
@@ -63,6 +65,7 @@ It returns ``False`` if no valid assignment was found, or a
        max_workers=4,
        chunk_size=1 << 12,
        include_flip=False,
+       weight=None,
    )
    if sol:
        braid, signs = sol

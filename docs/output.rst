@@ -166,7 +166,7 @@ attaches it as ``metadata["symbolic"]``.
 Output Formats
 ~~~~~~~~~~~~~~
 
-The symbolic output supports five format types:
+The Python symbolic helper supports five format types:
 
 .. list-table::
    :header-rows: 1
@@ -192,6 +192,9 @@ CLI:
    fk simple "[1,1,1]" 2 --symbolic
    fk simple "[1,1,1]" 2 --format latex
    fk simple "[1,1,1]" 2 --format mathematica
+
+The CLI accepts ``pretty``, ``inline``, ``latex``, and ``mathematica``.
+The ``str`` alias is available only through the Python helper.
 
 Python:
 

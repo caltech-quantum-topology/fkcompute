@@ -8,6 +8,10 @@ fk \- compute the FK invariant for braids using inversion, ILP reduction, and co
 .B fk simple
 .I BRAID DEGREE
 .RI [ \-\-symbolic ]
+.RI [ \-\-format " FORMAT" ]
+.RI [ \-\-threads " N" ]
+.RI [ \-\-workers " N" ]
+.RI [ \-\-weight " N" ]
 .br
 .B fk config
 .I CONFIG_FILE
@@ -63,6 +67,14 @@ Path to JSON or YAML configuration file containing braid, degree, and other para
 .I OUTPUT_PATH
 Path for the template file to be created (default: fk_config.yaml).
 .SH OPTIONS
+Global options:
+.TP
+.BR \-\-version ", " \-V
+Show the fkcompute version and exit.
+.TP
+.BR \-\-help
+Show command help and exit.
+.PP
 The following options are available for the
 .B simple
 subcommand:
@@ -72,6 +84,27 @@ Output result as human-readable symbolic polynomial using SymPy (default: disabl
 .TP
 .BR \-\-format "=\fIformat\fP"
 Symbolic output format when symbolic output is enabled (default: pretty). Available formats: pretty, inline, latex, mathematica.
+.TP
+.BR \-\-weight "=\fInumber\fP", " \-w \fInumber\fP"
+Weight parameter for stratified calculations.
+.TP
+.BR \-\-threads "=\fInumber\fP", " \-t \fInumber\fP"
+Number of C++ backend threads.
+.TP
+.BR \-\-workers "=\fInumber\fP"
+Number of Python inversion-search workers.
+.TP
+.BR \-\-name "=\fIname\fP", " \-n \fIname\fP"
+Base filename when saving output files.
+.TP
+.BR \-\-save
+Save inversion data, ILP data, and final JSON result.
+.TP
+.BR \-\-save\-dir "=\fIdirectory\fP"
+Directory for saved files when using \-\-save.
+.TP
+.BR \-\-verbose ", " \-v
+Enable verbose Python-layer logging.
 .PP
 The following options are available for the
 .B interactive
@@ -89,19 +122,6 @@ subcommand:
 .TP
 .BR \-\-overwrite
 Overwrite the output file if it already exists. Without this flag, the command will fail if the file exists.
-.PP
-The following options are available for the
-.B history
-subcommand:
-.TP
-.BR \-\-limit "=\fInumber\fP", " \-l \fInumber\fP"
-Number of recent computations to show (default: 10).
-.TP
-.BR \-\-all ", " \-a
-Show all computations in history.
-.TP
-.BR \-\-confirm ", " \-y
-Skip confirmation prompts for destructive operations (e.g., clear history).
 .SH EXAMPLES
 .SS Interactive Mode
 .nf
@@ -137,6 +157,9 @@ fk simple "[1, 1, 1]" 2 --format mathematica
 
 # Custom thread count
 fk simple "[1, -2, 3]" 2 --threads 4
+
+# Parallel inversion search and stratified weight bound
+fk simple "[1, -2, 1, -2]" 3 --workers 4 --threads 4 --weight 5
 
 # Same braid, different input formats
 fk simple "1,-2,-2,3" 3
@@ -184,25 +207,6 @@ EOF
 
 fk config batch.yaml
 .fi
-.SS History Management
-.nf
-# Show recent computations
-fk history show
-
-# Search computation history
-fk history search "trefoil"
-
-# Show all computations
-fk history show --all
-
-# Export/import history
-fk history export my_history.json
-fk history import my_history.json
-
-# Clear history (with confirmation)
-fk history clear
-fk history clear --confirm
-.fi
 .SS Advanced Configuration
 .nf
 # Using precomputed data
@@ -216,6 +220,7 @@ ilp_file: "precomputed/ilp.csv"
 preset: parallel
 chunk_size: 65536
 max_shifts: 1000
+weight: 5
 EOF
 
 fk config advanced.yaml
@@ -268,7 +273,7 @@ Save intermediate computation data to files (default: false).
 Directory for saved data files (default: "data").
 .TP
 .B inversion
-Precomputed inversion data as {crossing_index: [signs]}.
+Precomputed inversion data as {component_index: [signs]}.
 .TP
 .B inversion_file
 Path to JSON file containing precomputed inversion data.
@@ -278,6 +283,9 @@ Path to precomputed ILP problem file.
 .TP
 .B partial_signs
 Partial sign assignments to constrain computation.
+.TP
+.B weight
+Optional weight bound for stratified calculations.
 
 .SS Single Computation (JSON)
 .nf
@@ -287,6 +295,7 @@ Partial sign assignments to constrain computation.
   "name": "my_knot",
   "preset": "parallel",
   "max_workers": 4,
+  "weight": 5,
   "threads": 8,
   "verbose": true,
   "save_data": true,
@@ -332,9 +341,11 @@ ilp_file: "precomputed/ilp.csv"
 preset: parallel
 chunk_size: 65536
 max_shifts: 1000
+weight: 5
 
 # Partial constraints
-partial_signs: [1, -1, 0, 1]
+partial_signs:
+  0: [1, -1, 0, 1]
 .fi
 
 .SS Batch Processing Features
@@ -349,22 +360,26 @@ Progress tracking during execution
 .IP \(bu 2
 Error handling - continues processing if one computation fails
 .SH OUTPUT
-The program outputs comprehensive computation results as JSON to stdout, including the braid, inversion data, degree, components count, and FK invariant coefficients. When the \-\-symbolic flag is used, human-readable polynomial expressions are shown instead.
+The program outputs JSON to stdout by default. A single computation returns a dictionary with
+.B terms
+and
+.B metadata.
+When \-\-symbolic or \-\-format is used, human-readable polynomial text is shown instead.
 
 .SS Single Computation Output
 .nf
 {
-  "braid": [1, -2, -2, 3],
-  "inversion_data": {
-    "0": [1, -1, 1],
-    "1": [1, 1, -1],
-    "2": [-1, 1, 1]
-  },
-  "degree": 3,
-  "components": 4,
-  "fk": [
-    [[-2, 1], [0, -1], [2, 1]]
-  ]
+  "terms": [
+    {
+      "x": [0],
+      "q_terms": [{"q": -2, "c": "1"}, {"q": 0, "c": "-1"}]
+    }
+  ],
+  "metadata": {
+    "braid": [1, 1, 1],
+    "components": 1,
+    "inversion": {...}
+  }
 }
 .fi
 
@@ -372,24 +387,12 @@ The program outputs comprehensive computation results as JSON to stdout, includi
 .nf
 {
   "trefoil": {
-    "braid": [1, 1, 1],
-    "inversion_data": {...},
-    "degree": 2,
-    "fk": {
-      "q^-2": 1,
-      "q^0": -1,
-      "q^2": 1
-    }
+    "terms": [...],
+    "metadata": {"braid": [1, 1, 1], "components": 1}
   },
   "figure_eight": {
-    "braid": [1, -2, 1, -2],
-    "inversion_data": {...},
-    "degree": 3,
-    "fk": {
-      "q^-1": -1,
-      "q^1": -1,
-      "q^3": 1
-    }
+    "terms": [...],
+    "metadata": {"braid": [1, -2, 1, -2], "components": 1}
   }
 }
 .fi
@@ -423,27 +426,27 @@ Requirements: SymPy >= 1.10 must be installed. Install with optional dependencie
 
 .SS Output Fields
 .TP
-.B braid
-The braid word used in the computation (may be modified during processing)
+.B terms
+Sparse FK polynomial terms. Each term contains an x-exponent vector and sparse q-polynomial coefficient data.
 .TP
-.B inversion_data
-Dictionary mapping crossing indices to sign assignments from the inversion computation
+.B metadata
+Auxiliary metadata written by the C++ backend and Python layer.
 .TP
-.B degree
-The degree parameter used for the invariant computation
+.B metadata.braid
+The braid word used in the computation (may differ from the input if inversion used a shifted braid).
 .TP
-.B components
-Number of components/strands in the braid topology
+.B metadata.inversion
+Dictionary mapping component indices to sign assignments from the inversion computation, or null when an ILP file was supplied directly.
 .TP
-.B fk
-FK invariant coefficient matrix as nested lists of [power, coefficient] pairs
+.B metadata.components
+Number of link components in the braid closure.
 .TP
-.B symbolic
-Human-readable polynomial representation (only present when \-\-symbolic is used)
+.B metadata.symbolic
+Human-readable polynomial representation, present only when symbolic output was requested and SymPy is available.
 .SH FILES
 .TP
 .I data/
-Default directory for saved intermediate files when using \-\-save\-data.
+Default directory for saved intermediate files when using \-\-save.
 .TP
 .I *_inversion.json
 Saved inversion data files.
@@ -453,7 +456,7 @@ Saved ILP problem files.
 .SH DEPENDENCIES
 .TP
 .B Required
-Python 3.9+, NumPy >= 1.20, Gurobi >= 9.5 (commercial optimization solver), Typer >= 0.9.0, CMake >= 3.20 (for building C++ components)
+Python 3.9+, NumPy >= 1.20, HiGHS Python bindings >= 1.10, Typer >= 0.9.0, CMake >= 3.20 (for building C++ components)
 .TP
 .B Optional
 SymPy >= 1.10 (for symbolic polynomial output), Rich >= 13 (for enhanced interactive mode), PyYAML >= 6 (for YAML configuration files), IPython >= 8, Jupyter (for development and visualization)
@@ -501,8 +504,7 @@ The wrapper returns Mathematica Association objects and supports all options ava
 .SH SEE ALSO
 .BR python (1),
 .BR cmake (1),
-.BR gurobi (1),
 .BR mathematica (1)
 
 .SH COPYRIGHT
-License: TBD.
+This is free software under the MIT License.

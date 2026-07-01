@@ -46,7 +46,6 @@ pip install .
 Optional extras:
 
 ```bash
-pip install ".[ilp]"           # ILP feasibility/boundedness checks via Gurobi
 pip install ".[symbolic]"      # SymPy symbolic output
 pip install ".[interactive]"   # Rich-based interactive wizard + history
 pip install ".[yaml]"          # YAML config files (PyYAML)
@@ -59,21 +58,12 @@ Development install:
 pip install -e .
 ```
 
-## Optional: Gurobi (ILP)
+## HiGHS Solver
 
-`fkcompute` uses Gurobi via `gurobipy` for ILP feasibility/boundedness checks.
-This dependency is optional at install time, but required to run the full computation pipeline.
+`fkcompute` uses HiGHS via `highspy` for ILP feasibility/boundedness checks.
+This dependency is installed automatically by `pip install .`.
 
-You need:
-
-- The `gurobipy` Python package (install with `pip install ".[ilp]"`)
-- A working Gurobi installation and license
-
-Typical environment variables you may need (depends on your setup):
-
-- `GRB_LICENSE_FILE` (path to your license file)
-
-If Gurobi is not licensed correctly, ILP checks/solves in `src/fkcompute/solver/ilp.py` will fail.
+You do not need a separate commercial solver installation or license.
 
 ## Post-Install: Man Page
 

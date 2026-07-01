@@ -16,6 +16,7 @@ Inversion search (Python):
 - `include_flip`: try mirrored braid variants (increases search)
 - `max_shifts`: limit cyclic shifts (reduces search)
 - `partial_signs`: constrain some signs to shrink the space
+- `weight`: optional stratified weight bound used in feasibility checks
 
 C++ compute:
 

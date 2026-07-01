@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Tutorials" href="tutorials/index.html"><link rel="prev" title="Quickstart" href="quickstart.html">
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2025.12.19 -->
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>Mathematical Overview - fkcompute 0.2.20 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
@@ -375,8 +375,8 @@ have the same <span class="math notranslate nohighlight">\(F_K\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[F_K(x, q) = \sum_{n, k} a_{n,k}\, x^n\, q^k \;\in\; \mathbb{Z}[\![x, q^{\pm 1}]\!],\]</div>
 </div>
-<p>where <span class="math notranslate nohighlight">\(n\)</span> ranges over non-negative integers, <span class="math notranslate nohighlight">\(k\)</span> ranges over
-integers and <span class="math notranslate nohighlight">\(a_{n,k}\in\mathbb{Z}\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> ranges over non-negative integers and <span class="math notranslate nohighlight">\(k\)</span> ranges over
+integers.</p>
 <p>For a link <span class="math notranslate nohighlight">\(L\)</span> with <span class="math notranslate nohighlight">\(\ell\)</span> components, each component contributes
 its own <span class="math notranslate nohighlight">\(x\)</span> variable, so the invariant lives in</p>
 <div class="math-wrapper docutils container">
@@ -397,7 +397,7 @@ its own <span class="math notranslate nohighlight">\(x\)</span> variable, so the
 <p><strong>fkcompute</strong> implements the <strong>large-colour R-matrix / inverted state-sum</strong>
 approach developed by Park <a class="reference internal" href="#park2020a" id="id2"><span>[Park2020a]</span></a> <a class="reference internal" href="#park2020b" id="id3"><span>[Park2020b]</span></a>.</p>
 <p>Intuitively, the braid closure is cut into elementary crossings.  At each
-crossing an <em>R-matrix</em> or its inverse acts,
+crossing one of two <em>R-matrices</em> and hteir inverses (<span class="math notranslate nohighlight">\(R_1, R_2=R_1^{-1}, R_3, R_4=R_3^{-1}\)</span>) acts,
 depending on the crossing sign and the <em>sign assignment</em> (see below).
 The FK polynomial is then assembled as a weighted sum over all <em>states</em>
 — assignments of integers to the strands at each intermediate slice of
@@ -405,8 +405,10 @@ the braid.</p>
 <p>Formally, the state sum reads</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
-\[F_K(x,q) = \sum_{\text{states } s} \, \prod_{\text{crossings}} R_{\text{type}}(s).\]</div>
+\[F_K(x,q) = \sum_{\text{states } s} w(s)\, \prod_{\text{crossings}} R_{\text{type}}(s),\]</div>
 </div>
+<p>where the weight <span class="math notranslate nohighlight">\(w(s)\)</span> encodes the x-variables and the
+degree truncation cuts the sum to a finite computation.</p>
 </section>
 <section id="sign-assignment-inversion-phase">
 <h2>Sign Assignment (Inversion Phase)<a class="headerlink" href="#sign-assignment-inversion-phase" title="Link to this heading">¶</a></h2>
@@ -422,7 +424,7 @@ the sign assignment is determined uniquely and computed automatically.</p>
 braid word.</p></li>
 <li><p>For each variant, enumerating sign-assignment <em>permutation candidates</em>
 (derived from a combinatorial structure on the sign diagrams).</p></li>
-<li><p>Testing each candidate against the constraint system using Gurobi.</p></li>
+<li><p>Testing each candidate against the constraint system using HiGHS.</p></li>
 </ol>
 <p>See <a class="reference internal" href="pipeline.html"><span class="doc">Computation Pipeline</span></a> for implementation details.</p>
 </section>
@@ -435,7 +437,7 @@ integer values assigned to each braid state, and the constraints encode:</p>
 <li><p>R-matrix consistency (equality, inequality, and conservation laws).</p></li>
 <li><p>Degree bounds derived from the truncation parameter.</p></li>
 </ul>
-<p>The ILP feasibility check (using Gurobi) validates the constraint system,
+<p>The ILP feasibility check (using HiGHS) validates the constraint system,
 and the reduced constraint matrix is written to a <code class="docutils literal notranslate"><span class="pre">.csv</span></code> file consumed
 by the C++ backend.</p>
 </section>
@@ -564,12 +566,12 @@ the output.  Higher degrees are more expensive but recover more terms.</p>
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=9fea2d4c"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     </body>
 </html>

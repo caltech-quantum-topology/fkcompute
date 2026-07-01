@@ -21,7 +21,7 @@ src/fkcompute/
   cli/             # Typer CLI commands
   domain/          # pure braid/constraint logic
   inversion/       # Phase 1 sign assignment search
-  solver/          # ILP generation + (optional) Gurobi feasibility checks
+  solver/          # ILP generation + HiGHS feasibility checks
   output/          # symbolic formatting (SymPy)
   infra/           # config parsing + binary execution
   interactive/     # optional Rich-based interactive UI
@@ -54,7 +54,7 @@ The main call `fkcompute.fk(...)` orchestrates:
 
 2. Phase 2 (Constraint system + ILP)
    - Generate relations, reduce them, build a symbolic assignment, extract degree criteria + inequalities.
-    - Use optional Gurobi checks for boundedness/feasibility and write an ILP-like CSV consumed by the C++ backend.
+    - Use HiGHS checks for boundedness/feasibility and write an ILP-like CSV consumed by the C++ backend.
    - Code: `src/fkcompute/domain/constraints/*`, `src/fkcompute/domain/solver/*`, `src/fkcompute/solver/ilp.py`
 
 3. Phase 3 (C++ FK computation)

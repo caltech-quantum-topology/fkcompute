@@ -6,6 +6,7 @@ Help:
 
 ```bash
 fk --help
+fk --version
 fk simple --help
 fk config --help
 ```
@@ -36,6 +37,13 @@ Options:
 
 - `--symbolic`: print a symbolic polynomial (requires SymPy)
 - `--format {pretty,inline,latex,mathematica}`: choose symbolic format (auto-enables symbolic if not `pretty`)
+- `--weight`, `-w`: weight parameter for stratified calculations
+- `--threads`, `-t`: number of C++ backend threads
+- `--workers`: number of Python inversion-search workers
+- `--name`, `-n`: base name for saved files
+- `--save`: write inversion, ILP, and result files
+- `--save-dir`: directory used with `--save`
+- `--verbose`, `-v`: enable Python-layer logging
 
 ### Config
 
@@ -69,20 +77,6 @@ fk print-as data/trefoil.json --format latex
 ```
 
 This is useful when you ran a compute with `save_data: true` and want to reformat without recomputing.
-
-### History
-
-History is available when the optional interactive dependencies are installed.
-
-```bash
-fk history show
-fk history search trefoil
-fk history export history.json
-fk history import history.json
-fk history clear
-```
-
-History files live under `~/.fkcompute/`.
 
 ## Braid Input Formats
 

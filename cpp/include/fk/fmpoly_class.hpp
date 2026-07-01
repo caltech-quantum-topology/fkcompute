@@ -22,36 +22,37 @@ class FMPoly : public PolynomialBase<int, QPolynomial> {
 private:
   int numXVariables; // Number of x variables
   std::vector<int>
-      allGroundPowers;  // Ground powers: [q_min, x1_min, x2_min, ..., xn_min]
-  fmpz_mpoly_ctx_t ctx; // FLINT context for multivariate polynomials
-  fmpz_mpoly_t poly;    // Main FLINT polynomial
+      allGroundPowers; // Ground powers: [q_min, x1_min, x2_min, ..., xn_min]
+  // Shared per-variable-count FLINT context. Contexts are immutable after
+  // initialization, so all FMPoly instances (and threads) with the same
+  // variable count share one; it is never freed.
+  const fmpz_mpoly_ctx_struct *ctx;
+  fmpz_mpoly_t poly; // Main FLINT polynomial
 
   std::vector<int> maxXDegrees; // Max degrees (for compatibility)
   std::vector<int> blockSizes;  // Block sizes (for compatibility)
 
   // Helper methods
   void setupContext();
-  void convertExponents(int qPower, const std::vector<int> &xPowers,
-                        fmpz **exps, slong *exp_bits) const;
+  // Fill exp[0..numXVariables] with the stored (ground-offset, nonnegative)
+  // exponents for a logical (qPower, xPowers) monomial.
+  void storedExponents(int qPower, const std::vector<int> &xPowers,
+                       ulong *exp) const;
+  bool needsGroundAdjustment(int qPower,
+                             const std::vector<int> &xPowers) const;
   bool getExponentsFromMonomial(const fmpz *exps, int &qPower,
                                 std::vector<int> &xPowers) const;
   void adjustGroundPowersIfNeeded(int qPower, const std::vector<int> &xPowers);
 
   // Internal methods used by public interface
-  int getCoefficient(int qPower, const std::vector<int> &xPowers) const;
-  QPolynomial getQPolynomialObject(const std::vector<int> &xPowers) const;
-  void setQPolynomial(const std::vector<int> &xPowers,
-                      const std::vector<int> &qCoeffs, int minQPower = 0);
-  void setQPolynomial(const std::vector<int> &xPowers,
-                      const QPolynomial &qPoly);
   void addQPolynomial(const std::vector<int> &xPowers,
                       const QPolynomial &qPoly);
   void checkCompatibility(const FMPoly &other) const;
-  bool isZero() const;
 
 public:
   using Term = std::pair<std::vector<int>, QPolynomial>;
   std::vector<Term> getCoefficients() const override;
+  std::vector<Term> getCoefficientMap() const { return getCoefficients(); }
   /**
    * Constructor
    * @param numVariables Number of x variables
@@ -78,6 +79,12 @@ public:
   FMPoly(const FMPoly &other);
 
   /**
+   * Move constructor / move assignment (steal the FLINT polynomial)
+   */
+  FMPoly(FMPoly &&other) noexcept;
+  FMPoly &operator=(FMPoly &&other) noexcept;
+
+  /**
    * Assignment operator
    */
   FMPoly &operator=(const FMPoly &other);
@@ -95,6 +102,27 @@ public:
    */
   void setCoefficient(int qPower, const std::vector<int> &xPowers,
                       int coefficient) override;
+
+  /**
+   * Return coefficient for a specific term.
+   *
+   * This is a convenience/testing API; performance-critical code should prefer
+   * bulk operations.
+   */
+  int getCoefficient(int qPower, const std::vector<int> &xPowers) const;
+
+  /**
+   * Return the q-polynomial associated with a fixed x-monomial.
+   */
+  QPolynomial getQPolynomialObject(const std::vector<int> &xPowers) const;
+
+  /**
+   * Replace the q-polynomial associated with a fixed x-monomial.
+   */
+  void setQPolynomial(const std::vector<int> &xPowers,
+                      const std::vector<int> &qCoeffs, int minQPower = 0);
+  void setQPolynomial(const std::vector<int> &xPowers,
+                      const QPolynomial &qPoly);
 
   /**
    * Add to coefficient for specific term
@@ -131,11 +159,16 @@ public:
    */
   void clear() override;
 
+  bool isZero() const;
+
   /**
    * Export to JSON format
    * @param fileName Output file name
    */
   void exportToJson(const std::string &fileName) const override;
+  void exportToJson(const std::string &fileName,
+                    const std::vector<double> &overall_x_powers,
+                    double overall_q_power) const;
 
   /**
    * Print polynomial in human-readable format
@@ -164,11 +197,13 @@ public:
    * (Kept for compatibility with existing code)
    */
   int getNumXVariables() const;
+  const std::vector<int> &getMaxXDegrees() const { return maxXDegrees; }
+  const std::vector<int> &getBlockSizes() const { return blockSizes; }
 
   /**
    * Get access to the underlying FLINT polynomial (for advanced operations)
    * Similar to MultivariablePolynomial::getCoefficientMap()
    */
   const fmpz_mpoly_t &getFlintPoly() const { return poly; }
-  const fmpz_mpoly_ctx_t &getFlintContext() const { return ctx; }
+  const fmpz_mpoly_ctx_struct *getFlintContext() const { return ctx; }
 };

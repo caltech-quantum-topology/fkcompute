@@ -16,6 +16,7 @@ Project docs live in `docs/`:
 - Python API: `docs/python_api.md`
 - Output format: `docs/output.md`
 - Pipeline internals: `docs/pipeline.md`
+- Development and tests: `docs/development.md`
 
 Optional: build a single PDF from `docs/` with `./docs/build_pdf.sh`.
 
@@ -53,24 +54,22 @@ sudo yum install flint-devel gcc-openmp openblas-devel
 pip install .
 ```
 
-For full FK computation (ILP checks), also install: `pip install ".[ilp]"`.
+The Python package installs the HiGHS bindings used for ILP feasibility checks.
 
 Optional extras:
 
 ```bash
-pip install ".[ilp]"           # Gurobi ILP checks (requires a Gurobi install + license)
 pip install ".[symbolic]"      # SymPy symbolic output
 pip install ".[interactive]"   # Rich interactive wizard + history
 pip install ".[yaml]"          # YAML configs (PyYAML)
 pip install ".[full]"          # all optional extras
 ```
 
-### Gurobi
+### HiGHS
 
-`fkcompute` uses Gurobi (`gurobipy`) for ILP feasibility/boundedness checks.
-
-- Install the Python dependency with: `pip install ".[ilp]"`
-- You still need a working Gurobi installation and license (e.g. `GRB_LICENSE_FILE`)
+`fkcompute` uses the open-source HiGHS solver (`highspy`) for ILP
+feasibility/boundedness checks. It is installed automatically and does not
+require a separate solver license.
 
 ## Quickstart
 
@@ -80,6 +79,7 @@ Compute quickly:
 
 ```bash
 fk simple "[1,1,1]" 2
+fk --version
 ```
 
 Symbolic output (requires `fkcompute[symbolic]`):
@@ -94,6 +94,12 @@ Run from a config file (threading, saving, presets, batch, etc.):
 
 ```bash
 fk config my_run.yaml
+```
+
+Tune a larger search:
+
+```bash
+fk simple "[1,-2,1,-2]" 3 --workers 4 --threads 4 --weight 5
 ```
 
 Interactive wizard:
@@ -136,6 +142,7 @@ preset: parallel
 threads: 8
 max_workers: 8
 chunk_size: 16384
+weight: 5
 
 symbolic: true
 save_data: true
@@ -183,13 +190,24 @@ cmake -B build -S .
 cmake --build build
 ```
 
-Tests are maintained internally and are not included in the public snapshot.
+Run the focused public tests:
+
+```bash
+PYTHONPATH=src python -m pytest -q
+```
+
+For quick C++ iteration:
+
+```bash
+make -C cpp fk_main
+make -C cpp clean
+```
 
 More details: `docs/development.md`.
 
 ## License
 
-TBD.
+MIT.
 
 ## How To Cite
 

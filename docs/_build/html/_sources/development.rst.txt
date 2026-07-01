@@ -44,7 +44,7 @@ Repository Layout
    │       ├── cli/            # Typer CLI commands
    │       ├── domain/         # Pure domain logic (braid, constraints)
    │       ├── inversion/      # Phase 1: sign assignment search
-   │       ├── solver/         # Phase 2: ILP generation (Gurobi)
+   │       ├── solver/         # Phase 2: ILP generation (HiGHS)
    │       ├── output/         # Symbolic formatting (SymPy)
    │       ├── infra/          # Binary execution, config I/O
    │       ├── interactive/    # Rich-based interactive UI
@@ -55,10 +55,10 @@ Repository Layout
    │   ├── include/
    │   ├── tests/
    │   └── Makefile            # Legacy build (prefer CMake)
-   ├── tests/                  # Python test suite
-   │   ├── test_fk_baseline.py
-   │   ├── all_knots.yaml
-   │   └── all_links.yaml
+   ├── tests/                  # Focused public Python tests
+   │   ├── test_solver_ilp.py
+   │   ├── test_find_sign_assignment_full.py
+   │   └── test_inversion_search_order.py
    ├── mathematica/            # Wolfram Language paclet wrapper
    └── docs/                   # This documentation
 
@@ -68,19 +68,28 @@ Running the Test Suite
 .. code-block:: bash
 
    # Run all tests
-   pytest
+   PYTHONPATH=src python -m pytest -q
 
    # Run with verbose output
-   pytest -v
+   PYTHONPATH=src python -m pytest -v
 
    # Run a specific test file
-   pytest tests/test_fk_baseline.py
+   PYTHONPATH=src python -m pytest tests/test_solver_ilp.py
 
    # Run tests matching a name pattern
-   pytest -k "trefoil"
+   PYTHONPATH=src python -m pytest -k "inversion"
 
-The baseline tests compare FK invariants against a set of pre-computed
-reference values for knots up to 11 crossings.
+The public tests cover HiGHS-backed ILP feasibility checks, stable ILP CSV
+generation for small braids, inversion search ordering, and full
+sign-assignment deduplication. Larger baseline datasets are kept outside the
+public snapshot.
+
+C++ build validation:
+
+.. code-block:: bash
+
+   make -C cpp fk_main
+   make -C cpp clean
 
 Coding Conventions
 ------------------
@@ -101,8 +110,8 @@ Module Architecture Invariants
 The following rules maintain the layered architecture:
 
 * ``domain/`` — pure functions and data classes only; no subprocess calls,
-  no file I/O, no Gurobi imports.
-* ``solver/`` — may import Gurobi; no CLI or output code.
+  no file I/O, no HiGHS imports.
+* ``solver/`` — may import HiGHS; no CLI or output code.
 * ``infra/`` — all file and process I/O; no domain logic.
 * ``api/`` — orchestrates domain and infra; no direct CLI code.
 * ``cli/`` — translates CLI arguments to API calls; minimal business logic.
@@ -122,7 +131,7 @@ Install the documentation dependencies:
 
 .. code-block:: bash
 
-   pip install sphinx sphinx-rtd-theme sphinx-copybutton sphinx-design
+   pip install -r docs/requirements.txt
 
 Build the HTML documentation:
 
@@ -130,6 +139,12 @@ Build the HTML documentation:
 
    cd docs
    sphinx-build -b html . _build/html
+
+From the repository root, the equivalent command is:
+
+.. code-block:: bash
+
+   python -m sphinx -b html docs docs/_build/html
 
 Open ``docs/_build/html/index.html`` in a browser.
 
