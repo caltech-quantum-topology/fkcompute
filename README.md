@@ -8,15 +8,17 @@ Compute the FK invariant of braid closures (knot theory) via a Python orchestrat
 
 ## Documentation
 
-Project docs live in `docs/`:
+**Full documentation:** https://caltech-quantum-topology.github.io/fkcompute/
 
-- Getting started: `docs/quickstart.md`
-- CLI: `docs/cli.md`
-- Config files: `docs/config.md`
-- Python API: `docs/python_api.md`
-- Output format: `docs/output.md`
-- Pipeline internals: `docs/pipeline.md`
-- Development and tests: `docs/development.md`
+The same content also lives in `docs/` as Markdown:
+
+- Getting started: [`docs/quickstart.md`](docs/quickstart.md)
+- CLI: [`docs/cli.md`](docs/cli.md)
+- Config files: [`docs/config.md`](docs/config.md)
+- Python API: [`docs/python_api.md`](docs/python_api.md)
+- Output format: [`docs/output.md`](docs/output.md)
+- Pipeline internals: [`docs/pipeline.md`](docs/pipeline.md)
+- Development and tests: [`docs/development.md`](docs/development.md)
 
 Optional: build a single PDF from `docs/` with `./docs/build_pdf.sh`.
 
