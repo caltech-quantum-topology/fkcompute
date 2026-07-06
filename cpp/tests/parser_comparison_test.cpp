@@ -7,7 +7,7 @@
 #include "fk/fk_computation.hpp"
 #include "fk/string_to_int.hpp"
 
-// Original FK parsing logic extracted from fk_segments_links.cpp
+// Original FK parsing logic, kept here as a reference implementation
 struct OriginalFKConfig {
     int degree;
     int components;

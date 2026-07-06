@@ -10,8 +10,6 @@ build/
 
 # Executables built in this directory
 /fk_main
-/fk_segments_links
-/fk_computation_refactored
 /polynomial_example
 /fmpoly_example
 /fmpoly_compatibility_test

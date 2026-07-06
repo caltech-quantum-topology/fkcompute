@@ -1,4 +1,4 @@
-#kcompute
+# fkcompute
 
 Compute the **FK invariant** for braids using inversion, ILP reduction, and a compiled helper binary.
 
@@ -10,7 +10,7 @@ This package bundles both Python logic and C++ executables to make the computati
 
 ### Core Functionality
 - **FK Invariant Computation**: Calculate FK invariants for braids using advanced inversion and ILP reduction algorithms
-- **Optimized Performance**: Uses compiled C++ helper binary (`fk_segments_links`) for maximum speed
+- **Optimized Performance**: Uses compiled C++ helper binary (`fk_main`) for maximum speed
 - **Parallel Processing**: Multi-threaded inversion calculations with configurable worker count
 - **Multiple Interfaces**: Command-line tool, Python API, and configuration file support
 

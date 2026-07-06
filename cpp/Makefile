@@ -46,8 +46,7 @@ BUILD_DIR = build
 $(shell mkdir -p $(BUILD_DIR))
 
 # Source files
-SOURCES = $(SRC_DIR)/fk_segments_links.cpp \
-          $(SRC_DIR)/multivariable_polynomial.cpp \
+SOURCES = $(SRC_DIR)/multivariable_polynomial.cpp \
           $(SRC_DIR)/fmpoly.cpp \
           $(SRC_DIR)/qpolynomial.cpp \
           $(SRC_DIR)/fmpoly_class.cpp \
@@ -79,7 +78,7 @@ HEADERS = $(INCLUDE_DIR)/fk/multivariable_polynomial.hpp \
           $(INCLUDE_DIR)/fk/fk_computation.hpp
 
 # Main targets
-MAIN_TARGET = fk_segments_links
+MAIN_TARGET = fk_main
 POLYNOMIAL_EXAMPLE_TARGET = polynomial_example
 FMPOLY_EXAMPLE_TARGET = fmpoly_example
 FMPOLY_COMPATIBILITY_TARGET = fmpoly_compatibility_test
@@ -89,7 +88,6 @@ DEBUG_FMPOLY_TARGET = debug_fmpoly
 ARITHMETIC_TEST_TARGET = arithmetic_test
 EXAMPLE_TARGET = example
 INEQUALITY_EXAMPLE_TARGET = inequality_example
-FK_COMPUTATION_TARGET = fk_computation_refactored
 FK_TEST_TARGET = fk_computation_test
 TREFOIL_EXAMPLE_TARGET = trefoil_fk_example
 TREFOIL_SIMPLE_TARGET = trefoil_simple_example
@@ -116,10 +114,6 @@ main: $(FK_MAIN_TARGET)
 
 # Prevent Make from using built-in rule for main
 .PHONY: main
-
-# Main FK computation executable
-$(MAIN_TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(FLINT_LIBS) $(OPENMP_LIBS)
 
 # Polynomial example executable
 $(POLYNOMIAL_EXAMPLE_TARGET): $(BUILD_DIR)/polynomial_example.o $(BUILD_DIR)/multivariable_polynomial.o
@@ -157,10 +151,6 @@ $(EXAMPLE_TARGET): $(BUILD_DIR)/example.o $(BUILD_DIR)/multivariable_polynomial.
 $(INEQUALITY_EXAMPLE_TARGET): $(BUILD_DIR)/inequality_example.o $(BUILD_DIR)/multivariable_polynomial.o $(BUILD_DIR)/inequality_solver.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-# FK computation refactored executable
-$(FK_COMPUTATION_TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(FLINT_LIBS) $(OPENMP_LIBS)
-
 # FK computation test executable
 $(FK_TEST_TARGET): $(BUILD_DIR)/fk_computation_test.o $(BUILD_DIR)/fk_computation.o $(BUILD_DIR)/multivariable_polynomial.o $(BUILD_DIR)/qalg_links.o $(BUILD_DIR)/linalg.o $(BUILD_DIR)/string_to_int.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(OPENMP_LIBS)
@@ -190,7 +180,7 @@ $(PARSER_TEST_TARGET): $(BUILD_DIR)/parser_comparison_test.o $(BUILD_DIR)/fk_com
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(OPENMP_LIBS)
 
 # Testing executable
-$(TEST_TARGET): $(BUILD_DIR)/testing.o $(filter-out $(BUILD_DIR)/fk_segments_links.o,$(OBJECTS))
+$(TEST_TARGET): $(BUILD_DIR)/testing.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(FLINT_LIBS) $(OPENMP_LIBS)
 
 # Benchmark executable
@@ -264,7 +254,6 @@ $(BUILD_DIR)/%.o: %.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Specific dependencies for object files
-$(BUILD_DIR)/fk_segments_links.o: $(SRC_DIR)/fk_segments_links.cpp $(HEADERS)
 $(BUILD_DIR)/multivariable_polynomial.o: $(SRC_DIR)/multivariable_polynomial.cpp $(INCLUDE_DIR)/fk/multivariable_polynomial.hpp $(INCLUDE_DIR)/fk/bilvector.hpp
 $(BUILD_DIR)/fmpoly.o: $(SRC_DIR)/fmpoly.cpp $(INCLUDE_DIR)/fk/fmpoly.hpp $(INCLUDE_DIR)/fk/qpolynomial.hpp $(INCLUDE_DIR)/fk/fmpoly_class.hpp
 $(BUILD_DIR)/qpolynomial.o: $(SRC_DIR)/qpolynomial.cpp $(INCLUDE_DIR)/fk/qpolynomial.hpp
@@ -305,7 +294,7 @@ $(BUILD_DIR)/benchmark_poly.o: benchmark_poly.cpp $(INCLUDE_DIR)/fk/fmpoly_class
 
 # Utility targets
 clean:
-	rm -rf $(BUILD_DIR) $(MAIN_TARGET) $(EXAMPLE_TARGET) $(ARITHMETIC_TEST_TARGET) $(INEQUALITY_EXAMPLE_TARGET) $(FK_COMPUTATION_TARGET) $(FK_TEST_TARGET) $(TREFOIL_EXAMPLE_TARGET) $(TREFOIL_SIMPLE_TARGET) $(TREFOIL_DEMO_TARGET) $(TREFOIL_COMPLETE_TARGET) $(PARSER_TEST_TARGET) $(TEST_TARGET) $(FK_MAIN_TARGET) $(BILVECTOR_OPERATIONS) $(NEW_QBINOM) $(XQ_EXMPL) $(PERFORMANCE_COMPARISON_TARGET) $(FMPOLY_COMPATIBILITY_TARGET) $(FMPOLY_EXAMPLE_TARGET) $(POLYNOMIAL_EXAMPLE_TARGET) $(RANDOM_FMPOLY_TARGET) $(BMPOLY_TEST_TARGET) $(INVERSE_QPOCHHAMMER_TEST_TARGET)
+	rm -rf $(BUILD_DIR) $(MAIN_TARGET) $(EXAMPLE_TARGET) $(ARITHMETIC_TEST_TARGET) $(INEQUALITY_EXAMPLE_TARGET) $(FK_TEST_TARGET) $(TREFOIL_EXAMPLE_TARGET) $(TREFOIL_SIMPLE_TARGET) $(TREFOIL_DEMO_TARGET) $(TREFOIL_COMPLETE_TARGET) $(PARSER_TEST_TARGET) $(TEST_TARGET) $(FK_MAIN_TARGET) $(BILVECTOR_OPERATIONS) $(NEW_QBINOM) $(XQ_EXMPL) $(PERFORMANCE_COMPARISON_TARGET) $(FMPOLY_COMPATIBILITY_TARGET) $(FMPOLY_EXAMPLE_TARGET) $(POLYNOMIAL_EXAMPLE_TARGET) $(RANDOM_FMPOLY_TARGET) $(BMPOLY_TEST_TARGET) $(INVERSE_QPOCHHAMMER_TEST_TARGET)
 
 # Clean only object files
 clean-obj:
@@ -368,7 +357,6 @@ help:
 	@echo "Available targets:"
 	@echo "  all          - Build main executable and example (default)"
 	@echo "  main         - Build main FK computation executable (fk_main)"
-	@echo "  fk_segments_links - Build main FK computation executable"
 	@echo "  polynomial_example - Build polynomial example"
 	@echo "  arithmetic_test - Build arithmetic operations test"
 	@echo "  testing      - Build testing executable"
